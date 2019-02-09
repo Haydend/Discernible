@@ -1,7 +1,8 @@
 package com.discernible.message.header.options;
 
 import com.discernible.message.ByteFieldWithLength;
-import com.discernible.message.SocketFieldWithLength;
+import com.discernible.message.SocketField;
+import com.discernible.message.WithLength;
 
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public class OptionsHeader {
   private ByteFieldWithLength authentication;
   private ByteFieldWithLength routing;
   private ForwardingField forwarding;
-  private SocketFieldWithLength responseRedirection;
+  private WithLength<SocketField> responseRedirection;
   private String esn;
   private String vin;
 
