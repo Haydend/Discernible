@@ -2,6 +2,9 @@ plugins {
 	id 'net.ltgt.apt' version '0.10'
 }
 
+repositories {
+	mavenCentral()
+}
 
 apply plugin: 'java'
 

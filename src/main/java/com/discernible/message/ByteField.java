@@ -5,12 +5,12 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ByteFieldWithLength extends FieldWithLength {
+public class ByteField implements Field {
 
   private final byte[] field;
 
   @Override
-  protected byte[] encodeField() {
+  public byte[] encode() {
     return field;
   }
 

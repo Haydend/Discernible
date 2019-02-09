@@ -18,8 +18,8 @@ public class ForwardingFieldTest {
     byte[] actualFieldBytes = forwardingField.encode();
 
     // Then
-    // ------------------------- Field Length | IP Address / Forwarding Address ....| Forwarding Port .| TCP | Type
-    Assert.assertArrayEquals(new byte[] { 0x08, (byte) 0xC0, (byte) 0xA8, 0x00, 0x01, 0x13, (byte) 0x88, 0x06, 0x00 }, actualFieldBytes);
+    // --------------------------------- IP Address / Forwarding Address ....| Forwarding Port .| TCP | Type
+    Assert.assertArrayEquals(new byte[] {(byte) 0xC0, (byte) 0xA8, 0x00, 0x01, 0x13, (byte) 0x88, 0x06, 0x00 }, actualFieldBytes);
 
   }
 

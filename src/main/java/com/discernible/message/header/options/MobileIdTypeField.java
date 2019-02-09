@@ -1,18 +1,18 @@
 package com.discernible.message.header.options;
 
-import com.discernible.message.FieldWithLength;
+import com.discernible.message.Field;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class MobileIdTypeField extends FieldWithLength {
+public class MobileIdTypeField implements Field {
 
   private final MobileIdType mobileIdType;
 
   @Override
-  protected byte[] encodeField() {
+  public byte[] encode() {
 
     byte[] messageBytes = new byte[1];
     messageBytes[0] = (byte) mobileIdType.ordinal();

@@ -1,15 +1,13 @@
 package com.discernible.message.header.options;
 
-import com.discernible.message.FieldWithLength;
+import com.discernible.message.Field;
 import com.discernible.message.IpField;
 import com.discernible.message.PortField;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
-public class ForwardingField extends FieldWithLength {
+public class ForwardingField implements Field {
 
   private final IpField ip;
   private final PortField port;
@@ -24,7 +22,7 @@ public class ForwardingField extends FieldWithLength {
   }
 
   @Override
-  protected byte[] encodeField() {
+  public byte[] encode() {
 
     byte[] messageBytes = new byte[8];
 
