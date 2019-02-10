@@ -1,11 +1,35 @@
 package com.discernible.message.body;
 
 import java.math.BigInteger;
+import java.util.Queue;
+
+import com.discernible.message.body.type0.NullMessage;
+import com.discernible.util.ByteUtils;
 
 import lombok.Data;
 
 @Data
 public abstract class MessageBody {
+
+  public static MessageBody decode(Queue<Byte> messageByte) {
+
+    ServiceType serviceType = ServiceType.values()[messageByte.poll()];
+    MessageType messageType = MessageType.values()[messageByte.poll()];
+    int sequenceNumber = ByteUtils.unsignedShortToInt(ByteUtils.getFieldBytes(2, messageByte));
+
+    final MessageBody messageBody;
+    switch (messageType) {
+    case NULL_MESSAGE:
+      messageBody = NullMessage.decodeBody(messageByte);
+      break;
+
+    default:
+      throw new IllegalStateException("Message Type not supported");
+    }
+
+    messageBody.setSequenceNumber(sequenceNumber);
+    return messageBody;
+  }
 
   public abstract ServiceType getServiceType();
 

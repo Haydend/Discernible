@@ -5,16 +5,17 @@ import java.util.Queue;
 import com.discernible.message.Field;
 import com.discernible.message.IpField;
 import com.discernible.message.PortField;
+import com.discernible.util.ByteUtils;
 
 import lombok.Data;
 
 @Data
 public class ForwardingField implements Field {
 
-  private final IpField ip;
-  private final PortField port;
-  private final Protocol forwardingProtocol;
-  private final ForwardingOperationType forwardingOperationType;
+  private IpField ip;
+  private PortField port;
+  private Protocol forwardingProtocol;
+  private ForwardingOperationType forwardingOperationType;
 
   public ForwardingField(String ip, Integer port, Protocol forwardingProtocol, ForwardingOperationType forwardingOperationType) {
     this.ip = new IpField(ip);
@@ -23,9 +24,23 @@ public class ForwardingField implements Field {
     this.forwardingOperationType = forwardingOperationType;
   }
 
+  private ForwardingField(IpField ipField, PortField portField, Protocol protocol, ForwardingOperationType forwardingOperationType) {
+    this.ip = ipField;
+    this.port = portField;
+    this.forwardingProtocol = protocol;
+    this.forwardingOperationType = forwardingOperationType;
+  }
+
   public static ForwardingField decode(Queue<Byte> messageBytes) {
 
-    return null;
+    messageBytes.poll(); // Throw away field length.
+
+    IpField ipField = IpField.decode(messageBytes);
+    PortField portField = PortField.decode(messageBytes);
+    Protocol forwardingProtocol = Protocol.decode(messageBytes);
+    ForwardingOperationType forwardingOperationType = ForwardingOperationType.decode(messageBytes);
+
+    return new ForwardingField(ipField, portField, forwardingProtocol, forwardingOperationType);
   }
 
   @Override
@@ -42,7 +57,23 @@ public class ForwardingField implements Field {
     messageBytes[6] = forwardingProtocol.encode();
     messageBytes[7] = forwardingOperationType.encode();
 
-    return messageBytes;
+    return ByteUtils.prependFieldLength(messageBytes);
+  }
+
+  public void setIp(String ip) {
+    this.ip.setIp(ip);
+  }
+
+  public String getIp() {
+    return this.ip.getIP();
+  }
+
+  public void setPort(int port) {
+    this.port.setPort(port);
+  }
+
+  public int getPort() {
+    return this.port.getPort();
   }
 
   public enum Protocol {
@@ -53,6 +84,17 @@ public class ForwardingField implements Field {
 
     private Protocol(byte byteForEnum) {
       this.byteForEnum = byteForEnum;
+    }
+
+    public static Protocol decode(Queue<Byte> messageBytes) {
+      byte byteToMatch = messageBytes.poll();
+      for (Protocol protocol : Protocol.values()) {
+        if (protocol.byteForEnum == byteToMatch) {
+          return protocol;
+        }
+      }
+
+      throw new IllegalArgumentException(String.format("No Protocol found for byte: %s", byteToMatch));
     }
 
     public byte encode() {
@@ -69,6 +111,17 @@ public class ForwardingField implements Field {
 
     private ForwardingOperationType(byte byteForEnum) {
       this.byteForEnum = byteForEnum;
+    }
+
+    public static ForwardingOperationType decode(Queue<Byte> messageBytes) {
+      byte byteToMatch = messageBytes.poll();
+      for (ForwardingOperationType forwardingOperationType : ForwardingOperationType.values()) {
+        if (forwardingOperationType.byteForEnum == byteToMatch) {
+          return forwardingOperationType;
+        }
+      }
+
+      throw new IllegalArgumentException(String.format("No Forwarding Operation Type found for byte: %s", byteToMatch));
     }
 
     public byte encode() {

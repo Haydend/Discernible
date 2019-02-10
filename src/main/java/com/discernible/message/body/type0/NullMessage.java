@@ -1,8 +1,14 @@
 package com.discernible.message.body.type0;
 
+import java.util.Queue;
+
 import com.discernible.message.body.MessageBody;
 
 public class NullMessage extends MessageBody {
+
+  public static NullMessage decodeBody(Queue<Byte> messageBytes) {
+    return new NullMessage();
+  }
 
   @Override
   public ServiceType getServiceType() {

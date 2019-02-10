@@ -31,7 +31,7 @@ public class SocketFieldTest {
     SocketField socketField = SocketField.decode(bytes);
 
     // Then
-    Assert.assertEquals("192.168.0.1", socketField.getIP());
+    Assert.assertEquals("192.168.0.1", socketField.getIp());
     Assert.assertEquals(5000, socketField.getPort());
   }
 

@@ -45,11 +45,11 @@ public class SocketField implements Field {
     return ByteUtils.prependFieldLength(messageBytes);
   }
 
-  public String getIP() {
+  public String getIp() {
     return ip.getIP();
   }
 
-  public void setIP(String ip) {
+  public void setIp(String ip) {
     this.ip.setIp(ip);
   }
 
