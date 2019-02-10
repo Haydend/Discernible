@@ -1,5 +1,7 @@
 package com.discernible.message;
 
+import com.discernible.util.ByteUtils;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,7 +13,7 @@ public class ByteField implements Field {
 
   @Override
   public byte[] encode() {
-    return field;
+    return ByteUtils.prependFieldLength(field);
   }
 
 }

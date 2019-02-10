@@ -1,6 +1,7 @@
 package com.discernible.message.header.options;
 
 import com.discernible.message.Field;
+import com.discernible.util.ByteUtils;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,7 +18,7 @@ public class MobileIdTypeField implements Field {
     byte[] messageBytes = new byte[1];
     messageBytes[0] = (byte) mobileIdType.ordinal();
 
-    return messageBytes;
+    return ByteUtils.prependFieldLength(messageBytes);
   }
 
   public enum MobileIdType {

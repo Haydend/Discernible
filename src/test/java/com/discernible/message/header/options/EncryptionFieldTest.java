@@ -8,17 +8,17 @@ import com.discernible.message.header.options.extension.EncryptionField.Encrypti
 
 public class EncryptionFieldTest {
 
-	@Test
-	public void test_encode() {
+  @Test
+  public void test_encode() {
 
-		// Given
-		EncryptionField encryptionField = new EncryptionField(EncryptionSubField.ESN, 1234567);
+    // Given
+    EncryptionField encryptionField = new EncryptionField(EncryptionSubField.ESN, 1234567);
 
-		// When
-		byte[] actualMessaeBytes = encryptionField.encode();
+    // When
+    byte[] actualMessaeBytes = encryptionField.encode();
 
-		// Then
-		Assert.assertArrayEquals(new byte[] { 0x01, 0x01, 0x00, 0x12, (byte) 0xD6, (byte) 0x87 }, actualMessaeBytes);
-	}
+    // Then
+    Assert.assertArrayEquals(new byte[] { 0x06, 0x01, 0x01, 0x00, 0x12, (byte) 0xD6, (byte) 0x87 }, actualMessaeBytes);
+  }
 
 }

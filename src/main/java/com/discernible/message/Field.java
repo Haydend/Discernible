@@ -4,9 +4,6 @@ public interface Field {
 
   byte[] encode();
 
-  @SuppressWarnings("unchecked")
-  default <F extends Field> WithLength<F> withLength() {
-    return new WithLength<F>((F) this);
-  }
+  // void decode(Queue<Byte> messageBytes);
 
 }

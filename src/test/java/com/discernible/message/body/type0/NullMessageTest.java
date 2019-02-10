@@ -18,8 +18,8 @@ public class NullMessageTest {
     byte[] mobileId = new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 };
 
     OptionsHeader optonsHeader = new OptionsHeader();
-    optonsHeader.setMobileId(new ByteField(mobileId).withLength());
-    optonsHeader.setMobileIdType(new MobileIdTypeField(MobileIdType.ESN).withLength());
+    optonsHeader.setMobileId(new ByteField(mobileId));
+    optonsHeader.setMobileIdType(new MobileIdTypeField(MobileIdType.ESN));
 
     NullMessage nullMessage = new NullMessage();
     nullMessage.setSequenceNumber(1);

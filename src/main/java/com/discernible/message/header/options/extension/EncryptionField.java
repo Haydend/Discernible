@@ -3,32 +3,33 @@ package com.discernible.message.header.options.extension;
 import java.math.BigInteger;
 
 import com.discernible.message.Field;
+import com.discernible.util.ByteUtils;
 
 import lombok.Data;
 
 @Data
 public class EncryptionField implements Field {
 
-	private final EncryptionSubField encryptionSubField;
-	private final int randomKey;
+  private final EncryptionSubField encryptionSubField;
+  private final int randomKey;
 
-	@Override
-	public byte[] encode() {
+  @Override
+  public byte[] encode() {
 
-		byte[] messageBytes = new byte[6];
+    byte[] messageBytes = new byte[6];
 
-		messageBytes[0] = 0x01;
+    messageBytes[0] = 0x01;
 
-		messageBytes[1] = (byte) encryptionSubField.ordinal();
+    messageBytes[1] = (byte) encryptionSubField.ordinal();
 
-		byte[] randomKeyBytes = BigInteger.valueOf(randomKey).toByteArray();
-		int padding = 4 - randomKeyBytes.length;
-		System.arraycopy(randomKeyBytes, 0, messageBytes, 2 + padding, randomKeyBytes.length);
+    byte[] randomKeyBytes = BigInteger.valueOf(randomKey).toByteArray();
+    int padding = 4 - randomKeyBytes.length;
+    System.arraycopy(randomKeyBytes, 0, messageBytes, 2 + padding, randomKeyBytes.length);
 
-		return messageBytes;
-	}
+    return ByteUtils.prependFieldLength(messageBytes);
+  }
 
-	public enum EncryptionSubField {
-		NONE, ESN, IMEI_MEID, USER_DEFINED_MOBILE_ID
-	}
+  public enum EncryptionSubField {
+    NONE, ESN, IMEI_MEID, USER_DEFINED_MOBILE_ID
+  }
 }

@@ -10,7 +10,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.discernible.message.ByteField;
 import com.discernible.message.Field;
 import com.discernible.message.SocketField;
-import com.discernible.message.WithLength;
 import com.discernible.message.header.options.extension.OptionExtension;
 
 import lombok.Data;
@@ -18,12 +17,12 @@ import lombok.Data;
 @Data
 public class OptionsHeader implements Field {
 
-  private WithLength<ByteField> mobileId;
-  private WithLength<MobileIdTypeField> mobileIdType;
-  private WithLength<ByteField> authentication;
-  private WithLength<ByteField> routing;
-  private WithLength<ForwardingField> forwarding;
-  private WithLength<SocketField> responseRedirection;
+  private ByteField mobileId;
+  private MobileIdTypeField mobileIdType;
+  private ByteField authentication;
+  private ByteField routing;
+  private ForwardingField forwarding;
+  private SocketField responseRedirection;
   private OptionExtension optionExtension;
 
   @Override

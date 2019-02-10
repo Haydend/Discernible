@@ -10,18 +10,17 @@ import org.apache.commons.lang3.ArrayUtils;
 import com.discernible.message.Ascii8BitField;
 import com.discernible.message.ByteField;
 import com.discernible.message.Field;
-import com.discernible.message.WithLength;
 
 import lombok.Data;
 
 @Data
 public class OptionExtension implements Field {
 
-  private final WithLength<ByteField> esn;
-  private final WithLength<Ascii8BitField> vin;
-  private final WithLength<EncryptionField> encryption;
+  private final ByteField esn;
+  private final Ascii8BitField vin;
+  private final EncryptionField encryption;
   private final Boolean lmDirectCompression;
-  private final WithLength<LmDirectRouting> lmDirectRouting;
+  private final LmDirectRouting lmDirectRouting;
 
   @Override
   public byte[] encode() {
