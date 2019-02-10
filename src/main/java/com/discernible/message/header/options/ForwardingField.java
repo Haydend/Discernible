@@ -1,5 +1,7 @@
 package com.discernible.message.header.options;
 
+import java.util.Queue;
+
 import com.discernible.message.Field;
 import com.discernible.message.IpField;
 import com.discernible.message.PortField;
@@ -19,6 +21,11 @@ public class ForwardingField implements Field {
     this.port = new PortField(port);
     this.forwardingProtocol = forwardingProtocol;
     this.forwardingOperationType = forwardingOperationType;
+  }
+
+  public static ForwardingField decode(Queue<Byte> messageBytes) {
+
+    return null;
   }
 
   @Override

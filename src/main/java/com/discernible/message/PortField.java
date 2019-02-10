@@ -6,10 +6,8 @@ import java.util.Queue;
 import com.discernible.util.ByteUtils;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 public class PortField implements Field {
 
   private int port;
@@ -29,8 +27,8 @@ public class PortField implements Field {
   }
 
   public static PortField decode(Queue<Byte> messageBytes) {
-    byte[] portBytes = new byte[] { messageBytes.poll(), messageBytes.poll() };
-    int port = ByteUtils.unsignedShortToint(portBytes);
+    byte[] portBytes = ByteUtils.getFieldBytes(2, messageBytes);
+    int port = ByteUtils.unsignedShortToInt(portBytes);
 
     return new PortField(port);
   }

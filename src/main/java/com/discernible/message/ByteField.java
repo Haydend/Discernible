@@ -1,15 +1,24 @@
 package com.discernible.message;
 
+import java.util.Queue;
+
 import com.discernible.util.ByteUtils;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
 public class ByteField implements Field {
 
   private final byte[] field;
+
+  public static ByteField decode(Queue<Byte> messageBytes) {
+
+    int fieldLength = ByteUtils.getFieldLength(messageBytes);
+
+    byte[] fieldBytes = ByteUtils.getFieldBytes(fieldLength, messageBytes);
+
+    return new ByteField(fieldBytes);
+  }
 
   @Override
   public byte[] encode() {

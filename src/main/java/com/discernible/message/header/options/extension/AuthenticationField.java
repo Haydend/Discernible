@@ -1,28 +1,39 @@
 package com.discernible.message.header.options.extension;
 
+import java.util.Queue;
+
 import com.discernible.message.Field;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 @Data
-@EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
 public class AuthenticationField implements Field {
 
-	private final AuthenticationSubField authenticationSubField;
+  private AuthenticationSubField authenticationSubField;
 
-	@Override
-	public byte[] encode() {
+  public static AuthenticationField decode(Queue<Byte> messageBytes) {
 
-		byte[] messageBytes = new byte[2];
-		messageBytes[0] = 0x01; // HMAC-MD5
-		messageBytes[1] = (byte) authenticationSubField.ordinal();
+    messageBytes.poll(); // Throw away the first byte as we don't need it.
 
-		return messageBytes;
-	}
+    AuthenticationSubField authenticationSubField = AuthenticationSubField.values()[messageBytes.poll()];
 
-	public enum AuthenticationSubField {
-		MAINTENANCE, SERVICES, INBOUND, FORWARD;
-	}
+    return new AuthenticationField(authenticationSubField);
+  }
+
+  @Override
+  public byte[] encode() {
+
+    byte[] messageBytes = new byte[2];
+    messageBytes[0] = 0x01; // HMAC-MD5
+    messageBytes[1] = (byte) authenticationSubField.ordinal();
+
+    return messageBytes;
+  }
+
+  public enum AuthenticationSubField {
+    MAINTENANCE, SERVICES, INBOUND, FORWARD;
+  }
 
 }
