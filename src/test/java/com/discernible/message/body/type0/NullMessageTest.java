@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import com.discernible.message.ByteField;
 import com.discernible.message.Message;
-import com.discernible.message.body.MessageBody;
 import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
@@ -22,7 +21,6 @@ public class NullMessageTest {
     // Given
     ByteField mobileId = new ByteField(new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 });
     MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
-
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
     NullMessage nullMessage = new NullMessage();
@@ -45,18 +43,17 @@ public class NullMessageTest {
         (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x01));
 
     // When
-    OptionsHeader actualOptionsHeader = OptionsHeader.decode(bytes);
-    NullMessage actualNullMessage = (NullMessage) MessageBody.decode(bytes);
+    Message message = Message.decode(bytes);
 
     // Then
     ByteField mobileId = new ByteField(new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 });
     MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
-    Assert.assertEquals(optonsHeader, actualOptionsHeader);
+    Assert.assertEquals(optonsHeader, message.getOptionHeader());
 
     NullMessage nullMessage = new NullMessage();
     nullMessage.setSequenceNumber(1);
-    Assert.assertEquals(nullMessage, actualNullMessage);
+    Assert.assertEquals(nullMessage, message.getMessageBody());
   }
 
 }

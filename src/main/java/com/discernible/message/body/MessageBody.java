@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.Queue;
 
 import com.discernible.message.body.type0.NullMessage;
+import com.discernible.message.body.type1.AcknowledgeMessage;
 import com.discernible.util.ByteUtils;
 
 import lombok.Data;
@@ -11,16 +12,22 @@ import lombok.Data;
 @Data
 public abstract class MessageBody {
 
-  public static MessageBody decode(Queue<Byte> messageByte) {
+  private int sequenceNumber;
 
-    ServiceType serviceType = ServiceType.values()[messageByte.poll()];
-    MessageType messageType = MessageType.values()[messageByte.poll()];
-    int sequenceNumber = ByteUtils.unsignedShortToInt(ByteUtils.getFieldBytes(2, messageByte));
+  public static MessageBody decode(Queue<Byte> messageBytes) {
+
+    ServiceType serviceType = ServiceType.values()[messageBytes.poll()];
+    MessageType messageType = MessageType.values()[messageBytes.poll()];
+    int sequenceNumber = ByteUtils.unsignedShortToInt(ByteUtils.getFieldBytes(2, messageBytes));
 
     final MessageBody messageBody;
     switch (messageType) {
     case NULL_MESSAGE:
-      messageBody = NullMessage.decodeBody(messageByte);
+      messageBody = NullMessage.decodeBody(messageBytes);
+      break;
+
+    case ACK_NAK_MESSAGE:
+      messageBody = AcknowledgeMessage.decodeBody(messageBytes);
       break;
 
     default:
@@ -34,8 +41,6 @@ public abstract class MessageBody {
   public abstract ServiceType getServiceType();
 
   public abstract MessageType getMessageType();
-
-  private int sequenceNumber;
 
   public abstract byte[] encodeBody();
 

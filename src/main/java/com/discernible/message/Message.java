@@ -1,5 +1,7 @@
 package com.discernible.message;
 
+import java.util.Queue;
+
 import com.discernible.message.body.MessageBody;
 import com.discernible.message.header.options.OptionsHeader;
 
@@ -10,6 +12,14 @@ public class Message {
 
   private final OptionsHeader optionHeader;
   private final MessageBody messageBody;
+
+  public static Message decode(Queue<Byte> messageBytes) {
+
+    OptionsHeader optionsHeader = OptionsHeader.decode(messageBytes);
+    MessageBody messageBody = MessageBody.decode(messageBytes);
+
+    return new Message(optionsHeader, messageBody);
+  }
 
   public byte[] encode() {
 
