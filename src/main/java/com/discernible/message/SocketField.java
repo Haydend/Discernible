@@ -10,14 +10,14 @@ import lombok.EqualsAndHashCode;
 public class SocketField implements Field {
 
   private final IpField ip;
-  private final PortField port;
+  private final UnsignedIntegerField port;
 
   public SocketField(String ip, Integer port) {
     this.ip = new IpField(ip);
-    this.port = new PortField(port);
+    this.port = new UnsignedIntegerField(port);
   }
 
-  private SocketField(IpField ip, PortField port) {
+  private SocketField(IpField ip, UnsignedIntegerField port) {
     this.ip = ip;
     this.port = port;
   }
@@ -27,7 +27,7 @@ public class SocketField implements Field {
     ByteUtils.getFieldLength(messageBytes); // We don't need the field length, but we need to take the byte off the queue.
 
     IpField ipField = IpField.decode(messageBytes);
-    PortField portField = PortField.decode(messageBytes);
+    UnsignedIntegerField portField = UnsignedIntegerField.decode(messageBytes);
 
     return new SocketField(ipField, portField);
   }
@@ -54,11 +54,11 @@ public class SocketField implements Field {
   }
 
   public int getPort() {
-    return port.getPort();
+    return port.getValue();
   }
 
   public void setPort(int port) {
-    this.port.setPort(port);
+    this.port.setValue(port);
   }
 
 }

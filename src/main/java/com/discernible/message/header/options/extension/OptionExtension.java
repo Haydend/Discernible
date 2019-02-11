@@ -46,7 +46,7 @@ public class OptionExtension implements Field {
       encryption = EncryptionField.decode(messageBytes);
     }
 
-    Boolean lmDirectCompression = (flagByte & 0b00001000) == 0b00001000;
+    boolean lmDirectCompression = (flagByte & 0b00001000) == 0b00001000;
 
     LmDirectRouting lmDirectRouting = null;
     if ((flagByte & 0b00010000) == 0b00010000) {

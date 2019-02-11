@@ -27,6 +27,10 @@ public class ByteUtils {
     return l;
   }
 
+  public static final byte[] intToSignedBytes(int value) {
+    return new byte[] { (byte) (value >>> 24), (byte) (value >>> 16), (byte) (value >>> 8), (byte) value };
+  }
+
   public static byte[] prependFieldLength(byte[] fieldBytes) {
     // Get the field length that need prepending the byte array.
     byte fieldLength = (byte) fieldBytes.length;

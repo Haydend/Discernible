@@ -7,13 +7,13 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class PortFieldTest {
+public class UnsignedIntegerFieldTest {
 
   @Test
   public void test_encode() {
 
     // Given
-    PortField portField = new PortField(5000);
+    UnsignedIntegerField portField = new UnsignedIntegerField(5000);
 
     // When
     byte[] actualBytes = portField.encode();
@@ -29,10 +29,10 @@ public class PortFieldTest {
     Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x13, (byte) 0x88));
 
     // When
-    PortField portField = PortField.decode(bytes);
+    UnsignedIntegerField portField = UnsignedIntegerField.decode(bytes);
 
     // Then
-    Assert.assertEquals(5000, portField.getPort());
+    Assert.assertEquals(5000, portField.getValue());
 
   }
 

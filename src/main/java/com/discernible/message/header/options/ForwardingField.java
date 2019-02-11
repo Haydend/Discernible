@@ -4,7 +4,7 @@ import java.util.Queue;
 
 import com.discernible.message.Field;
 import com.discernible.message.IpField;
-import com.discernible.message.PortField;
+import com.discernible.message.UnsignedIntegerField;
 import com.discernible.util.ByteUtils;
 
 import lombok.Data;
@@ -13,18 +13,18 @@ import lombok.Data;
 public class ForwardingField implements Field {
 
   private IpField ip;
-  private PortField port;
+  private UnsignedIntegerField port;
   private Protocol forwardingProtocol;
   private ForwardingOperationType forwardingOperationType;
 
   public ForwardingField(String ip, Integer port, Protocol forwardingProtocol, ForwardingOperationType forwardingOperationType) {
     this.ip = new IpField(ip);
-    this.port = new PortField(port);
+    this.port = new UnsignedIntegerField(port);
     this.forwardingProtocol = forwardingProtocol;
     this.forwardingOperationType = forwardingOperationType;
   }
 
-  private ForwardingField(IpField ipField, PortField portField, Protocol protocol, ForwardingOperationType forwardingOperationType) {
+  private ForwardingField(IpField ipField, UnsignedIntegerField portField, Protocol protocol, ForwardingOperationType forwardingOperationType) {
     this.ip = ipField;
     this.port = portField;
     this.forwardingProtocol = protocol;
@@ -36,7 +36,7 @@ public class ForwardingField implements Field {
     messageBytes.poll(); // Throw away field length.
 
     IpField ipField = IpField.decode(messageBytes);
-    PortField portField = PortField.decode(messageBytes);
+    UnsignedIntegerField portField = UnsignedIntegerField.decode(messageBytes);
     Protocol forwardingProtocol = Protocol.decode(messageBytes);
     ForwardingOperationType forwardingOperationType = ForwardingOperationType.decode(messageBytes);
 
@@ -69,11 +69,11 @@ public class ForwardingField implements Field {
   }
 
   public void setPort(int port) {
-    this.port.setPort(port);
+    this.port.setValue(port);
   }
 
   public int getPort() {
-    return this.port.getPort();
+    return this.port.getValue();
   }
 
   public enum Protocol {
