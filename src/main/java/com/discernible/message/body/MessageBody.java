@@ -5,6 +5,7 @@ import java.util.Queue;
 
 import com.discernible.message.body.type0.NullMessage;
 import com.discernible.message.body.type1.AcknowledgeMessage;
+import com.discernible.message.body.type2.EventReportMessage;
 import com.discernible.util.ByteUtils;
 
 import lombok.Data;
@@ -22,16 +23,20 @@ public abstract class MessageBody {
 
     final MessageBody messageBody;
     switch (messageType) {
-    case NULL_MESSAGE:
-      messageBody = NullMessage.decodeBody(messageBytes);
-      break;
+      case NULL_MESSAGE:
+        messageBody = NullMessage.decodeBody(messageBytes);
+        break;
 
-    case ACK_NAK_MESSAGE:
-      messageBody = AcknowledgeMessage.decodeBody(messageBytes);
-      break;
+      case ACK_NAK_MESSAGE:
+        messageBody = AcknowledgeMessage.decodeBody(messageBytes);
+        break;
 
-    default:
-      throw new IllegalStateException("Message Type not supported");
+      case EVENT_REPORT_MESSAGE:
+        messageBody = EventReportMessage.decodeBody(messageBytes, serviceType);
+        break;
+
+      default:
+        throw new IllegalStateException("Message Type not supported");
     }
 
     messageBody.setSequenceNumber(sequenceNumber);
