@@ -1,4 +1,4 @@
-package com.discernible.message.body.type1;
+package com.discernible.message.body;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Queue;
@@ -18,24 +18,19 @@ public class AppVersionField implements Field {
 
   public static AppVersionField decode(Queue<Byte> messageBytes) {
 
-    int firstDigit = messageBytes.poll();
-    int secondDigit = messageBytes.poll();
-    int version = (firstDigit * 10) + secondDigit;
+    byte[] fieldBytes = ByteUtils.getFieldBytes(3, messageBytes);
+    String fieldString = new String(fieldBytes, StandardCharsets.UTF_8);
 
-    char subVersion = new String(ByteUtils.getFieldBytes(1, messageBytes), StandardCharsets.UTF_8).charAt(0);
+    int version = Integer.parseInt(fieldString.substring(0, 2));
+    char subVersion = fieldString.charAt(2);
 
     return new AppVersionField(version, subVersion);
   }
 
   @Override
   public byte[] encode() {
-
-    int firstDigit = version / 10;
-    int secondDigit = version - (firstDigit * 10);
-
-    byte[] bytes = new byte[] { (byte) firstDigit, (byte) secondDigit, (byte) subVersion };
-
-    return bytes;
+    String versionString = new Integer(version).toString() + new Character(subVersion).toString();
+    return versionString.getBytes(StandardCharsets.UTF_8);
   }
 
 }

@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import com.discernible.message.ByteField;
 import com.discernible.message.Message;
+import com.discernible.message.body.AppVersionField;
 import com.discernible.message.body.MessageBody.MessageType;
 import com.discernible.message.body.type1.StatusField.Status;
 import com.discernible.message.header.options.MobileIdTypeField;

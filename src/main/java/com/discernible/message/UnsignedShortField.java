@@ -15,12 +15,13 @@ public class UnsignedShortField implements Field {
 
   @Override
   public byte[] encode() {
-    return new byte[] { (byte) value };
+    return new byte[] {(byte) value};
   }
 
   public static UnsignedShortField decode(Queue<Byte> messageBytes) {
 
-    short value = (short) messageBytes.poll();
+    byte fieldByte = messageBytes.poll();
+    short value = (short) Byte.toUnsignedInt(fieldByte);
 
     return new UnsignedShortField(value);
   }

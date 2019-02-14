@@ -1,4 +1,4 @@
-package com.discernible.message.body.type2;
+package com.discernible.message.body;
 
 import java.util.Queue;
 

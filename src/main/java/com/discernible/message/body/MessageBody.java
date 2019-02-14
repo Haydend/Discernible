@@ -6,6 +6,7 @@ import java.util.Queue;
 import com.discernible.message.body.type0.NullMessage;
 import com.discernible.message.body.type1.AcknowledgeMessage;
 import com.discernible.message.body.type2.EventReportMessage;
+import com.discernible.message.body.type3.IdReportMessage;
 import com.discernible.util.ByteUtils;
 
 import lombok.Data;
@@ -33,6 +34,10 @@ public abstract class MessageBody {
 
       case EVENT_REPORT_MESSAGE:
         messageBody = EventReportMessage.decodeBody(messageBytes, serviceType);
+        break;
+
+      case ID_REPORT_MESSAGE:
+        messageBody = IdReportMessage.decodeBody(messageBytes, serviceType);
         break;
 
       default:

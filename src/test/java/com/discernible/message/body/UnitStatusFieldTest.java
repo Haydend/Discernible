@@ -1,4 +1,4 @@
-package com.discernible.message.body.type2;
+package com.discernible.message.body;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -7,7 +7,8 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.discernible.message.body.type2.UnitStatusField.Status;
+import com.discernible.message.body.UnitStatusField;
+import com.discernible.message.body.UnitStatusField.Status;
 
 public class UnitStatusFieldTest {
 

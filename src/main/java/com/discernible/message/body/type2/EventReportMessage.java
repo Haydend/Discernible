@@ -13,6 +13,7 @@ import com.discernible.message.SignedShortField;
 import com.discernible.message.UnsignedIntegerField;
 import com.discernible.message.UnsignedShortField;
 import com.discernible.message.body.MessageBody;
+import com.discernible.message.body.UnitStatusField;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

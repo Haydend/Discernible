@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,9 +19,10 @@ import com.discernible.message.SignedShortField;
 import com.discernible.message.UnsignedIntegerField;
 import com.discernible.message.UnsignedShortField;
 import com.discernible.message.body.MessageBody.ServiceType;
+import com.discernible.message.body.UnitStatusField;
+import com.discernible.message.body.UnitStatusField.Status;
 import com.discernible.message.body.type2.CommStatusField.NetworkTechnology;
 import com.discernible.message.body.type2.FixStatusField.FixStatus;
-import com.discernible.message.body.type2.UnitStatusField.Status;
 import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
@@ -124,6 +126,34 @@ public class EventReportMessageTest {
         unitStatusField, eventIndex, eventCode, accumulatorFields);
 
     Assert.assertEquals(eventReportMessage, message.getMessageBody());
+  }
+
+  @Test
+  public void test() {
+
+    String hexString =
+        "8308359316072183855f0102010300018a0a353068000823c302000000004532328628ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff4f54413a317c303b302c312c392c31312c31357c343b302c347c373b30004f5441535441543a302c302c302c302c302c222200564255534552523a342c300056494e2d494e464f3a56494e3d2c4445562d5245474e3d55532c535256522d5245474e3d3f3f004654424c3a342c302c414132357c302c302c344631397c302c312c4446453500";
+    byte[] data = hexStringToByteArray(hexString);
+
+    Queue<Byte> bytes = new LinkedList<Byte>(
+        Arrays.asList(
+            ArrayUtils.toObject(data)));
+
+
+    Message message = Message.decode(bytes);
+
+    return;
+
+  }
+
+  public static byte[] hexStringToByteArray(String s) {
+    int len = s.length();
+    byte[] data = new byte[len / 2];
+    for (int i = 0; i < len; i += 2) {
+      data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
+          + Character.digit(s.charAt(i + 1), 16));
+    }
+    return data;
   }
 
 }

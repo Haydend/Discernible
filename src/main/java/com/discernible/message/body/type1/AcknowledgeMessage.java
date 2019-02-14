@@ -2,6 +2,7 @@ package com.discernible.message.body.type1;
 
 import java.util.Queue;
 
+import com.discernible.message.body.AppVersionField;
 import com.discernible.message.body.MessageBody;
 
 import lombok.AllArgsConstructor;
