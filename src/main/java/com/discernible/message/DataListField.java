@@ -30,7 +30,7 @@ public class DataListField implements Field {
       String[] lineValues = fieldLine.split(":");
 
       String key = lineValues[0];
-      String value = lineValues[1];
+      String value = lineValues.length >= 2 ? lineValues[1] : "";
 
       data.put(key, value);
     }
