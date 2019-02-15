@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -126,34 +125,6 @@ public class EventReportMessageTest {
         unitStatusField, eventIndex, eventCode, accumulatorFields);
 
     Assert.assertEquals(eventReportMessage, message.getMessageBody());
-  }
-
-  @Test
-  public void test() {
-
-    String hexString =
-        "8308014776000838069f0102020300001a1935326200082ddc02000000004635082650ffffff014776000838069f204080805079153fffffffffffffffffffffffffffffffffffff4f54413a317c303b302c312c392c31312c3135004f5441535441543a302c302c302c302c302c2222004654424c3a302c302c383541467c302c312c3434464100";
-    byte[] data = hexStringToByteArray(hexString);
-
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList(
-            ArrayUtils.toObject(data)));
-
-
-    Message message = Message.decode(bytes);
-
-    return;
-
-  }
-
-  public static byte[] hexStringToByteArray(String s) {
-    int len = s.length();
-    byte[] data = new byte[len / 2];
-    for (int i = 0; i < len; i += 2) {
-      data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-          + Character.digit(s.charAt(i + 1), 16));
-    }
-    return data;
   }
 
 }

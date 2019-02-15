@@ -7,7 +7,7 @@ import java.util.Queue;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.discernible.message.ExtensionStringsField;
+import com.discernible.message.DataListField;
 import com.discernible.message.SignedIntegerField;
 import com.discernible.message.UnsignedShortField;
 import com.discernible.message.body.AppVersionField;
@@ -40,7 +40,7 @@ public class IdReportMessage extends MessageBody {
   private PackedBcd8ByteField imsi;
   private PackedBcd8ByteField phoneNo;
   private PackedBcd10ByteField iccid;
-  private ExtensionStringsField extensionStrings;
+  private DataListField extensionStrings;
 
   public static IdReportMessage decodeBody(Queue<Byte> messageBytes, ServiceType serviceType) {
 
@@ -58,7 +58,7 @@ public class IdReportMessage extends MessageBody {
     PackedBcd8ByteField imsi = PackedBcd8ByteField.decode(messageBytes);
     PackedBcd8ByteField phoneNo = PackedBcd8ByteField.decode(messageBytes);
     PackedBcd10ByteField iccid = PackedBcd10ByteField.decode(messageBytes);
-    ExtensionStringsField extensionStrings = ExtensionStringsField.decode(messageBytes);
+    DataListField extensionStrings = DataListField.decode(messageBytes);
 
     return new IdReportMessage(serviceType, scriptVersion, configVersion, firmwareVersion, vehicleClass, unitStatus, modemSelection, applicationId,
         mobileId, queryId, esn, imei, imsi, phoneNo, iccid, extensionStrings);

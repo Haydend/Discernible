@@ -14,9 +14,13 @@ public class Message {
   private final MessageBody messageBody;
 
   public static Message decode(Queue<Byte> messageBytes) {
+    return Message.decode(messageBytes, true);
+  }
+
+  public static Message decode(Queue<Byte> messageBytes, boolean sentFromLmu) {
 
     OptionsHeader optionsHeader = OptionsHeader.decode(messageBytes);
-    MessageBody messageBody = MessageBody.decode(messageBytes);
+    MessageBody messageBody = MessageBody.decode(messageBytes, sentFromLmu);
 
     return new Message(optionsHeader, messageBody);
   }

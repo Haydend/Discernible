@@ -7,6 +7,7 @@ import com.discernible.message.body.type0.NullMessage;
 import com.discernible.message.body.type1.AcknowledgeMessage;
 import com.discernible.message.body.type2.EventReportMessage;
 import com.discernible.message.body.type3.IdReportMessage;
+import com.discernible.message.body.type5.ApplicationMessage;
 import com.discernible.util.ByteUtils;
 
 import lombok.Data;
@@ -16,7 +17,7 @@ public abstract class MessageBody {
 
   private int sequenceNumber;
 
-  public static MessageBody decode(Queue<Byte> messageBytes) {
+  public static MessageBody decode(Queue<Byte> messageBytes, boolean sentFromLmu) {
 
     ServiceType serviceType = ServiceType.values()[messageBytes.poll()];
     MessageType messageType = MessageType.values()[messageBytes.poll()];
@@ -38,6 +39,10 @@ public abstract class MessageBody {
 
       case ID_REPORT_MESSAGE:
         messageBody = IdReportMessage.decodeBody(messageBytes, serviceType);
+        break;
+
+      case APPLICATION_DATA_MESSAGE:
+        messageBody = ApplicationMessage.decodeBody(messageBytes, serviceType, sentFromLmu);
         break;
 
       default:

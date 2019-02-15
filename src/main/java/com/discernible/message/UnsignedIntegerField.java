@@ -20,8 +20,9 @@ public class UnsignedIntegerField implements Field {
   public byte[] encode() {
     byte[] messageBytes = new byte[2];
 
-    byte[] portBytes = BigInteger.valueOf(value).toByteArray();
-    System.arraycopy(portBytes, 0, messageBytes, 0, 2);
+    byte[] integerBytes = BigInteger.valueOf(value).toByteArray();
+    int padding = 2 - integerBytes.length;
+    System.arraycopy(integerBytes, 0, messageBytes, padding, integerBytes.length);
 
     return messageBytes;
   }
