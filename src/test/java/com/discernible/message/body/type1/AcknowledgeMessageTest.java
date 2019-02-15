@@ -22,7 +22,7 @@ public class AcknowledgeMessageTest {
   public void test_encode() {
 
     // Given
-    ByteField mobileId = new ByteField(new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 });
+    ByteField mobileId = new ByteField(new byte[] {0x01, 0x02, 0x03, 0x04, 0x05});
     MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
@@ -39,7 +39,7 @@ public class AcknowledgeMessageTest {
 
     // Then
     Assert.assertArrayEquals(
-        new byte[] { (byte) 0x83, 0x05, 0x01, 0x02, 0x03, 0x04, 0x05, 0x01, 0x01, 0x02, 0x01, 0x00, 0x01, 0x0C, 0x05, 0x00, 0x06, 0x05, 0x62 },
+        new byte[] {(byte) 0x83, 0x05, 0x01, 0x02, 0x03, 0x04, 0x05, 0x01, 0x01, 0x02, 0x01, 0x00, 0x01, 0x0C, 0x05, 0x00, 0x36, 0x35, 0x62},
         actualBytes);
   }
 
@@ -49,13 +49,13 @@ public class AcknowledgeMessageTest {
     // Given
     Queue<Byte> bytes = new LinkedList<Byte>(
         Arrays.asList((byte) 0x83, (byte) 0x05, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x01, (byte) 0x01,
-            (byte) 0x02, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x0C, (byte) 0x05, (byte) 0x00, (byte) 0x06, (byte) 0x05, (byte) 0x62));
+            (byte) 0x02, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x0C, (byte) 0x05, (byte) 0x00, (byte) 0x36, (byte) 0x35, (byte) 0x62));
 
     // When
     Message message = Message.decode(bytes);
 
     // Then
-    ByteField mobileId = new ByteField(new byte[] { 0x01, 0x02, 0x03, 0x04, 0x05 });
+    ByteField mobileId = new ByteField(new byte[] {0x01, 0x02, 0x03, 0x04, 0x05});
     MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
     Assert.assertEquals(optonsHeader, message.getOptionHeader());
