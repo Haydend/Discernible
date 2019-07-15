@@ -27,6 +27,10 @@ public abstract class ApplicationMessagePayload implements Field {
         applicationMessagePayload = VehicleIdReport.decodePayload(fieldBytes, payloadLength.getValue());
         break;
 
+      case 122:
+        applicationMessagePayload = MotionLogReport.decodePayload(fieldBytes, payloadLength.getValue());
+        break;
+
       default:
         throw new IllegalArgumentException(String.format("Type not support: %s", applicationMessageType.getValue()));
     }
