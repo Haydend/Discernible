@@ -7,9 +7,13 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.body.type2.CommStatusFieldHandler;
 import com.discernible.message.body.type2.CommStatusField.NetworkTechnology;
 
 public class CommStatusFieldTest {
+
+  // Class under test.
+  private CommStatusFieldHandler commStatusFieldHandler = new CommStatusFieldHandler();
 
   @Test
   public void test_encode() {
@@ -18,7 +22,7 @@ public class CommStatusFieldTest {
     CommStatusField commStatusField = new CommStatusField(true, false, true, false, true, false, NetworkTechnology._2G_NETWORK);
 
     // When
-    byte[] fieldBytes = commStatusField.encode();
+    byte[] fieldBytes = commStatusFieldHandler.encode(commStatusField);
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b00010101}, fieldBytes);
@@ -31,7 +35,7 @@ public class CommStatusFieldTest {
     Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b00010101));
 
     // When
-    CommStatusField actualCommStatusField = CommStatusField.decode(bytes);
+    CommStatusField actualCommStatusField = commStatusFieldHandler.decode(bytes);
 
     // Then
     CommStatusField expectedCommStatusField = new CommStatusField(true, false, true, false, true, false, NetworkTechnology._2G_NETWORK);

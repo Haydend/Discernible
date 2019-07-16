@@ -7,9 +7,12 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.body.type1.TypeFieldHandler;
 import com.discernible.message.body.MessageBody.MessageType;
 
 public class TypeFieldTest {
+
+  private TypeFieldHandler typeFieldHandler = new TypeFieldHandler();
 
   @Test
   public void test_encode() {
@@ -18,10 +21,10 @@ public class TypeFieldTest {
     TypeField statusField = new TypeField(MessageType.ACK_NAK_MESSAGE);
 
     // When
-    byte[] fieldBytes = statusField.encode();
+    byte[] fieldBytes = typeFieldHandler.encode(statusField);
 
     // Then
-    Assert.assertArrayEquals(new byte[] { 0x01 }, fieldBytes);
+    Assert.assertArrayEquals(new byte[] {0x01}, fieldBytes);
   }
 
   @Test
@@ -31,7 +34,7 @@ public class TypeFieldTest {
     Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x01));
 
     // When
-    TypeField typeField = TypeField.decode(bytes);
+    TypeField typeField = typeFieldHandler.decode(bytes);
 
     // Then
     Assert.assertEquals(MessageType.ACK_NAK_MESSAGE, typeField.getType());

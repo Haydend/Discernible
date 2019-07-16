@@ -1,31 +1,13 @@
 package com.discernible.message.body.type1;
 
-import java.util.Queue;
-
-import com.discernible.message.Field;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class StatusField implements Field {
+public class StatusField {
 
   private Status status;
-
-  public static StatusField decode(Queue<Byte> messageBytes) {
-
-    byte statusByte = messageBytes.poll();
-    Status status = Status.values()[(int) statusByte];
-
-    return new StatusField(status);
-  }
-
-  @Override
-  public byte[] encode() {
-    byte statusByte = (byte) status.ordinal();
-    return new byte[] { statusByte };
-  }
 
   public enum Status {
     SUCCESSFUL,

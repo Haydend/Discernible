@@ -7,9 +7,12 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.body.type1.StatusFieldHandler;
 import com.discernible.message.body.type1.StatusField.Status;
 
 public class StatusFieldTest {
+
+  private StatusFieldHandler statusFieldHandler = new StatusFieldHandler();
 
   @Test
   public void test_encode() {
@@ -18,10 +21,10 @@ public class StatusFieldTest {
     StatusField statusField = new StatusField(Status.FAILED_PARAMETER_UPDATE_FAILURE);
 
     // When
-    byte[] fieldBytes = statusField.encode();
+    byte[] fieldBytes = statusFieldHandler.encode(statusField);
 
     // Then
-    Assert.assertArrayEquals(new byte[] { 0x0A }, fieldBytes);
+    Assert.assertArrayEquals(new byte[] {0x0A}, fieldBytes);
   }
 
   @Test
@@ -31,7 +34,7 @@ public class StatusFieldTest {
     Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x0A));
 
     // When
-    StatusField statusField = StatusField.decode(bytes);
+    StatusField statusField = statusFieldHandler.decode(bytes);
 
     // Then
     Assert.assertEquals(Status.FAILED_PARAMETER_UPDATE_FAILURE, statusField.getStatus());

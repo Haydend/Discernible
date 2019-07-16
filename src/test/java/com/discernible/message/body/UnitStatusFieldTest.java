@@ -7,10 +7,12 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.discernible.message.body.UnitStatusField;
+import com.discernible.handler.body.UnitStatusFieldHandler;
 import com.discernible.message.body.UnitStatusField.Status;
 
 public class UnitStatusFieldTest {
+
+  private UnitStatusFieldHandler unitStatusFieldHandler = new UnitStatusFieldHandler();
 
   @Test
   public void test_encode() {
@@ -19,7 +21,7 @@ public class UnitStatusFieldTest {
     UnitStatusField inputField = new UnitStatusField(Status.OK, Status.ERROR, Status.OK, true);
 
     // When
-    byte[] fieldBytes = inputField.encode();
+    byte[] fieldBytes = unitStatusFieldHandler.encode(inputField);
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b00001101}, fieldBytes);
@@ -32,7 +34,7 @@ public class UnitStatusFieldTest {
     Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b00001101));
 
     // When
-    UnitStatusField actualUnitStatusField = UnitStatusField.decode(bytes);
+    UnitStatusField actualUnitStatusField = unitStatusFieldHandler.decode(bytes);
 
     // Then
     UnitStatusField expectedInputField = new UnitStatusField(Status.OK, Status.ERROR, Status.OK, true);

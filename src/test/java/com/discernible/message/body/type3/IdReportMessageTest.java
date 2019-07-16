@@ -3,21 +3,17 @@ package com.discernible.message.body.type3;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.discernible.message.ByteField;
-import com.discernible.message.DataListField;
+import com.discernible.handler.MessageHandler;
 import com.discernible.message.Message;
-import com.discernible.message.SignedIntegerField;
-import com.discernible.message.UnsignedShortField;
 import com.discernible.message.body.AppVersionField;
 import com.discernible.message.body.MessageBody.ServiceType;
-import com.discernible.message.body.PackedBcd10ByteField;
-import com.discernible.message.body.PackedBcd8ByteField;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.UnitStatusField.Status;
 import com.discernible.message.header.options.MobileIdTypeField;
@@ -27,33 +23,36 @@ import com.discernible.util.ByteUtils;
 
 public class IdReportMessageTest {
 
+  // Class under test.
+  private final MessageHandler messageHandler = new MessageHandler();
+
   @Test
   public void test_encode() {
 
     // Given
-    ByteField mobileId = new ByteField(new byte[] {0x35, (byte) 0x93, 0x16, 0x07, 0x51, 0x77, 0x50, (byte) 0x8F});
+    byte[] mobileId = new byte[] {0x35, (byte) 0x93, 0x16, 0x07, 0x51, 0x77, 0x50, (byte) 0x8F};
     MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.IMEI_OR_EID);
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
-    UnsignedShortField scriptVersion = new UnsignedShortField((short) 200);
-    UnsignedShortField configVersion = new UnsignedShortField((short) 32);
+    Short scriptVersion = 200;
+    Short configVersion = 32;
     AppVersionField firmwareVersion = new AppVersionField(39, 'l');
-    UnsignedShortField vehicleClass = new UnsignedShortField((short) 0);
+    Short vehicleClass = 0;
     UnitStatusField unitStatus = new UnitStatusField(Status.ERROR, Status.ERROR, Status.ERROR, false);
-    UnsignedShortField modemSelection = new UnsignedShortField((short) 35);
-    UnsignedShortField applicationId = new UnsignedShortField((short) 195);
-    UnsignedShortField mobileIdBody = new UnsignedShortField((short) 2);
-    SignedIntegerField queryId = new SignedIntegerField(0);
-    PackedBcd8ByteField esn = new PackedBcd8ByteField("4532459871");
-    PackedBcd8ByteField imei = new PackedBcd8ByteField("359316075177508");
-    PackedBcd8ByteField imsi = new PackedBcd8ByteField("204080812249437");
-    PackedBcd8ByteField phoneNo = new PackedBcd8ByteField("");
-    PackedBcd10ByteField iccid = new PackedBcd10ByteField("8931088817125056770");
+    Short modemSelection = 35;
+    Short applicationId = 195;
+    Short mobileIdBody = 2;
+    Integer queryId = 0;
+    String esn = "4532459871";
+    String imei = "359316075177508";
+    String imsi = "204080812249437";
+    String phoneNo = "";
+    String iccid = "8931088817125056770";
 
-    DataListField extensionStrings = new DataListField(new HashMap<>());
-    extensionStrings.add("OTA", "1|0;0,1,9,11|4;0,4|7;0");
-    extensionStrings.add("OTASTAT", "1548950433,0,1,5,0,\"\"");
-    extensionStrings.add("FTBL", "4,0,226B|0,1,7C3B");
+    Map<String, String> extensionStrings = new HashMap<>();
+    extensionStrings.put("OTA", "1|0;0,1,9,11|4;0,4|7;0");
+    extensionStrings.put("OTASTAT", "1548950433,0,1,5,0,\"\"");
+    extensionStrings.put("FTBL", "4,0,226B|0,1,7C3B");
 
     IdReportMessage idReportMessage =
         new IdReportMessage(ServiceType.RESPONSE_TO_AN_ACKNOWLEDGED_REQUEST, scriptVersion, configVersion, firmwareVersion, vehicleClass, unitStatus,
@@ -62,7 +61,7 @@ public class IdReportMessageTest {
     Message message = new Message(optonsHeader, idReportMessage);
 
     // When
-    byte[] messageBytes = message.encode();
+    byte[] messageBytes = messageHandler.encode(message, true);
 
     // Then
     String hexString =
@@ -84,32 +83,28 @@ public class IdReportMessageTest {
             ArrayUtils.toObject(data)));
 
     // When
-    Message message = Message.decode(bytes);
+    Message message = messageHandler.decode(bytes, true);
 
     // Then
-    ByteField mobileId = new ByteField(new byte[] {0x35, (byte) 0x93, 0x16, 0x07, 0x51, 0x77, 0x50, (byte) 0x8F});
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.IMEI_OR_EID);
-    OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
-    Assert.assertEquals(optonsHeader, message.getOptionHeader());
-
-    UnsignedShortField scriptVersion = new UnsignedShortField((short) 200);
-    UnsignedShortField configVersion = new UnsignedShortField((short) 32);
+    Short scriptVersion = 200;
+    Short configVersion = 32;
     AppVersionField firmwareVersion = new AppVersionField(39, 'l');
-    UnsignedShortField vehicleClass = new UnsignedShortField((short) 0);
+    Short vehicleClass = 0;
     UnitStatusField unitStatus = new UnitStatusField(Status.ERROR, Status.ERROR, Status.ERROR, false);
-    UnsignedShortField modemSelection = new UnsignedShortField((short) 35);
-    UnsignedShortField applicationId = new UnsignedShortField((short) 195);
-    UnsignedShortField mobileIdBody = new UnsignedShortField((short) 2);
-    SignedIntegerField queryId = new SignedIntegerField(0);
-    PackedBcd8ByteField esn = new PackedBcd8ByteField("4532459871");
-    PackedBcd8ByteField imei = new PackedBcd8ByteField("359316075177508");
-    PackedBcd8ByteField imsi = new PackedBcd8ByteField("204080812249437");
-    PackedBcd8ByteField phoneNo = new PackedBcd8ByteField("");
-    PackedBcd10ByteField iccid = new PackedBcd10ByteField("8931088817125056770");
-    DataListField extensionStrings = new DataListField(new HashMap<>());
-    extensionStrings.add("OTA", "1|0;0,1,9,11|4;0,4|7;0");
-    extensionStrings.add("OTASTAT", "1548950433,0,1,5,0,\"\"");
-    extensionStrings.add("FTBL", "4,0,226B|0,1,7C3B");
+    Short modemSelection = 35;
+    Short applicationId = 195;
+    Short mobileIdBody = 2;
+    Integer queryId = 0;
+    String esn = "4532459871";
+    String imei = "359316075177508";
+    String imsi = "204080812249437";
+    String phoneNo = "";
+    String iccid = "8931088817125056770";
+
+    Map<String, String> extensionStrings = new HashMap<>();
+    extensionStrings.put("OTA", "1|0;0,1,9,11|4;0,4|7;0");
+    extensionStrings.put("OTASTAT", "1548950433,0,1,5,0,\"\"");
+    extensionStrings.put("FTBL", "4,0,226B|0,1,7C3B");
 
     IdReportMessage idReportMessage =
         new IdReportMessage(ServiceType.RESPONSE_TO_AN_ACKNOWLEDGED_REQUEST, scriptVersion, configVersion, firmwareVersion, vehicleClass, unitStatus,

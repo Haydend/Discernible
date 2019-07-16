@@ -7,7 +7,12 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.body.type2.HdopFieldHandler;
+
 public class HdopFieldTest {
+
+  // Class under test.
+  private HdopFieldHandler hdopFieldHandler = new HdopFieldHandler();
 
   @Test
   public void test_encode() {
@@ -16,7 +21,7 @@ public class HdopFieldTest {
     HdopField hdopField = new HdopField(0.2);
 
     // When
-    byte[] fieldBytes = hdopField.encode();
+    byte[] fieldBytes = hdopFieldHandler.encode(hdopField);
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0x02}, fieldBytes);
@@ -29,7 +34,7 @@ public class HdopFieldTest {
     Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x04));
 
     // When
-    HdopField actualHdopField = HdopField.decode(bytes);
+    HdopField actualHdopField = hdopFieldHandler.decode(bytes);
 
     // Then
     Assert.assertEquals(0.4, actualHdopField.getValue(), 0.01);

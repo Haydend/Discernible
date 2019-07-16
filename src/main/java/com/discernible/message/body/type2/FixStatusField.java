@@ -1,34 +1,16 @@
 package com.discernible.message.body.type2;
 
 import java.util.EnumSet;
-import java.util.Queue;
-
-import com.discernible.message.Field;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 @AllArgsConstructor
-public class FixStatusField implements Field {
+public class FixStatusField {
 
   private EnumSet<FixStatus> fixStatus;
-
-  public static FixStatusField decode(Queue<Byte> messageQueue) {
-    EnumSet<FixStatus> fixStatus = FixStatus.decode(messageQueue.poll());
-    return new FixStatusField(fixStatus);
-  }
-
-  @Override
-  public byte[] encode() {
-
-    int returnValue = 0;
-    for (FixStatus _fixStatus : fixStatus) {
-      returnValue |= _fixStatus.value;
-    }
-
-    return new byte[] { (byte) returnValue };
-  }
 
   public enum FixStatus {
     PREDICTED(1),
@@ -39,6 +21,7 @@ public class FixStatusField implements Field {
     HISTORIC(32),
     INVALID_TIME(64);
 
+    @Getter
     private int value;
 
     private FixStatus(int value) {

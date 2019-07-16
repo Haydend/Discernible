@@ -1,43 +1,16 @@
 package com.discernible.message;
 
-import java.util.Queue;
-
 import com.discernible.message.body.MessageBody;
 import com.discernible.message.header.options.OptionsHeader;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class Message {
 
-  private final OptionsHeader optionHeader;
-  private final MessageBody messageBody;
-
-  public static Message decode(Queue<Byte> messageBytes) {
-    return Message.decode(messageBytes, true);
-  }
-
-  public static Message decode(Queue<Byte> messageBytes, boolean sentFromLmu) {
-
-    OptionsHeader optionsHeader = OptionsHeader.decode(messageBytes);
-    MessageBody messageBody = MessageBody.decode(messageBytes, sentFromLmu);
-
-    return new Message(optionsHeader, messageBody);
-  }
-
-  public byte[] encode() {
-
-    byte[] optionHeaderBytes = optionHeader.encode();
-    byte[] headerBytes = messageBody.encodeMessageHeader();
-    byte[] bodyBytes = messageBody.encodeBody();
-
-    byte[] messageBytes = new byte[optionHeaderBytes.length + headerBytes.length + bodyBytes.length];
-
-    System.arraycopy(optionHeaderBytes, 0, messageBytes, 0, optionHeaderBytes.length);
-    System.arraycopy(headerBytes, 0, messageBytes, optionHeaderBytes.length, headerBytes.length);
-    System.arraycopy(bodyBytes, 0, messageBytes, optionHeaderBytes.length + headerBytes.length, bodyBytes.length);
-
-    return messageBytes;
-  }
+  private OptionsHeader optionHeader;
+  private MessageBody messageBody;
 
 }

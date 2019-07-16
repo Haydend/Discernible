@@ -7,7 +7,12 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.body.type2.InputFieldHandler;
+
 public class InputFieldTest {
+
+  // Class under test.
+  private InputFieldHandler inputFieldHandler = new InputFieldHandler();
 
   @Test
   public void test_encode() {
@@ -16,7 +21,7 @@ public class InputFieldTest {
     InputField inputField = new InputField(true, false, true, false, true, false, true, false);
 
     // When
-    byte[] fieldBytes = inputField.encode();
+    byte[] fieldBytes = inputFieldHandler.encode(inputField);
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b01010101}, fieldBytes);
@@ -29,7 +34,7 @@ public class InputFieldTest {
     Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b01010101));
 
     // When
-    InputField actualInputField = InputField.decode(bytes);
+    InputField actualInputField = inputFieldHandler.decode(bytes);
 
     // Then
     InputField expectedInputField = new InputField(true, false, true, false, true, false, true, false);

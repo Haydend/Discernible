@@ -7,7 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.discernible.message.ByteField;
+import com.discernible.handler.MessageHandler;
 import com.discernible.message.Message;
 import com.discernible.message.body.AppVersionField;
 import com.discernible.message.body.MessageBody.MessageType;
@@ -18,11 +18,14 @@ import com.discernible.message.header.options.OptionsHeader;
 
 public class AcknowledgeMessageTest {
 
+  // Class under test.
+  private MessageHandler messageHandler = new MessageHandler();
+
   @Test
   public void test_encode() {
 
     // Given
-    ByteField mobileId = new ByteField(new byte[] {0x01, 0x02, 0x03, 0x04, 0x05});
+    byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};
     MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
@@ -35,7 +38,7 @@ public class AcknowledgeMessageTest {
     Message message = new Message(optonsHeader, acknowledgeMessage);
 
     // When
-    byte[] actualBytes = message.encode();
+    byte[] actualBytes = messageHandler.encode(message, false);
 
     // Then
     Assert.assertArrayEquals(
@@ -52,10 +55,10 @@ public class AcknowledgeMessageTest {
             (byte) 0x02, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x0C, (byte) 0x05, (byte) 0x00, (byte) 0x36, (byte) 0x35, (byte) 0x62));
 
     // When
-    Message message = Message.decode(bytes);
+    Message message = messageHandler.decode(bytes, false);
 
     // Then
-    ByteField mobileId = new ByteField(new byte[] {0x01, 0x02, 0x03, 0x04, 0x05});
+    byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};
     MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
     Assert.assertEquals(optonsHeader, message.getOptionHeader());
