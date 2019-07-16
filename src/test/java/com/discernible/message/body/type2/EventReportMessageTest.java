@@ -10,9 +10,9 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.discernible.handler.MessageHandler;
-import com.discernible.message.Message;
-import com.discernible.message.body.MessageBody.ServiceType;
+import com.discernible.handler.body.MessageHandler;
+import com.discernible.message.body.Message;
+import com.discernible.message.body.Message.ServiceType;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.UnitStatusField.Status;
 import com.discernible.message.body.type2.CommStatusField.NetworkTechnology;
@@ -58,11 +58,10 @@ public class EventReportMessageTest {
         timeOfFix, latitude, longitude, altitude, speed, heading, satellitesCount, fixStatus, carrierId, rssi, commStatus, hdopField, inputField,
         unitStatusField, eventIndex, eventCode, accumulatorFields);
     eventReportMessage.setSequenceNumber(1);
-
-    Message message = new Message(optonsHeader, eventReportMessage);
+    eventReportMessage.setOptionHeader(optonsHeader);
 
     // When
-    byte[] messageBytes = messageHandler.encode(message, true);
+    byte[] messageBytes = messageHandler.encode(eventReportMessage, true);
 
     // Then
     byte[] expectedMessageBytes =
@@ -121,8 +120,10 @@ public class EventReportMessageTest {
     EventReportMessage eventReportMessage = new EventReportMessage(ServiceType.ACKNOWLEDGED_REQUEST, updateTime,
         timeOfFix, latitude, longitude, altitude, speed, heading, satellitesCount, fixStatus, carrierId, rssi, commStatus, hdopField, inputField,
         unitStatusField, eventIndex, eventCode, accumulatorFields);
+    eventReportMessage.setOptionHeader(optonsHeader);
+    eventReportMessage.setSequenceNumber(1);
 
-    Assert.assertEquals(eventReportMessage, message.getMessageBody());
+    Assert.assertEquals(eventReportMessage, message);
   }
 
 }

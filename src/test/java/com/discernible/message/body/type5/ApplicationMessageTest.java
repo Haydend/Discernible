@@ -10,9 +10,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.discernible.handler.MessageHandler;
-import com.discernible.message.Message;
-import com.discernible.message.body.MessageBody.ServiceType;
+import com.discernible.handler.body.MessageHandler;
+import com.discernible.message.body.Message;
+import com.discernible.message.body.Message.ServiceType;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.UnitStatusField.Status;
 import com.discernible.message.body.type2.CommStatusField;
@@ -65,11 +65,10 @@ public class ApplicationMessageTest {
         new ApplicationMessage(ServiceType.ACKNOWLEDGED_REQUEST, true, updateTime, timeOfFix, latitude, longitude, altitude, speed,
             heading, satellitesCount, fixStatus, carrierId, rssi, commStatus, hdopField, inputField, unitStatusField, vehicleIdReport);
     applicationMessage.setSequenceNumber(7);
-
-    Message message = new Message(optonsHeader, applicationMessage);
+    applicationMessage.setOptionHeader(optonsHeader);
 
     // When
-    byte[] messageBytes = messageHandler.encode(message, true);
+    byte[] messageBytes = messageHandler.encode(applicationMessage, true);
 
     // Then
     String hexString =

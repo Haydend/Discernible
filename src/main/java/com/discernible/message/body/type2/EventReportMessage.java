@@ -3,7 +3,7 @@ package com.discernible.message.body.type2;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.discernible.message.body.MessageBody;
+import com.discernible.message.body.Message;
 import com.discernible.message.body.UnitStatusField;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class EventReportMessage extends MessageBody {
+public class EventReportMessage extends Message {
 
   private ServiceType serviceType;
   private LocalDateTime updateTime;

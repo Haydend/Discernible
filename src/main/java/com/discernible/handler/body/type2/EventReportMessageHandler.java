@@ -14,7 +14,7 @@ import com.discernible.handler.SignedShortFieldHandler;
 import com.discernible.handler.UnsignedIntegerFieldHandler;
 import com.discernible.handler.UnsignedShortFieldHandler;
 import com.discernible.handler.body.UnitStatusFieldHandler;
-import com.discernible.message.body.MessageBody.ServiceType;
+import com.discernible.message.body.Message.ServiceType;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.type2.AccumulatorField;
 import com.discernible.message.body.type2.CommStatusField;

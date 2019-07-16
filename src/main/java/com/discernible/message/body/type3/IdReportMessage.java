@@ -3,7 +3,7 @@ package com.discernible.message.body.type3;
 import java.util.Map;
 
 import com.discernible.message.body.AppVersionField;
-import com.discernible.message.body.MessageBody;
+import com.discernible.message.body.Message;
 import com.discernible.message.body.UnitStatusField;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class IdReportMessage extends MessageBody {
+public class IdReportMessage extends Message {
 
   private ServiceType serviceType;
   private Short scriptVersion;

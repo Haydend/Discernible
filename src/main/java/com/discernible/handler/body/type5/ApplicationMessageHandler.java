@@ -20,7 +20,7 @@ import com.discernible.handler.body.type2.FixStatusFieldHandler;
 import com.discernible.handler.body.type2.HdopFieldHandler;
 import com.discernible.handler.body.type2.InputFieldHandler;
 import com.discernible.handler.body.type5.payload.ApplicationMessagePayloadHandler;
-import com.discernible.message.body.MessageBody.ServiceType;
+import com.discernible.message.body.Message.ServiceType;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.type2.CommStatusField;
 import com.discernible.message.body.type2.CoordinateField;

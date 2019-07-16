@@ -1,8 +1,8 @@
 package com.discernible.message.body.type0;
 
-import com.discernible.message.body.MessageBody;
+import com.discernible.message.body.Message;
 
-public class NullMessage extends MessageBody {
+public class NullMessage extends Message {
 
   @Override
   public ServiceType getServiceType() {

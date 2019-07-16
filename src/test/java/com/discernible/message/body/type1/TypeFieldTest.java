@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.discernible.handler.body.type1.TypeFieldHandler;
-import com.discernible.message.body.MessageBody.MessageType;
+import com.discernible.message.body.Message.MessageType;
 
 public class TypeFieldTest {
 

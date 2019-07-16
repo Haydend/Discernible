@@ -1,6 +1,6 @@
 package com.discernible.message.body.type1;
 
-import com.discernible.message.body.MessageBody.MessageType;
+import com.discernible.message.body.Message.MessageType;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

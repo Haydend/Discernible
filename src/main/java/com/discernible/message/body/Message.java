@@ -1,10 +1,15 @@
 package com.discernible.message.body;
 
+import com.discernible.message.header.options.OptionsHeader;
+
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public abstract class MessageBody {
+@EqualsAndHashCode
+public abstract class Message {
 
+  private OptionsHeader optionHeader;
   private int sequenceNumber;
 
   public abstract ServiceType getServiceType();

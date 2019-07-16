@@ -2,7 +2,7 @@ package com.discernible.message.body.type5;
 
 import java.time.LocalDateTime;
 
-import com.discernible.message.body.MessageBody;
+import com.discernible.message.body.Message;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.type2.CommStatusField;
 import com.discernible.message.body.type2.CoordinateField;
@@ -18,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-public class ApplicationMessage extends MessageBody {
+public class ApplicationMessage extends Message {
 
   private ServiceType serviceType;
   private boolean sentByLmu;

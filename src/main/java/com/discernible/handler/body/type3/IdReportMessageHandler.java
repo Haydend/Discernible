@@ -16,7 +16,7 @@ import com.discernible.handler.body.PackedBcd10ByteFieldHandler;
 import com.discernible.handler.body.PackedBcd8ByteFieldHandler;
 import com.discernible.handler.body.UnitStatusFieldHandler;
 import com.discernible.message.body.AppVersionField;
-import com.discernible.message.body.MessageBody.ServiceType;
+import com.discernible.message.body.Message.ServiceType;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.type3.IdReportMessage;
 

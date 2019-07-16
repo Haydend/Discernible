@@ -7,8 +7,8 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.discernible.handler.MessageHandler;
-import com.discernible.message.Message;
+import com.discernible.handler.body.MessageHandler;
+import com.discernible.message.body.Message;
 import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
@@ -26,10 +26,9 @@ public class NullMessageTest {
     MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
-    NullMessage nullMessage = new NullMessage();
-    nullMessage.setSequenceNumber(1);
-
-    Message message = new Message(optonsHeader, nullMessage);
+    NullMessage message = new NullMessage();
+    message.setSequenceNumber(1);
+    message.setOptionHeader(optonsHeader);
 
     // When
     byte[] actualBytes = messageHandler.encode(message, true);
@@ -56,7 +55,8 @@ public class NullMessageTest {
 
     NullMessage nullMessage = new NullMessage();
     nullMessage.setSequenceNumber(1);
-    Assert.assertEquals(nullMessage, message.getMessageBody());
+    nullMessage.setOptionHeader(optonsHeader);
+    Assert.assertEquals(nullMessage, message);
   }
 
 }

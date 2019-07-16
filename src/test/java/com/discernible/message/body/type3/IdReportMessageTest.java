@@ -10,10 +10,10 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.discernible.handler.MessageHandler;
-import com.discernible.message.Message;
+import com.discernible.handler.body.MessageHandler;
 import com.discernible.message.body.AppVersionField;
-import com.discernible.message.body.MessageBody.ServiceType;
+import com.discernible.message.body.Message;
+import com.discernible.message.body.Message.ServiceType;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.UnitStatusField.Status;
 import com.discernible.message.header.options.MobileIdTypeField;
@@ -57,11 +57,11 @@ public class IdReportMessageTest {
     IdReportMessage idReportMessage =
         new IdReportMessage(ServiceType.RESPONSE_TO_AN_ACKNOWLEDGED_REQUEST, scriptVersion, configVersion, firmwareVersion, vehicleClass, unitStatus,
             modemSelection, applicationId, mobileIdBody, queryId, esn, imei, imsi, phoneNo, iccid, extensionStrings);
-
-    Message message = new Message(optonsHeader, idReportMessage);
+    idReportMessage.setOptionHeader(optonsHeader);
+    idReportMessage.setSequenceNumber(0);
 
     // When
-    byte[] messageBytes = messageHandler.encode(message, true);
+    byte[] messageBytes = messageHandler.encode(idReportMessage, true);
 
     // Then
     String hexString =
@@ -86,6 +86,10 @@ public class IdReportMessageTest {
     Message message = messageHandler.decode(bytes, true);
 
     // Then
+    byte[] mobileId = new byte[] {0x35, (byte) 0x93, 0x16, 0x07, 0x51, 0x77, 0x50, (byte) 0x8F};
+    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.IMEI_OR_EID);
+    OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
+
     Short scriptVersion = 200;
     Short configVersion = 32;
     AppVersionField firmwareVersion = new AppVersionField(39, 'l');
@@ -109,8 +113,10 @@ public class IdReportMessageTest {
     IdReportMessage idReportMessage =
         new IdReportMessage(ServiceType.RESPONSE_TO_AN_ACKNOWLEDGED_REQUEST, scriptVersion, configVersion, firmwareVersion, vehicleClass, unitStatus,
             modemSelection, applicationId, mobileIdBody, queryId, esn, imei, imsi, phoneNo, iccid, extensionStrings);
+    idReportMessage.setOptionHeader(optonsHeader);
+    idReportMessage.setSequenceNumber(0);
 
-    Assert.assertEquals(idReportMessage, message.getMessageBody());
+    Assert.assertEquals(idReportMessage, message);
   }
 
 }

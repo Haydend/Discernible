@@ -7,10 +7,10 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.discernible.handler.MessageHandler;
-import com.discernible.message.Message;
+import com.discernible.handler.body.MessageHandler;
 import com.discernible.message.body.AppVersionField;
-import com.discernible.message.body.MessageBody.MessageType;
+import com.discernible.message.body.Message;
+import com.discernible.message.body.Message.MessageType;
 import com.discernible.message.body.type1.StatusField.Status;
 import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
@@ -32,13 +32,13 @@ public class AcknowledgeMessageTest {
     TypeField typeField = new TypeField(MessageType.MINI_APPLICATION_MESSAGE);
     StatusField statusField = new StatusField(Status.FAILED_AUTHENTICATION_FAILURE);
     AppVersionField appVersionField = new AppVersionField(65, 'b');
+
     AcknowledgeMessage acknowledgeMessage = new AcknowledgeMessage(typeField, statusField, appVersionField);
     acknowledgeMessage.setSequenceNumber(1);
-
-    Message message = new Message(optonsHeader, acknowledgeMessage);
+    acknowledgeMessage.setOptionHeader(optonsHeader);
 
     // When
-    byte[] actualBytes = messageHandler.encode(message, false);
+    byte[] actualBytes = messageHandler.encode(acknowledgeMessage, false);
 
     // Then
     Assert.assertArrayEquals(
@@ -66,9 +66,12 @@ public class AcknowledgeMessageTest {
     TypeField typeField = new TypeField(MessageType.MINI_APPLICATION_MESSAGE);
     StatusField statusField = new StatusField(Status.FAILED_AUTHENTICATION_FAILURE);
     AppVersionField appVersionField = new AppVersionField(65, 'b');
+
     AcknowledgeMessage acknowledgeMessage = new AcknowledgeMessage(typeField, statusField, appVersionField);
     acknowledgeMessage.setSequenceNumber(1);
-    Assert.assertEquals(acknowledgeMessage, message.getMessageBody());
+    acknowledgeMessage.setOptionHeader(optonsHeader);
+
+    Assert.assertEquals(acknowledgeMessage, message);
   }
 
 }
