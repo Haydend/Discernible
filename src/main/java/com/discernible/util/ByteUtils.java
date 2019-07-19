@@ -2,7 +2,10 @@ package com.discernible.util;
 
 import java.io.IOException;
 
+import com.igormaznitsa.jbbp.JBBPParser;
 import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
+import com.igormaznitsa.jbbp.model.JBBPFieldBit;
+import com.igormaznitsa.jbbp.model.JBBPFieldStruct;
 
 public class ByteUtils {
 
@@ -85,6 +88,18 @@ public class ByteUtils {
       hexChars[j * 2 + 1] = hexArray[v & 0x0F];
     }
     return new String(hexChars);
+  }
+
+  public static JBBPFieldStruct parse(JBBPBitInputStream messageBytes, JBBPParser parser) {
+    try {
+      return parser.parse(messageBytes);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  public static boolean isFlagSet(JBBPFieldStruct header, String name) {
+    return header.findFieldForNameAndType(name, JBBPFieldBit.class).getAsBool();
   }
 
 }

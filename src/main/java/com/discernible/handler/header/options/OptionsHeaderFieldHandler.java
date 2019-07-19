@@ -17,7 +17,9 @@ import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.OptionsHeader;
 import com.discernible.message.header.options.extension.OptionExtension;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.JBBPParser;
 import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
+import com.igormaznitsa.jbbp.model.JBBPFieldStruct;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,6 +27,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class OptionsHeaderFieldHandler implements FieldHandler<OptionsHeader> {
+
+  private static final JBBPParser HEADER =
+      JBBPParser.prepare(
+          "bit:1 mobileIdFlag;bit:1 mobileIdTypeFlag;bit:1 authenticationFlag;bit:1 routingFlag;bit:1 forwardingFlag;bit:1 responseRedirectionFlag;bit:1 optionExtension;bit:1;");
 
   private final ByteFieldHandler byteFieldHandler = new ByteFieldHandler();
   private final MobileIdTypeFieldHandler mobileIdTypeFieldHandler = new MobileIdTypeFieldHandler();
@@ -35,40 +41,40 @@ public class OptionsHeaderFieldHandler implements FieldHandler<OptionsHeader> {
   @Override
   public OptionsHeader decode(JBBPBitInputStream messageBytes) {
 
-    byte flagByte = ByteUtils.getByte(messageBytes);
+    JBBPFieldStruct header = ByteUtils.parse(messageBytes, HEADER);
 
     byte[] mobileId = null;
-    if ((flagByte & 0b00000001) == 0b00000001) {
+    if (ByteUtils.isFlagSet(header, "mobileIdFlag")) {
       mobileId = byteFieldHandler.decode(messageBytes);
     }
 
     MobileIdTypeField mobileIdTypeField = null;
-    if ((flagByte & 0b00000010) == 0b00000010) {
+    if (ByteUtils.isFlagSet(header, "mobileIdTypeFlag")) {
       mobileIdTypeField = mobileIdTypeFieldHandler.decode(messageBytes);
     }
 
     byte[] authentication = null;
-    if ((flagByte & 0b00000100) == 0b00000100) {
+    if (ByteUtils.isFlagSet(header, "authenticationFlag")) {
       authentication = byteFieldHandler.decode(messageBytes);
     }
 
     byte[] routing = null;
-    if ((flagByte & 0b00001000) == 0b00001000) {
+    if (ByteUtils.isFlagSet(header, "routingFlag")) {
       routing = byteFieldHandler.decode(messageBytes);
     }
 
     ForwardingField forwarding = null;
-    if ((flagByte & 0b00010000) == 0b00010000) {
+    if (ByteUtils.isFlagSet(header, "forwardingFlag")) {
       forwarding = forwardingFieldHandler.decode(messageBytes);
     }
 
     Socket responseRedirection = null;
-    if ((flagByte & 0b00100000) == 0b00100000) {
+    if (ByteUtils.isFlagSet(header, "responseRedirectionFlag")) {
       responseRedirection = socketFieldHandler.decode(messageBytes);
     }
 
     OptionExtension optionExtension = null;
-    if ((flagByte & 0b01000000) == 0b01000000) {
+    if (ByteUtils.isFlagSet(header, "optionExtension")) {
       optionExtension = optionExtensionFieldHandler.decode(messageBytes);
     }
 

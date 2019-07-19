@@ -14,7 +14,11 @@ import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.LmDirectRouting;
 import com.discernible.message.header.options.extension.OptionExtension;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.JBBPParser;
 import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
+import com.igormaznitsa.jbbp.model.JBBPFieldArrayUByte;
+import com.igormaznitsa.jbbp.model.JBBPFieldString;
+import com.igormaznitsa.jbbp.model.JBBPFieldStruct;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,6 +26,11 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class OptionExtensionFieldHandler implements FieldHandler<OptionExtension> {
+
+  private static final JBBPParser HEADER =
+      JBBPParser.prepare("skip;bit:1 esnFlag;bit:1 vinFlag;bit:1 encryptionFlag;bit:1 lmDirectCompressionFlag;bit:1 lmDirectRouting;bit:3;");
+  private static final JBBPParser ESN = JBBPParser.prepare("ubyte esnLength;ubyte[(esnLength)] esn;");
+  private static final JBBPParser VIN = JBBPParser.prepare("stringj vin;");
 
   private final ByteFieldHandler byteFieldHandler = new ByteFieldHandler();
   private final Ascii8BitFieldHandler ascii8BitFieldHandler = new Ascii8BitFieldHandler();
@@ -31,29 +40,27 @@ public class OptionExtensionFieldHandler implements FieldHandler<OptionExtension
   @Override
   public OptionExtension decode(JBBPBitInputStream messageBytes) {
 
-    ByteUtils.getByte(messageBytes); // Throw away field length;
-
-    byte flagByte = ByteUtils.getByte(messageBytes);
+    JBBPFieldStruct header = ByteUtils.parse(messageBytes, HEADER);
 
     byte[] esn = null;
-    if ((flagByte & 0b00000001) == 0b00000001) {
-      esn = byteFieldHandler.decode(messageBytes);
+    if (ByteUtils.isFlagSet(header, "esnFlag")) {
+      esn = ByteUtils.parse(messageBytes, ESN).findFieldForNameAndType("esn", JBBPFieldArrayUByte.class).getArray();
     }
 
     String vin = null;
-    if ((flagByte & 0b00000010) == 0b00000010) {
-      vin = ascii8BitFieldHandler.decode(messageBytes);
+    if (ByteUtils.isFlagSet(header, "vinFlag")) {
+      vin = ByteUtils.parse(messageBytes, VIN).findFieldForNameAndType("vin", JBBPFieldString.class).getAsString();
     }
 
     EncryptionField encryption = null;
-    if ((flagByte & 0b00000100) == 0b00000100) {
+    if (ByteUtils.isFlagSet(header, "encryptionFlag")) {
       encryption = encryptionFieldHandler.decode(messageBytes);
     }
 
-    boolean lmDirectCompression = (flagByte & 0b00001000) == 0b00001000;
+    boolean lmDirectCompression = ByteUtils.isFlagSet(header, "lmDirectCompressionFlag");
 
     LmDirectRouting lmDirectRouting = null;
-    if ((flagByte & 0b00010000) == 0b00010000) {
+    if (ByteUtils.isFlagSet(header, "lmDirectRouting")) {
       lmDirectRouting = lmDirectRoutingFieldHandler.decode(messageBytes);
     }
 

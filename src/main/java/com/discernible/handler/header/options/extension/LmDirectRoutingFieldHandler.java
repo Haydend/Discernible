@@ -3,16 +3,16 @@ package com.discernible.handler.header.options.extension;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.LmDirectRouting;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.JBBPParser;
 import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class LmDirectRoutingFieldHandler implements FieldHandler<LmDirectRouting> {
 
+  private static final JBBPParser LM_DIRECT_ROUTING = JBBPParser.prepare("byte fieldLength;byte version;byte destination;byte source;");
+
   @Override
   public LmDirectRouting decode(JBBPBitInputStream messageBytes) {
-    ByteUtils.getByte(messageBytes); // Throw away field length
-    ByteUtils.getByte(messageBytes); // Throw away version
-    ByteUtils.getByte(messageBytes); // Throw away destination
-    ByteUtils.getByte(messageBytes); // Throw away source
+    ByteUtils.parse(messageBytes, LM_DIRECT_ROUTING);
 
     return new LmDirectRouting();
   }
