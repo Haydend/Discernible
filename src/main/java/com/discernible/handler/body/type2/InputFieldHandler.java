@@ -1,9 +1,9 @@
 package com.discernible.handler.body.type2;
 
-import java.util.Queue;
-
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.type2.InputField;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,8 +13,8 @@ import lombok.Data;
 public class InputFieldHandler implements FieldHandler<InputField> {
 
   @Override
-  public InputField decode(Queue<Byte> messageQueue) {
-    byte fieldByte = messageQueue.poll();
+  public InputField decode(JBBPBitInputStream messageQueue) {
+    byte fieldByte = ByteUtils.getByte(messageQueue);
 
     boolean ignition = (fieldByte & 0b00000001) != 0;
     boolean inputOne = (fieldByte & 0b00000010) != 0;

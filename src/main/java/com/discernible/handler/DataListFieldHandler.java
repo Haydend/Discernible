@@ -4,15 +4,15 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Queue;
 
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class DataListFieldHandler implements FieldHandler<Map<String, String>> {
 
-  public Map<String, String> decode(Queue<Byte> messageBytes) {
+  public Map<String, String> decode(JBBPBitInputStream messageBytes) {
 
-    byte[] fieldBytes = ByteUtils.getFieldBytes(messageBytes.size(), messageBytes);
+    byte[] fieldBytes = ByteUtils.getFieldBytes(-1, messageBytes); // Read all the bytes left.
 
     String field = new String(fieldBytes, StandardCharsets.UTF_8);
 

@@ -1,10 +1,10 @@
 package com.discernible.handler;
 
-import java.util.Queue;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public interface FieldHandler<E> {
 
-  E decode(Queue<Byte> messageBytes);
+  E decode(JBBPBitInputStream messageBytes);
 
   byte[] encode(E field);
 

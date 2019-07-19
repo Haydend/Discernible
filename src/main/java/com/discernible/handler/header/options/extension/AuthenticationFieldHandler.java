@@ -1,10 +1,10 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.Queue;
-
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.AuthenticationField;
 import com.discernible.message.header.options.extension.AuthenticationField.AuthenticationSubField;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,10 +14,10 @@ import lombok.Data;
 public class AuthenticationFieldHandler implements FieldHandler<AuthenticationField> {
 
   @Override
-  public AuthenticationField decode(Queue<Byte> messageBytes) {
-    messageBytes.poll(); // Throw away the first byte as we don't need it.
+  public AuthenticationField decode(JBBPBitInputStream messageBytes) {
+    ByteUtils.getByte(messageBytes); // Throw away the first byte as we don't need it.
 
-    AuthenticationSubField authenticationSubField = AuthenticationSubField.values()[messageBytes.poll()];
+    AuthenticationSubField authenticationSubField = AuthenticationSubField.values()[ByteUtils.getByte(messageBytes)];
 
     return new AuthenticationField(authenticationSubField);
   }

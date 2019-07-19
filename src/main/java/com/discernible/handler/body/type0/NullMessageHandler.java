@@ -1,12 +1,11 @@
 package com.discernible.handler.body.type0;
 
-import java.util.Queue;
-
 import com.discernible.message.body.type0.NullMessage;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class NullMessageHandler {
 
-  public NullMessage decodeBody(Queue<Byte> messageBytes) {
+  public NullMessage decodeBody(JBBPBitInputStream messageBytes) {
     return new NullMessage();
   }
 

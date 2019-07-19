@@ -1,20 +1,19 @@
 package com.discernible.handler.header.options;
 
-import java.util.Queue;
-
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class MobileIdTypeFieldHandler implements FieldHandler<MobileIdTypeField> {
 
   @Override
-  public MobileIdTypeField decode(Queue<Byte> messageBytes) {
+  public MobileIdTypeField decode(JBBPBitInputStream messageBytes) {
 
-    messageBytes.poll(); // Throw away field length.
+    ByteUtils.getByte(messageBytes); // Throw away field length.
 
-    MobileIdType mobileIdType = MobileIdTypeField.MobileIdType.values()[messageBytes.poll()];
+    MobileIdType mobileIdType = MobileIdTypeField.MobileIdType.values()[ByteUtils.getByte(messageBytes)];
 
     return new MobileIdTypeField(mobileIdType);
   }

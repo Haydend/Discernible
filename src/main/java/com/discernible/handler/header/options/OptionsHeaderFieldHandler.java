@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Queue;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -17,6 +16,8 @@ import com.discernible.message.header.options.ForwardingField;
 import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.OptionsHeader;
 import com.discernible.message.header.options.extension.OptionExtension;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,9 +33,9 @@ public class OptionsHeaderFieldHandler implements FieldHandler<OptionsHeader> {
   private final OptionExtensionFieldHandler optionExtensionFieldHandler = new OptionExtensionFieldHandler();
 
   @Override
-  public OptionsHeader decode(Queue<Byte> messageBytes) {
+  public OptionsHeader decode(JBBPBitInputStream messageBytes) {
 
-    byte flagByte = messageBytes.poll();
+    byte flagByte = ByteUtils.getByte(messageBytes);
 
     byte[] mobileId = null;
     if ((flagByte & 0b00000001) == 0b00000001) {

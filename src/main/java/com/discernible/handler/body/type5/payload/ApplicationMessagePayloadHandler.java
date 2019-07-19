@@ -1,12 +1,11 @@
 package com.discernible.handler.body.type5.payload;
 
-import java.util.Queue;
-
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.UnsignedIntegerFieldHandler;
 import com.discernible.message.body.type5.payload.ApplicationMessagePayload;
 import com.discernible.message.body.type5.payload.MotionLogReport;
 import com.discernible.message.body.type5.payload.VehicleIdReport;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class ApplicationMessagePayloadHandler implements FieldHandler<ApplicationMessagePayload> {
 
@@ -15,7 +14,7 @@ public class ApplicationMessagePayloadHandler implements FieldHandler<Applicatio
   private MotionLogReportHandler motionLogReportHandler = new MotionLogReportHandler();
 
   @Override
-  public ApplicationMessagePayload decode(Queue<Byte> fieldBytes) {
+  public ApplicationMessagePayload decode(JBBPBitInputStream fieldBytes) {
 
     Integer applicationMessageType = unsignedIntegerFieldHandler.decode(fieldBytes);
     Integer payloadLength = unsignedIntegerFieldHandler.decode(fieldBytes);

@@ -1,17 +1,17 @@
 package com.discernible.handler;
 
-import java.util.Queue;
-
 import com.discernible.message.IP;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class IpFieldHandler implements FieldHandler<IP> {
 
-  public IP decode(Queue<Byte> messageBytes) {
+  public IP decode(JBBPBitInputStream messageBytes) {
 
-    int firstOctet = messageBytes.poll() & 0xFF; // 'AND' the byte value to get the unsigned value.
-    int secondOctet = messageBytes.poll() & 0xFF;
-    int thirdOctet = messageBytes.poll() & 0xFF;
-    int fourthOctet = messageBytes.poll() & 0xFF;
+    int firstOctet = ByteUtils.getByte(messageBytes) & 0xFF; // 'AND' the byte value to get the unsigned value.
+    int secondOctet = ByteUtils.getByte(messageBytes) & 0xFF;
+    int thirdOctet = ByteUtils.getByte(messageBytes) & 0xFF;
+    int fourthOctet = ByteUtils.getByte(messageBytes) & 0xFF;
 
     return new IP(firstOctet, secondOctet, thirdOctet, fourthOctet);
   }

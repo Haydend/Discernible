@@ -1,12 +1,11 @@
 package com.discernible.handler.body.type5.payload;
 
-import java.util.Queue;
-
 import com.discernible.message.body.type5.payload.MotionLogReport;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class MotionLogReportHandler {
 
-  public MotionLogReport decodePayload(Queue<Byte> fieldBytes, int fieldLength) {
+  public MotionLogReport decodePayload(JBBPBitInputStream fieldBytes, int fieldLength) {
 
     // Byte recordType = fieldBytes.poll(); // 1 byte
     // UnsignedShortFieldHandler groupCount = UnsignedShortFieldHandler.decode(fieldBytes); // 1 byte

@@ -1,13 +1,12 @@
 package com.discernible.handler;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.discernible.message.Socket;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class SocketFieldTest {
 
@@ -29,8 +28,9 @@ public class SocketFieldTest {
   @Test
   public void test_decode() {
     // Given
-    Queue<Byte> bytes =
-        new LinkedList<Byte>(Arrays.asList((byte) 0x06, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01, (byte) 0x13, (byte) 0x88));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0x06, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01, (byte) 0x13, (byte) 0x88}));
 
     // When
     Socket socketField = fieldHandler.decode(bytes);

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Queue;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -23,6 +22,8 @@ import com.discernible.message.body.type2.EventReportMessage;
 import com.discernible.message.body.type2.FixStatusField;
 import com.discernible.message.body.type2.HdopField;
 import com.discernible.message.body.type2.InputField;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -46,7 +47,7 @@ public class EventReportMessageHandler {
   private final UnitStatusFieldHandler unitStatusFieldHandler = new UnitStatusFieldHandler();
   private final AccumulatorFieldHandler accumulatorFieldHandler = new AccumulatorFieldHandler();
 
-  public EventReportMessage decodeBody(Queue<Byte> messageBytes, ServiceType serviceType) {
+  public EventReportMessage decodeBody(JBBPBitInputStream messageBytes, ServiceType serviceType) {
 
     LocalDateTime updateTime = dateTimeFieldHandler.decode(messageBytes);
     LocalDateTime timeOfFix = dateTimeFieldHandler.decode(messageBytes);
@@ -67,7 +68,7 @@ public class EventReportMessageHandler {
     Short eventCode = unsignedShortFieldHandler.decode(messageBytes);
 
     Short numberOfAccumulators = unsignedShortFieldHandler.decode(messageBytes);
-    messageBytes.poll(); // Throw away 'append' byte.
+    ByteUtils.getByte(messageBytes); // Throw away 'append' byte.
     List<AccumulatorField> accumulatorFields = new ArrayList<>();
     for (int i = 0; i < numberOfAccumulators; i++) {
       accumulatorFields.add(accumulatorFieldHandler.decode(messageBytes));

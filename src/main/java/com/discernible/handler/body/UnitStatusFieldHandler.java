@@ -1,10 +1,10 @@
 package com.discernible.handler.body;
 
-import java.util.Queue;
-
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.UnitStatusField.Status;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,9 +13,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class UnitStatusFieldHandler implements FieldHandler<UnitStatusField> {
 
-  public UnitStatusField decode(Queue<Byte> messageBytes) {
+  public UnitStatusField decode(JBBPBitInputStream messageBytes) {
 
-    byte fieldByte = messageBytes.poll();
+    byte fieldByte = ByteUtils.getByte(messageBytes);
 
     Status httpOtaUpdateStatus = (fieldByte & 0b00000001) != 0 ? Status.OK : Status.ERROR;
     Status gpsAntennaStatus = (fieldByte & 0b00000010) != 0 ? Status.OK : Status.ERROR;

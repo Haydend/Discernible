@@ -3,13 +3,13 @@ package com.discernible.handler;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Queue;
 
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class DateTimeFieldHandler implements FieldHandler<LocalDateTime> {
 
-  public LocalDateTime decode(Queue<Byte> messageBytes) {
+  public LocalDateTime decode(JBBPBitInputStream messageBytes) {
 
     byte[] dateTimeFieldBytes = ByteUtils.getFieldBytes(4, messageBytes);
     long epochSeconds = ByteUtils.unsignedIntToLong(dateTimeFieldBytes);

@@ -1,13 +1,12 @@
 package com.discernible.message.body;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.discernible.handler.body.AppVersionFieldHandler;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class AppVersionFieldTest {
 
@@ -30,7 +29,8 @@ public class AppVersionFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x33, (byte) 0x39, (byte) 0x6C));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0x33, (byte) 0x39, (byte) 0x6C}));
 
     // When
     AppVersionField appVersionField = appVersionFieldHandler.decode(bytes);

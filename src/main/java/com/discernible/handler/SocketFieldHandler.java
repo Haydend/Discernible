@@ -1,17 +1,16 @@
 package com.discernible.handler;
 
-import java.util.Queue;
-
 import com.discernible.message.IP;
 import com.discernible.message.Socket;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class SocketFieldHandler implements FieldHandler<Socket> {
 
   private IpFieldHandler ipHandler = new IpFieldHandler();
   private UnsignedIntegerFieldHandler portHandler = new UnsignedIntegerFieldHandler();
 
-  public Socket decode(Queue<Byte> messageBytes) {
+  public Socket decode(JBBPBitInputStream messageBytes) {
 
     ByteUtils.getFieldLength(messageBytes); // We don't need the field length, but we need to take the byte off the queue.
 

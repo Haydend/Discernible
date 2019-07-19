@@ -1,12 +1,9 @@
 package com.discernible.message.body.type5;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.Queue;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -27,6 +24,7 @@ import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class ApplicationMessageTest {
 
@@ -85,9 +83,7 @@ public class ApplicationMessageTest {
         "83000102010220985D0118755D0118751F3F917EFEF9ACCD00003D8C0000006400120D20000AFFB32F073F006C820200000000060002B33D";
     byte[] data = ByteUtils.hexStringToByteArray(hexString);
 
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList(
-            ArrayUtils.toObject(data)));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(data));
 
     // When
     Message message = messageHandler.decode(bytes, true);

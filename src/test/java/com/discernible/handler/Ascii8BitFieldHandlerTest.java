@@ -1,11 +1,11 @@
 package com.discernible.handler;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class Ascii8BitFieldHandlerTest {
 
@@ -28,7 +28,9 @@ public class Ascii8BitFieldHandlerTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x04, (byte) 0x74, (byte) 0x65, (byte) 0x73, (byte) 0x74));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0x04, (byte) 0x74, (byte) 0x65, (byte) 0x73, (byte) 0x74}));
 
     // When
     String ascii8BitField = fieldHandler.decode(bytes);

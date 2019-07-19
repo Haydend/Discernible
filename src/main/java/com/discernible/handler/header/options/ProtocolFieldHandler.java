@@ -1,15 +1,15 @@
 package com.discernible.handler.header.options;
 
-import java.util.Queue;
-
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.Protocol;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class ProtocolFieldHandler implements FieldHandler<Protocol> {
 
   @Override
-  public Protocol decode(Queue<Byte> messageBytes) {
-    byte byteToMatch = messageBytes.poll();
+  public Protocol decode(JBBPBitInputStream messageBytes) {
+    byte byteToMatch = ByteUtils.getByte(messageBytes);
 
     switch (byteToMatch) {
       case 0x06:

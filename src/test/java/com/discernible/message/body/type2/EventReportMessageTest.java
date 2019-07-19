@@ -1,11 +1,10 @@
 package com.discernible.message.body.type2;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -20,6 +19,7 @@ import com.discernible.message.body.type2.FixStatusField.FixStatus;
 import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class EventReportMessageTest {
 
@@ -79,14 +79,14 @@ public class EventReportMessageTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList(
-            (byte) 0x83, (byte) 0x05, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x01, (byte) 0x01,
-            (byte) 0x01, (byte) 0x02, (byte) 0x00, (byte) 0x01, (byte) 0x4F, (byte) 0xB4, (byte) 0x64, (byte) 0x88, (byte) 0x4F, (byte) 0xB4,
-            (byte) 0x64, (byte) 0x88, (byte) 0x13, (byte) 0xBF, (byte) 0x71, (byte) 0xA8, (byte) 0xBA, (byte) 0x18, (byte) 0xA5, (byte) 0x06,
-            (byte) 0x00, (byte) 0x00, (byte) 0x13, (byte) 0x33, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x11, (byte) 0x11,
-            (byte) 0x02, (byte) 0x33, (byte) 0x44, (byte) 0x44, (byte) 0x55, (byte) 0x55, (byte) 0x66, (byte) 0x77, (byte) 0x88, (byte) 0x09,
-            (byte) 0x10, (byte) 0x11, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0x83, (byte) 0x05, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x01, (byte) 0x01,
+                (byte) 0x01, (byte) 0x02, (byte) 0x00, (byte) 0x01, (byte) 0x4F, (byte) 0xB4, (byte) 0x64, (byte) 0x88, (byte) 0x4F, (byte) 0xB4,
+                (byte) 0x64, (byte) 0x88, (byte) 0x13, (byte) 0xBF, (byte) 0x71, (byte) 0xA8, (byte) 0xBA, (byte) 0x18, (byte) 0xA5, (byte) 0x06,
+                (byte) 0x00, (byte) 0x00, (byte) 0x13, (byte) 0x33, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x11, (byte) 0x11,
+                (byte) 0x02, (byte) 0x33, (byte) 0x44, (byte) 0x44, (byte) 0x55, (byte) 0x55, (byte) 0x66, (byte) 0x77, (byte) 0x88, (byte) 0x09,
+                (byte) 0x10, (byte) 0x11, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04}));
 
     // When
     Message message = messageHandler.decode(bytes, true);

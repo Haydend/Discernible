@@ -2,10 +2,10 @@ package com.discernible.handler.body.type5.payload;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
 
 import com.discernible.handler.DataListFieldHandler;
 import com.discernible.message.body.type5.payload.VehicleIdReport;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class VehicleIdReportHandler {
 
@@ -16,7 +16,7 @@ public class VehicleIdReportHandler {
 
   private final DataListFieldHandler dataListFieldHandler = new DataListFieldHandler();
 
-  public VehicleIdReport decodePayload(Queue<Byte> fieldBytes, int fieldLength) {
+  public VehicleIdReport decodePayload(JBBPBitInputStream fieldBytes, int fieldLength) {
     Map<String, String> data = dataListFieldHandler.decode(fieldBytes);
 
     String vin = data.get(VIN_KEY);

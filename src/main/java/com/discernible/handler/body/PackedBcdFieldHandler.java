@@ -1,9 +1,8 @@
 package com.discernible.handler.body;
 
-import java.util.Queue;
-
 import com.discernible.handler.FieldHandler;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.Data;
 
@@ -17,7 +16,7 @@ public class PackedBcdFieldHandler implements FieldHandler<String> {
   }
 
   @Override
-  public String decode(Queue<Byte> messageBytes) {
+  public String decode(JBBPBitInputStream messageBytes) {
 
     byte[] bytes = ByteUtils.getFieldBytes(fieldLength, messageBytes);
 

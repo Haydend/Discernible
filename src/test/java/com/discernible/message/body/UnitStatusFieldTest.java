@@ -1,14 +1,13 @@
 package com.discernible.message.body;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.discernible.handler.body.UnitStatusFieldHandler;
 import com.discernible.message.body.UnitStatusField.Status;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class UnitStatusFieldTest {
 
@@ -31,7 +30,8 @@ public class UnitStatusFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b00001101));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0b00001101}));
 
     // When
     UnitStatusField actualUnitStatusField = unitStatusFieldHandler.decode(bytes);

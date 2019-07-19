@@ -1,13 +1,12 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.discernible.message.header.options.extension.AuthenticationField;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class AuthenticationFieldTest {
 
@@ -30,7 +29,7 @@ public class AuthenticationFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0x03));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(new byte[] {(byte) 0x01, (byte) 0x03}));
 
     // When
     AuthenticationField authenticationField = authenticationFieldHandler.decode(bytes);

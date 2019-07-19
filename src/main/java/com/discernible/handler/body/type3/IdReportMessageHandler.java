@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -19,6 +18,7 @@ import com.discernible.message.body.AppVersionField;
 import com.discernible.message.body.Message.ServiceType;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.type3.IdReportMessage;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class IdReportMessageHandler {
 
@@ -30,7 +30,7 @@ public class IdReportMessageHandler {
   private final PackedBcd10ByteFieldHandler packedBcd10ByteFieldHandler = new PackedBcd10ByteFieldHandler();
   private final DataListFieldHandler dataListFieldHandler = new DataListFieldHandler();
 
-  public IdReportMessage decodeBody(Queue<Byte> messageBytes, ServiceType serviceType) {
+  public IdReportMessage decodeBody(JBBPBitInputStream messageBytes, ServiceType serviceType) {
 
     Short scriptVersion = unsignedShortFieldHandler.decode(messageBytes);
     Short configVersion = unsignedShortFieldHandler.decode(messageBytes);

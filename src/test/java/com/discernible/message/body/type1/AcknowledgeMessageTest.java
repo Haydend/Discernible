@@ -1,8 +1,6 @@
 package com.discernible.message.body.type1;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,6 +13,7 @@ import com.discernible.message.body.type1.StatusField.Status;
 import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class AcknowledgeMessageTest {
 
@@ -50,9 +49,10 @@ public class AcknowledgeMessageTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList((byte) 0x83, (byte) 0x05, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x01, (byte) 0x01,
-            (byte) 0x02, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x0C, (byte) 0x05, (byte) 0x00, (byte) 0x36, (byte) 0x35, (byte) 0x62));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0x83, (byte) 0x05, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x01, (byte) 0x01,
+                (byte) 0x02, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x0C, (byte) 0x05, (byte) 0x00, (byte) 0x36, (byte) 0x35, (byte) 0x62}));
 
     // When
     Message message = messageHandler.decode(bytes, false);

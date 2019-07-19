@@ -14,17 +14,17 @@ group = 'haydend.github.com'
 version = '1.0.0'
 
 ext {
-	lombokVersion = "2.9.2"
-	apacheCommonLang3Version = "3.8.1" 
+	apacheCommonLang3Version = "3.9"
+	mockitoVersion = "3.0.0"
 	junitVersion = "4.12"
-	mockitoVersion = "2.24.0"
+	jbbpVersion = "1.4.1"
 }
 
 dependencies {
 
 	// Common
-	compileOnly 'org.projectlombok:lombok:1.18.4'
-	apt 'org.projectlombok:lombok:1.18.4'
+	compileOnly  'org.projectlombok:lombok:1.18.8' // Lombok version has to hardcoded, varaibles don't work. No idea why.
+	apt 'org.projectlombok:lombok:1.18.8' // See comment above.
 	compile "org.apache.commons:commons-lang3:$apacheCommonLang3Version"
 	
 	
@@ -32,7 +32,8 @@ dependencies {
 	testCompile "junit:junit:$junitVersion"
 	testCompile "org.mockito:mockito-core:$mockitoVersion"
 	
-
+	// JBBP
+  compile "com.igormaznitsa:jbbp:$jbbpVersion"
 
 }
 

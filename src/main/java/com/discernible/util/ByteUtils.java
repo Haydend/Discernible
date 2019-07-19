@@ -1,6 +1,8 @@
 package com.discernible.util;
 
-import java.util.Queue;
+import java.io.IOException;
+
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class ByteUtils {
 
@@ -42,19 +44,25 @@ public class ByteUtils {
     return messageBytes;
   }
 
-  public static int getFieldLength(Queue<Byte> messageBytes) {
-    int fieldLength = messageBytes.poll();
+  public static int getFieldLength(JBBPBitInputStream messageBytes) {
+    int fieldLength = getByte(messageBytes);
     return fieldLength;
   }
 
-  public static byte[] getFieldBytes(int fieldLength, Queue<Byte> messageBytes) {
-    byte[] fieldBytes = new byte[fieldLength];
-
-    for (int i = 0; i < fieldLength; i++) {
-      fieldBytes[i] = messageBytes.poll();
+  public static byte[] getFieldBytes(int fieldLength, JBBPBitInputStream messageBytes) {
+    try {
+      return messageBytes.readByteArray(fieldLength);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    return fieldBytes;
+  public static byte getByte(JBBPBitInputStream messageBytes) {
+    try {
+      return (byte) messageBytes.read();
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   public static byte[] hexStringToByteArray(String s) {

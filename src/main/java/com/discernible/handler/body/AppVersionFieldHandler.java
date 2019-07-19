@@ -1,15 +1,15 @@
 package com.discernible.handler.body;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Queue;
 
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.AppVersionField;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class AppVersionFieldHandler implements FieldHandler<AppVersionField> {
 
-  public AppVersionField decode(Queue<Byte> messageBytes) {
+  public AppVersionField decode(JBBPBitInputStream messageBytes) {
 
     byte[] fieldBytes = ByteUtils.getFieldBytes(3, messageBytes);
     String fieldString = new String(fieldBytes, StandardCharsets.UTF_8);

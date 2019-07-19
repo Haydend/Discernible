@@ -1,14 +1,13 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.EncryptionField.EncryptionSubField;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class EncryptionFieldTest {
 
@@ -31,8 +30,8 @@ public class EncryptionFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes =
-        new LinkedList<Byte>(Arrays.asList((byte) 0x06, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x12, (byte) 0xD6, (byte) 0x87));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(new byte[] {(byte) 0x06, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x12, (byte) 0xD6, (byte) 0x87}));
 
     // When
     EncryptionField encryptionField = encryptionFieldHandler.decode(bytes);

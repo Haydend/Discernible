@@ -1,9 +1,9 @@
 package com.discernible.handler;
 
 import java.nio.ByteBuffer;
-import java.util.Queue;
 
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +12,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class SignedIntegerFieldHandler implements FieldHandler<Integer> {
 
-  public Integer decode(Queue<Byte> messageBytes) {
+  public Integer decode(JBBPBitInputStream messageBytes) {
     byte[] fieldBytes = ByteUtils.getFieldBytes(4, messageBytes);
     int value = ByteBuffer.wrap(fieldBytes).getInt();
 

@@ -1,8 +1,6 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -10,6 +8,7 @@ import org.junit.Test;
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.LmDirectRouting;
 import com.discernible.message.header.options.extension.OptionExtension;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class OptionExtensionTest {
 
@@ -33,8 +32,8 @@ public class OptionExtensionTest {
   public void test_decode_esn() {
 
     // Given
-    Queue<Byte> bytes =
-        new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0b00000001, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(new byte[] {(byte) 0x01, (byte) 0b00000001, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04}));
 
     // When
     OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);
@@ -67,8 +66,8 @@ public class OptionExtensionTest {
   public void test_decode_vin() {
 
     // Given
-    Queue<Byte> bytes =
-        new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0b00000010, (byte) 0x04, (byte) 0x74, (byte) 0x65, (byte) 0x73, (byte) 0x74));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(new byte[] {(byte) 0x01, (byte) 0b00000010, (byte) 0x04, (byte) 0x74, (byte) 0x65, (byte) 0x73, (byte) 0x74}));
 
     // When
     OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);
@@ -101,8 +100,9 @@ public class OptionExtensionTest {
   public void test_decode_encryption() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList((byte) 0x01, (byte) 0b00000100, (byte) 0x06, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x12, (byte) 0xD6, (byte) 0x87));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0x01, (byte) 0b00000100, (byte) 0x06, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x12, (byte) 0xD6, (byte) 0x87}));
 
     // When
     OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);
@@ -135,7 +135,9 @@ public class OptionExtensionTest {
   public void test_decode_lmDirectCompression() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0b00001000));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0x01, (byte) 0b00001000}));
 
     // When
     OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);
@@ -166,7 +168,9 @@ public class OptionExtensionTest {
   public void test_decode_lmDirectRouting() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0b00010000, (byte) 0x03, (byte) 0x01, (byte) 0x00, (byte) 0x00));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0x01, (byte) 0b00010000, (byte) 0x03, (byte) 0x01, (byte) 0x00, (byte) 0x00}));
 
     // When
     OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);

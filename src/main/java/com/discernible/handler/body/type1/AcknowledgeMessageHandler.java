@@ -1,12 +1,12 @@
 package com.discernible.handler.body.type1;
 
-import java.util.Queue;
-
 import com.discernible.handler.body.AppVersionFieldHandler;
 import com.discernible.message.body.AppVersionField;
 import com.discernible.message.body.type1.AcknowledgeMessage;
 import com.discernible.message.body.type1.StatusField;
 import com.discernible.message.body.type1.TypeField;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class AcknowledgeMessageHandler {
 
@@ -14,11 +14,11 @@ public class AcknowledgeMessageHandler {
   private StatusFieldHandler statusFieldHandler = new StatusFieldHandler();
   private AppVersionFieldHandler appVersionFieldHandler = new AppVersionFieldHandler();
 
-  public AcknowledgeMessage decode(Queue<Byte> messageBytes) {
+  public AcknowledgeMessage decode(JBBPBitInputStream messageBytes) {
 
     TypeField typeField = typeFieldHandler.decode(messageBytes);
     StatusField statusField = statusFieldHandler.decode(messageBytes);
-    messageBytes.poll(); // Spare
+    ByteUtils.getByte(messageBytes); // Spare
     AppVersionField appVersionField = appVersionFieldHandler.decode(messageBytes);
 
     return new AcknowledgeMessage(typeField, statusField, appVersionField);

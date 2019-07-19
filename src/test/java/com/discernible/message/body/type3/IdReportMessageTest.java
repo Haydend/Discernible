@@ -1,12 +1,9 @@
 package com.discernible.message.body.type3;
 
-import java.util.Arrays;
+import java.io.ByteArrayInputStream;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Queue;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -20,6 +17,7 @@ import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class IdReportMessageTest {
 
@@ -78,9 +76,7 @@ public class IdReportMessageTest {
         "8308359316075177508f010202030000c82033396c000023c302000000004532459871ffffff359316075177508f204080812249437fffffffffffffffff8931088817125056770f4654424c3a342c302c323236427c302c312c37433342004f54413a317c303b302c312c392c31317c343b302c347c373b30004f5441535441543a313534383935303433332c302c312c352c302c222200";
     byte[] data = ByteUtils.hexStringToByteArray(hexString);
 
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList(
-            ArrayUtils.toObject(data)));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(data));
 
     // When
     Message message = messageHandler.decode(bytes, true);

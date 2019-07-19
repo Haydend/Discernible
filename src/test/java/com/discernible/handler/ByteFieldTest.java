@@ -1,11 +1,11 @@
 package com.discernible.handler;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class ByteFieldTest {
 
@@ -28,7 +28,9 @@ public class ByteFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x02, (byte) 0x01, (byte) 0x02, (byte) 0x01));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0x02, (byte) 0x01, (byte) 0x02, (byte) 0x01}));
 
     // When
     byte[] byteField = fieldHandler.decode(bytes);

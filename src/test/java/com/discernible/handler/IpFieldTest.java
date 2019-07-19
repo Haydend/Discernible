@@ -1,13 +1,12 @@
 package com.discernible.handler;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.discernible.message.IP;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class IpFieldTest {
 
@@ -40,7 +39,9 @@ public class IpFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01}));
 
     // When
     IP ipField = fieldHandler.decode(bytes);

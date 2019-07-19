@@ -1,7 +1,6 @@
 package com.discernible.handler.body;
 
 import java.math.BigInteger;
-import java.util.Queue;
 
 import com.discernible.handler.body.type0.NullMessageHandler;
 import com.discernible.handler.body.type1.AcknowledgeMessageHandler;
@@ -19,6 +18,7 @@ import com.discernible.message.body.type3.IdReportMessage;
 import com.discernible.message.body.type5.ApplicationMessage;
 import com.discernible.message.header.options.OptionsHeader;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class MessageHandler {
 
@@ -29,12 +29,12 @@ public class MessageHandler {
   private final ApplicationMessageHandler applicationMessageHandler = new ApplicationMessageHandler();
   private final OptionsHeaderFieldHandler optionsHeaderFieldHandler = new OptionsHeaderFieldHandler();
 
-  public Message decode(Queue<Byte> messageBytes, boolean sentFromLmu) {
+  public Message decode(JBBPBitInputStream messageBytes, boolean sentFromLmu) {
 
     OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(messageBytes);
 
-    ServiceType serviceType = ServiceType.values()[messageBytes.poll()];
-    MessageType messageType = MessageType.values()[messageBytes.poll()];
+    ServiceType serviceType = ServiceType.values()[ByteUtils.getByte(messageBytes)];
+    MessageType messageType = MessageType.values()[ByteUtils.getByte(messageBytes)];
     int sequenceNumber = ByteUtils.unsignedShortToInt(ByteUtils.getFieldBytes(2, messageBytes));
 
     final Message messageBody;

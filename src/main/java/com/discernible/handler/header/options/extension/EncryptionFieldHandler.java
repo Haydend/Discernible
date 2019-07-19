@@ -1,12 +1,12 @@
 package com.discernible.handler.header.options.extension;
 
 import java.math.BigInteger;
-import java.util.Queue;
 
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.EncryptionField.EncryptionSubField;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,12 +16,12 @@ import lombok.Data;
 public class EncryptionFieldHandler implements FieldHandler<EncryptionField> {
 
   @Override
-  public EncryptionField decode(Queue<Byte> messageBytes) {
+  public EncryptionField decode(JBBPBitInputStream messageBytes) {
 
-    messageBytes.poll(); // Throw away field length.
-    messageBytes.poll(); // Throw away the version and theirs only one version.
+    ByteUtils.getByte(messageBytes); // Throw away field length.
+    ByteUtils.getByte(messageBytes); // Throw away the version and there is only one version.
 
-    EncryptionSubField encryptionSubField = EncryptionSubField.values()[messageBytes.poll()];
+    EncryptionSubField encryptionSubField = EncryptionSubField.values()[ByteUtils.getByte(messageBytes)];
 
     byte[] randomKeyBytes = ByteUtils.getFieldBytes(4, messageBytes);
     long randomKey = ByteUtils.unsignedIntToLong(randomKeyBytes);

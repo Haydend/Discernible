@@ -1,10 +1,7 @@
 package com.discernible.message.header.options;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +9,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.discernible.handler.header.options.MobileIdTypeFieldHandler;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MobileIdTypeFieldTest {
@@ -114,7 +112,8 @@ public class MobileIdTypeFieldTest {
   private void test_decode(MobileIdTypeField.MobileIdType expectedMobileIdType, byte[] messageBytes) {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList(ArrayUtils.toObject(messageBytes)));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        messageBytes));
 
     // When
     MobileIdTypeField mobileIdTypeField = mobileIdTypeFieldHandler.decode(bytes);

@@ -1,7 +1,5 @@
 package com.discernible.handler.header.options;
 
-import java.util.Queue;
-
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.IpFieldHandler;
 import com.discernible.handler.UnsignedIntegerFieldHandler;
@@ -10,6 +8,7 @@ import com.discernible.message.header.options.ForwardingField;
 import com.discernible.message.header.options.ForwardingOperationType;
 import com.discernible.message.header.options.Protocol;
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class ForwardingFieldHandler implements FieldHandler<ForwardingField> {
 
@@ -18,9 +17,9 @@ public class ForwardingFieldHandler implements FieldHandler<ForwardingField> {
   private final ProtocolFieldHandler protocolFieldHandler = new ProtocolFieldHandler();
   private final ForwardingOperationTypeFieldHandler forwardingOperationTypeFieldHandler = new ForwardingOperationTypeFieldHandler();
 
-  public ForwardingField decode(Queue<Byte> messageBytes) {
+  public ForwardingField decode(JBBPBitInputStream messageBytes) {
 
-    messageBytes.poll(); // Throw away field length.
+    ByteUtils.getByte(messageBytes); // Throw away field length.
 
     IP ipField = ipFieldHandler.decode(messageBytes);
     Integer portField = unsignedIntegerFieldHandler.decode(messageBytes);

@@ -1,12 +1,11 @@
 package com.discernible.handler;
 
-import java.util.Queue;
-
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class ByteFieldHandler implements FieldHandler<byte[]> {
 
-  public byte[] decode(Queue<Byte> messageBytes) {
+  public byte[] decode(JBBPBitInputStream messageBytes) {
 
     int fieldLength = ByteUtils.getFieldLength(messageBytes);
 

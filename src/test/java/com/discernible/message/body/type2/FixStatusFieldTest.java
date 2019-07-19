@@ -1,14 +1,13 @@
 package com.discernible.message.body.type2;
 
-import java.util.Arrays;
+import java.io.ByteArrayInputStream;
 import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.discernible.handler.body.type2.FixStatusFieldHandler;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class FixStatusFieldTest {
 
@@ -32,7 +31,9 @@ public class FixStatusFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b00010000));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0b00010000}));
 
     // When
     FixStatusField fixStatusField = fixStatusFieldHandler.decode(bytes);

@@ -1,8 +1,6 @@
 package com.discernible.message.header.options;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,6 +9,7 @@ import com.discernible.handler.header.options.OptionsHeaderFieldHandler;
 import com.discernible.message.Socket;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.extension.OptionExtension;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class OptionHeaderTest {
 
@@ -34,7 +33,8 @@ public class OptionHeaderTest {
   public void test_decode_mobileId() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10000001, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0b10000001, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04}));
 
     // When
     OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
@@ -69,7 +69,8 @@ public class OptionHeaderTest {
   public void test_decode_mobileIdType() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10000010, (byte) 0x01, (byte) 0x01));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0b10000010, (byte) 0x01, (byte) 0x01}));
 
     // When
     OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
@@ -104,7 +105,8 @@ public class OptionHeaderTest {
   public void test_decode_authentication() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10000100, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0b10000100, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04}));
 
     // When
     OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
@@ -139,7 +141,8 @@ public class OptionHeaderTest {
   public void test_decode_routing() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10001000, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0b10001000, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04}));
 
     // When
     OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
@@ -175,8 +178,9 @@ public class OptionHeaderTest {
   public void test_decode_forwarding() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10010000, (byte) 0x08, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01,
-        (byte) 0x13, (byte) 0x88, (byte) 0x06, (byte) 0x00));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0b10010000, (byte) 0x08, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01,
+            (byte) 0x13, (byte) 0x88, (byte) 0x06, (byte) 0x00}));
 
     // When
     OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
@@ -214,8 +218,8 @@ public class OptionHeaderTest {
   public void test_decode_socketField() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList((byte) 0b10100000, (byte) 0x06, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01, (byte) 0x13, (byte) 0x88));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0b10100000, (byte) 0x06, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01, (byte) 0x13, (byte) 0x88}));
 
     // When
     OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
@@ -251,7 +255,8 @@ public class OptionHeaderTest {
   public void test_decode_optionExtension() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b11000000, (byte) 0x01, (byte) 0b00000000));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0b11000000, (byte) 0x01, (byte) 0b00000000}));
 
     // When
     OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);

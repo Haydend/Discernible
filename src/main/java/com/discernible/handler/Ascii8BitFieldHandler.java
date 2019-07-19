@@ -1,13 +1,13 @@
 package com.discernible.handler;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Queue;
 
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class Ascii8BitFieldHandler implements FieldHandler<String> {
 
-  public String decode(Queue<Byte> messageBytes) {
+  public String decode(JBBPBitInputStream messageBytes) {
 
     int fieldLength = ByteUtils.getFieldLength(messageBytes);
 

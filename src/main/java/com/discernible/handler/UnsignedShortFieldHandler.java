@@ -1,6 +1,7 @@
 package com.discernible.handler;
 
-import java.util.Queue;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.Data;
 
@@ -12,9 +13,9 @@ public class UnsignedShortFieldHandler implements FieldHandler<Short> {
     return new byte[] {value.byteValue()};
   }
 
-  public Short decode(Queue<Byte> messageBytes) {
+  public Short decode(JBBPBitInputStream messageBytes) {
 
-    byte fieldByte = messageBytes.poll();
+    byte fieldByte = ByteUtils.getByte(messageBytes);
     short value = (short) Byte.toUnsignedInt(fieldByte);
 
     return value;

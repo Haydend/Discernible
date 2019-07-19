@@ -1,17 +1,17 @@
 package com.discernible.handler.body.type1;
 
-import java.util.Queue;
-
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.Message.MessageType;
 import com.discernible.message.body.type1.TypeField;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class TypeFieldHandler implements FieldHandler<TypeField> {
 
   @Override
-  public TypeField decode(Queue<Byte> messageBytes) {
+  public TypeField decode(JBBPBitInputStream messageBytes) {
 
-    byte typeByte = messageBytes.poll();
+    byte typeByte = ByteUtils.getByte(messageBytes);
     MessageType messageType = MessageType.values()[(int) typeByte];
 
     return new TypeField(messageType);

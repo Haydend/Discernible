@@ -1,13 +1,12 @@
 package com.discernible.message.body;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import java.io.ByteArrayInputStream;
 
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.discernible.handler.body.PackedBcd8ByteFieldHandler;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class PackedBcdFieldTest {
 
@@ -30,8 +29,8 @@ public class PackedBcdFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes =
-        new LinkedList<Byte>(Arrays.asList((byte) 0x45, (byte) 0x32, (byte) 0x45, (byte) 0x98, (byte) 0x71, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
+        new byte[] {(byte) 0x45, (byte) 0x32, (byte) 0x45, (byte) 0x98, (byte) 0x71, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF}));
 
     // When
     String field = packedBcd8ByteFieldHandler.decode(bytes);

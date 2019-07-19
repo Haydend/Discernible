@@ -1,9 +1,9 @@
 package com.discernible.handler;
 
 import java.math.BigInteger;
-import java.util.Queue;
 
 import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class UnsignedIntegerFieldHandler implements FieldHandler<Integer> {
     return messageBytes;
   }
 
-  public Integer decode(Queue<Byte> messageBytes) {
+  public Integer decode(JBBPBitInputStream messageBytes) {
     byte[] valueBytes = ByteUtils.getFieldBytes(2, messageBytes);
     int value = ByteUtils.unsignedShortToInt(valueBytes);
 

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Queue;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -14,6 +13,8 @@ import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.LmDirectRouting;
 import com.discernible.message.header.options.extension.OptionExtension;
+import com.discernible.util.ByteUtils;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -28,11 +29,11 @@ public class OptionExtensionFieldHandler implements FieldHandler<OptionExtension
   private final LmDirectRoutingFieldHandler lmDirectRoutingFieldHandler = new LmDirectRoutingFieldHandler();
 
   @Override
-  public OptionExtension decode(Queue<Byte> messageBytes) {
+  public OptionExtension decode(JBBPBitInputStream messageBytes) {
 
-    messageBytes.poll(); // Throw away field length;
+    ByteUtils.getByte(messageBytes); // Throw away field length;
 
-    byte flagByte = messageBytes.poll();
+    byte flagByte = ByteUtils.getByte(messageBytes);
 
     byte[] esn = null;
     if ((flagByte & 0b00000001) == 0b00000001) {

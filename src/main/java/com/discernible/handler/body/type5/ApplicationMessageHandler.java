@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Queue;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -29,6 +28,7 @@ import com.discernible.message.body.type2.HdopField;
 import com.discernible.message.body.type2.InputField;
 import com.discernible.message.body.type5.ApplicationMessage;
 import com.discernible.message.body.type5.payload.ApplicationMessagePayload;
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -52,7 +52,7 @@ public class ApplicationMessageHandler {
   private final UnitStatusFieldHandler unitStatusField = new UnitStatusFieldHandler();
   private final ApplicationMessagePayloadHandler applicationMessagePayloadHandler = new ApplicationMessagePayloadHandler();
 
-  public ApplicationMessage decodeBody(Queue<Byte> messageBytes, ServiceType serviceType, boolean sentByLmu) {
+  public ApplicationMessage decodeBody(JBBPBitInputStream messageBytes, ServiceType serviceType, boolean sentByLmu) {
 
     LocalDateTime updateTime = null;
     LocalDateTime timeOfFix = null;

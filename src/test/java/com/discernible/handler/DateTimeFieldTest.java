@@ -1,12 +1,12 @@
 package com.discernible.handler;
 
+import java.io.ByteArrayInputStream;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
 
 public class DateTimeFieldTest {
 
@@ -29,7 +29,9 @@ public class DateTimeFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x00, (byte) 0x00, (byte) 0x0E, (byte) 0x10));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(
+        new ByteArrayInputStream(
+            new byte[] {(byte) 0x00, (byte) 0x00, (byte) 0x0E, (byte) 0x10}));
 
     // When
     LocalDateTime dateTimeField = fieldHandler.decode(bytes);
