@@ -99,11 +99,8 @@ public class MobileIdTypeFieldTest {
 
   private void test_encode(MobileIdTypeField.MobileIdType mobileIdType, byte[] expectedMessageBytes) {
 
-    // Given
-    MobileIdTypeField mobileIdField = new MobileIdTypeField(mobileIdType);
-
     // When
-    byte[] actualMessageBytes = mobileIdTypeFieldHandler.encode(mobileIdField);
+    byte[] actualMessageBytes = mobileIdTypeFieldHandler.encode(mobileIdType);
 
     // Then
     Assert.assertArrayEquals(String.format("Bytes for %s were not as expected", mobileIdType), expectedMessageBytes, actualMessageBytes);
@@ -112,15 +109,13 @@ public class MobileIdTypeFieldTest {
   private void test_decode(MobileIdTypeField.MobileIdType expectedMobileIdType, byte[] messageBytes) {
 
     // Given
-    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(
-        messageBytes));
+    JBBPBitInputStream bytes = new JBBPBitInputStream(new ByteArrayInputStream(messageBytes));
 
     // When
-    MobileIdTypeField mobileIdTypeField = mobileIdTypeFieldHandler.decode(bytes);
+    MobileIdType mobileIdTypeField = mobileIdTypeFieldHandler.decode(bytes);
 
     // Then
-    Assert.assertEquals(String.format("Did not get expected field: %s", expectedMobileIdType), expectedMobileIdType,
-        mobileIdTypeField.getMobileIdType());
+    Assert.assertEquals(String.format("Did not get expected field: %s", expectedMobileIdType), expectedMobileIdType, mobileIdTypeField);
   }
 
 }

@@ -1,6 +1,7 @@
 package com.discernible.message.header.options;
 
 import com.discernible.message.Socket;
+import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.extension.OptionExtension;
 
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.Data;
 public class OptionsHeader {
 
   private byte[] mobileId;
-  private MobileIdTypeField mobileIdType;
+  private MobileIdType mobileIdType;
   private byte[] authentication;
   private byte[] routing;
   private ForwardingField forwarding;

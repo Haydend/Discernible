@@ -13,7 +13,6 @@ import com.discernible.message.body.Message;
 import com.discernible.message.body.Message.ServiceType;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.UnitStatusField.Status;
-import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
 import com.discernible.util.ByteUtils;
@@ -29,7 +28,7 @@ public class IdReportMessageTest {
 
     // Given
     byte[] mobileId = new byte[] {0x35, (byte) 0x93, 0x16, 0x07, 0x51, 0x77, 0x50, (byte) 0x8F};
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.IMEI_OR_EID);
+    MobileIdType mobileIdType = MobileIdType.IMEI_OR_EID;
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
     Short scriptVersion = 200;
@@ -83,7 +82,7 @@ public class IdReportMessageTest {
 
     // Then
     byte[] mobileId = new byte[] {0x35, (byte) 0x93, 0x16, 0x07, 0x51, 0x77, 0x50, (byte) 0x8F};
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.IMEI_OR_EID);
+    MobileIdType mobileIdType = MobileIdType.IMEI_OR_EID;
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
     Short scriptVersion = 200;

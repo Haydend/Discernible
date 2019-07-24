@@ -1,5 +1,6 @@
 package com.discernible.handler.header.options.extension;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +17,7 @@ import com.discernible.message.header.options.extension.OptionExtension;
 import com.discernible.util.ByteUtils;
 import com.igormaznitsa.jbbp.JBBPParser;
 import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
+import com.igormaznitsa.jbbp.io.JBBPOut;
 import com.igormaznitsa.jbbp.model.JBBPFieldArrayUByte;
 import com.igormaznitsa.jbbp.model.JBBPFieldString;
 import com.igormaznitsa.jbbp.model.JBBPFieldStruct;
@@ -80,7 +82,13 @@ public class OptionExtensionFieldHandler implements FieldHandler<OptionExtension
     }
 
     if (Objects.nonNull(optionExtension.getVin())) {
-      byte[] vin = ascii8BitFieldHandler.encode(optionExtension.getVin());
+      byte[] vin = null;
+      try {
+        vin = JBBPOut.BeginBin().String(optionExtension.getVin()).End().toByteArray();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      // byte[] vin = ascii8BitFieldHandler.encode(optionExtension.getVin());
       messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(vin)));
     }
 

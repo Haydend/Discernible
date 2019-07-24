@@ -20,7 +20,6 @@ import com.discernible.message.body.type2.FixStatusField.FixStatus;
 import com.discernible.message.body.type2.HdopField;
 import com.discernible.message.body.type2.InputField;
 import com.discernible.message.body.type5.payload.VehicleIdReport;
-import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
 import com.discernible.util.ByteUtils;
@@ -36,7 +35,7 @@ public class ApplicationMessageTest {
 
     // Given
     byte[] mobileId = new byte[] {0x35, (byte) 0x93, 0x16, 0x07, 0x50, (byte) 0x84, 0x37, 0x3f};
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.IMEI_OR_EID);
+    MobileIdType mobileIdType = MobileIdType.IMEI_OR_EID;
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
     LocalDateTime updateTime = LocalDateTime.of(2019, 1, 10, 15, 24, 40);

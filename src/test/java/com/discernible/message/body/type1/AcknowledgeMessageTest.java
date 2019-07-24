@@ -10,7 +10,6 @@ import com.discernible.message.body.AppVersionField;
 import com.discernible.message.body.Message;
 import com.discernible.message.body.Message.MessageType;
 import com.discernible.message.body.type1.StatusField.Status;
-import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
 import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
@@ -25,7 +24,7 @@ public class AcknowledgeMessageTest {
 
     // Given
     byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
+    MobileIdType mobileIdType = MobileIdType.ESN;
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
     TypeField typeField = new TypeField(MessageType.MINI_APPLICATION_MESSAGE);
@@ -59,7 +58,7 @@ public class AcknowledgeMessageTest {
 
     // Then
     byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
+    MobileIdType mobileIdType = MobileIdType.ESN;
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
     Assert.assertEquals(optonsHeader, message.getOptionHeader());
 

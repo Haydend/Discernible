@@ -7,7 +7,6 @@ import org.junit.Test;
 
 import com.discernible.handler.body.MessageHandler;
 import com.discernible.message.body.Message;
-import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
 import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
@@ -22,7 +21,7 @@ public class NullMessageTest {
 
     // Given
     byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
+    MobileIdType mobileIdType = MobileIdType.ESN;
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
     NullMessage message = new NullMessage();
@@ -50,7 +49,7 @@ public class NullMessageTest {
 
     // Then
     byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
+    MobileIdType mobileIdType = MobileIdType.ESN;
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
     Assert.assertEquals(optonsHeader, message.getOptionHeader());
 

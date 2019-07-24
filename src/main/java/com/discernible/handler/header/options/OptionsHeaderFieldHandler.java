@@ -13,12 +13,13 @@ import com.discernible.handler.SocketFieldHandler;
 import com.discernible.handler.header.options.extension.OptionExtensionFieldHandler;
 import com.discernible.message.Socket;
 import com.discernible.message.header.options.ForwardingField;
-import com.discernible.message.header.options.MobileIdTypeField;
+import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
 import com.discernible.message.header.options.extension.OptionExtension;
 import com.discernible.util.ByteUtils;
 import com.igormaznitsa.jbbp.JBBPParser;
 import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
+import com.igormaznitsa.jbbp.model.JBBPFieldArrayUByte;
 import com.igormaznitsa.jbbp.model.JBBPFieldStruct;
 
 import lombok.AllArgsConstructor;
@@ -31,6 +32,7 @@ public class OptionsHeaderFieldHandler implements FieldHandler<OptionsHeader> {
   private static final JBBPParser HEADER =
       JBBPParser.prepare(
           "bit:1 mobileIdFlag;bit:1 mobileIdTypeFlag;bit:1 authenticationFlag;bit:1 routingFlag;bit:1 forwardingFlag;bit:1 responseRedirectionFlag;bit:1 optionExtension;bit:1;");
+  private static final JBBPParser BYTE_FIELD = JBBPParser.prepare("ubyte length;ubyte[(length)] value;");
 
   private final ByteFieldHandler byteFieldHandler = new ByteFieldHandler();
   private final MobileIdTypeFieldHandler mobileIdTypeFieldHandler = new MobileIdTypeFieldHandler();
@@ -45,22 +47,22 @@ public class OptionsHeaderFieldHandler implements FieldHandler<OptionsHeader> {
 
     byte[] mobileId = null;
     if (ByteUtils.isFlagSet(header, "mobileIdFlag")) {
-      mobileId = byteFieldHandler.decode(messageBytes);
+      mobileId = ByteUtils.parse(messageBytes, BYTE_FIELD).findFieldForNameAndType("value", JBBPFieldArrayUByte.class).getArray();
     }
 
-    MobileIdTypeField mobileIdTypeField = null;
+    MobileIdType mobileIdTypeField = null;
     if (ByteUtils.isFlagSet(header, "mobileIdTypeFlag")) {
       mobileIdTypeField = mobileIdTypeFieldHandler.decode(messageBytes);
     }
 
     byte[] authentication = null;
     if (ByteUtils.isFlagSet(header, "authenticationFlag")) {
-      authentication = byteFieldHandler.decode(messageBytes);
+      authentication = ByteUtils.parse(messageBytes, BYTE_FIELD).findFieldForNameAndType("value", JBBPFieldArrayUByte.class).getArray();
     }
 
     byte[] routing = null;
     if (ByteUtils.isFlagSet(header, "routingFlag")) {
-      routing = byteFieldHandler.decode(messageBytes);
+      routing = ByteUtils.parse(messageBytes, BYTE_FIELD).findFieldForNameAndType("value", JBBPFieldArrayUByte.class).getArray();
     }
 
     ForwardingField forwarding = null;

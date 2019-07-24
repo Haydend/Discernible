@@ -55,7 +55,7 @@ public class OptionHeaderTest {
   public void test_encode_mobileIdType() {
 
     // Given
-    MobileIdTypeField mobileIdTypeField = new MobileIdTypeField(MobileIdType.ESN);
+    MobileIdType mobileIdTypeField = MobileIdType.ESN;
     OptionsHeader optionsHeader = new OptionsHeader(null, mobileIdTypeField, null, null, null, null, null);
 
     // When
@@ -84,7 +84,7 @@ public class OptionHeaderTest {
     Assert.assertNull(optionsHeader.getResponseRedirection());
     Assert.assertNull(optionsHeader.getOptionExtension());
 
-    Assert.assertEquals(MobileIdType.ESN, optionsHeader.getMobileIdType().getMobileIdType());
+    Assert.assertEquals(MobileIdType.ESN, optionsHeader.getMobileIdType());
   }
 
   @Test

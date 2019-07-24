@@ -16,7 +16,6 @@ import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.UnitStatusField.Status;
 import com.discernible.message.body.type2.CommStatusField.NetworkTechnology;
 import com.discernible.message.body.type2.FixStatusField.FixStatus;
-import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 import com.discernible.message.header.options.OptionsHeader;
 import com.igormaznitsa.jbbp.io.JBBPBitInputStream;
@@ -31,7 +30,7 @@ public class EventReportMessageTest {
 
     // Given
     byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
+    MobileIdType mobileIdType = MobileIdType.ESN;
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
 
     LocalDateTime updateTime = LocalDateTime.of(2012, 5, 17, 02, 38);
@@ -93,7 +92,7 @@ public class EventReportMessageTest {
 
     // Then
     byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};
-    MobileIdTypeField mobileIdType = new MobileIdTypeField(MobileIdType.ESN);
+    MobileIdType mobileIdType = MobileIdType.ESN;
     OptionsHeader optonsHeader = new OptionsHeader(mobileId, mobileIdType, null, null, null, null, null);
     Assert.assertEquals(optonsHeader, message.getOptionHeader());
 
