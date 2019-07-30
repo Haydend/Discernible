@@ -19,9 +19,10 @@ public class Ascii8BitFieldHandler implements FieldHandler<String> {
   }
 
   @Override
-  public byte[] encode(String field) {
+  public void encode(String field, ByteOutputStream out) {
     byte[] fieldBytes = field.getBytes(StandardCharsets.UTF_8);
-    return ByteUtils.prependFieldLength(fieldBytes);
+    out.write(fieldBytes.length);
+    out.write(fieldBytes);
   }
 
 }

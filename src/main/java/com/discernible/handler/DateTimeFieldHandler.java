@@ -1,6 +1,5 @@
 package com.discernible.handler;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Queue;
@@ -19,16 +18,9 @@ public class DateTimeFieldHandler implements FieldHandler<LocalDateTime> {
   }
 
   @Override
-  public byte[] encode(LocalDateTime datetime) {
-
+  public void encode(LocalDateTime datetime, ByteOutputStream out) {
     long epochSeconds = datetime.atZone(ZoneOffset.UTC).toEpochSecond();
-    byte[] dateTimeBytes = BigInteger.valueOf(epochSeconds).toByteArray();
-
-    byte[] messageBytes = new byte[4];
-    int padding = 4 - dateTimeBytes.length;
-    System.arraycopy(dateTimeBytes, 0, messageBytes, padding, dateTimeBytes.length);
-
-    return messageBytes;
+    out.writeUnsignedInt(epochSeconds);
   }
 
 }

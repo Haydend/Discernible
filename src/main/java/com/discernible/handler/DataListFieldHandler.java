@@ -32,7 +32,7 @@ public class DataListFieldHandler implements FieldHandler<Map<String, String>> {
   }
 
   @Override
-  public byte[] encode(Map<String, String> data) {
+  public void encode(Map<String, String> data, ByteOutputStream out) {
 
     StringBuilder fieldBuilder = new StringBuilder();
     for (Entry<String, String> entry : data.entrySet()) {
@@ -43,7 +43,7 @@ public class DataListFieldHandler implements FieldHandler<Map<String, String>> {
     }
 
     byte[] fieldBytes = fieldBuilder.toString().getBytes(StandardCharsets.UTF_8);
-    return fieldBytes;
+    out.write(fieldBytes);
   }
 
 }

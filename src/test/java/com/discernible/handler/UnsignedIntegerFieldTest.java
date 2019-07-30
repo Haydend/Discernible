@@ -16,12 +16,13 @@ public class UnsignedIntegerFieldTest {
 
     // Given
     Integer value = 5000;
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = fieldHandler.encode(value);
+    fieldHandler.encode(value, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x13, (byte) 0x88}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x13, (byte) 0x88}, out.toByteArray());
   }
 
   @Test

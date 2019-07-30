@@ -16,8 +16,9 @@ public class ByteFieldHandler implements FieldHandler<byte[]> {
   }
 
   @Override
-  public byte[] encode(byte[] field) {
-    return ByteUtils.prependFieldLength(field);
+  public void encode(byte[] field, ByteOutputStream out) {
+    out.write(field.length);
+    out.write(field);
   }
 
 }

@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.type2.InputFieldHandler;
 
 public class InputFieldTest {
@@ -19,9 +20,11 @@ public class InputFieldTest {
 
     // Given
     InputField inputField = new InputField(true, false, true, false, true, false, true, false);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] fieldBytes = inputFieldHandler.encode(inputField);
+    inputFieldHandler.encode(inputField, out);
+    byte[] fieldBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b01010101}, fieldBytes);

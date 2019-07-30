@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.DataListFieldHandler;
 import com.discernible.message.body.type5.payload.VehicleIdReport;
 
@@ -27,7 +28,7 @@ public class VehicleIdReportHandler {
     return new VehicleIdReport(vin, obd2ProtocolId, supportedParameters, supportedIndicators);
   }
 
-  public byte[] encodePayload(VehicleIdReport vehicleIdReport) {
+  public void encodePayload(VehicleIdReport vehicleIdReport, ByteOutputStream output) {
 
     Map<String, String> payload = new HashMap<>();
     payload.put(VIN_KEY, vehicleIdReport.getVin());
@@ -35,7 +36,7 @@ public class VehicleIdReportHandler {
     payload.put(SUPPORTED_PARAMETERS_KEY, vehicleIdReport.getSupportedParameters());
     payload.put(SUPPORTED_INDICATORS_KEY, vehicleIdReport.getSupportedIndicators());
 
-    return dataListFieldHandler.encode(payload);
+    dataListFieldHandler.encode(payload, output);
   }
 
 }

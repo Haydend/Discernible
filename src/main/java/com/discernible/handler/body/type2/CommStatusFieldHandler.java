@@ -2,6 +2,7 @@ package com.discernible.handler.body.type2;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.type2.CommStatusField;
 import com.discernible.message.body.type2.CommStatusField.NetworkTechnology;
@@ -42,7 +43,7 @@ public class CommStatusFieldHandler implements FieldHandler<CommStatusField> {
   }
 
   @Override
-  public byte[] encode(CommStatusField field) {
+  public void encode(CommStatusField field, ByteOutputStream out) {
     StringBuilder bits = new StringBuilder("00000000");
 
     if (field.isAvailable()) {
@@ -83,7 +84,7 @@ public class CommStatusFieldHandler implements FieldHandler<CommStatusField> {
         throw new IllegalArgumentException("Network Technology not supported");
     }
 
-    return new byte[] {Byte.valueOf(bits.toString(), 2)};
+    out.write(Byte.valueOf(bits.toString(), 2));
   }
 
 }

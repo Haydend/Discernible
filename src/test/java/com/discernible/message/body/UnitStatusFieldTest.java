@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.UnitStatusFieldHandler;
 import com.discernible.message.body.UnitStatusField.Status;
 
@@ -19,9 +20,11 @@ public class UnitStatusFieldTest {
 
     // Given
     UnitStatusField inputField = new UnitStatusField(Status.OK, Status.ERROR, Status.OK, true);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] fieldBytes = unitStatusFieldHandler.encode(inputField);
+    unitStatusFieldHandler.encode(inputField, out);
+    byte[] fieldBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b00001101}, fieldBytes);

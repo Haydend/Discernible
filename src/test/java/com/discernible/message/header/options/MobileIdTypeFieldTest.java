@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.header.options.MobileIdTypeFieldHandler;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
 
@@ -103,9 +104,11 @@ public class MobileIdTypeFieldTest {
 
     // Given
     MobileIdTypeField mobileIdField = new MobileIdTypeField(mobileIdType);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualMessageBytes = mobileIdTypeFieldHandler.encode(mobileIdField);
+    mobileIdTypeFieldHandler.encode(mobileIdField, out);
+    byte[] actualMessageBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(String.format("Bytes for %s were not as expected", mobileIdType), expectedMessageBytes, actualMessageBytes);

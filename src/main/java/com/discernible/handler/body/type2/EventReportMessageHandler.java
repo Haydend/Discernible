@@ -2,12 +2,10 @@ package com.discernible.handler.body.type2;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
-import org.apache.commons.lang3.ArrayUtils;
-
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.DateTimeFieldHandler;
 import com.discernible.handler.SignedIntegerFieldHandler;
 import com.discernible.handler.SignedShortFieldHandler;
@@ -77,38 +75,29 @@ public class EventReportMessageHandler {
         carrierId, rssi, commStatus, hdopField, inputField, untiStatusField, eventIndex, eventCode, accumulatorFields);
   }
 
-  public byte[] encodeBody(EventReportMessage message) {
-    List<Byte> messageBytes = new ArrayList<>();
-
-    add(messageBytes, dateTimeFieldHandler.encode(message.getUpdateTime()));
-    add(messageBytes, dateTimeFieldHandler.encode(message.getTimeOfFix()));
-    add(messageBytes, coordinateFieldHandler.encode(message.getLatitude()));
-    add(messageBytes, coordinateFieldHandler.encode(message.getLongitude()));
-    add(messageBytes, signedIntegerFieldHandler.encode(message.getAltitude()));
-    add(messageBytes, signedIntegerFieldHandler.encode(message.getSpeed()));
-    add(messageBytes, signedShortFieldHandler.encode(message.getHeading()));
-    add(messageBytes, unsignedShortFieldHandler.encode(message.getSatellitesCount()));
-    add(messageBytes, fixStatusFieldHandler.encode(message.getFixStatus()));
-    add(messageBytes, unsignedIntegerFieldHandler.encode(message.getCarrierId()));
-    add(messageBytes, signedShortFieldHandler.encode(message.getRssi()));
-    add(messageBytes, commStatusFieldHandler.encode(message.getCommStatus()));
-    add(messageBytes, hdopFieldHandler.encode(message.getHdop()));
-    add(messageBytes, inputFieldHandler.encode(message.getInput()));
-    add(messageBytes, unitStatusFieldHandler.encode(message.getUnitStatus()));
-    add(messageBytes, unsignedShortFieldHandler.encode(message.getEventIndex()));
-    add(messageBytes, unsignedShortFieldHandler.encode(message.getEventCode()));
-    add(messageBytes, new byte[] {(byte) message.getAccumulators().size()});
-    messageBytes.add(new Byte((byte) 0x00)); // Append byte.
+  public void encodeBody(EventReportMessage message, ByteOutputStream out) {
+    dateTimeFieldHandler.encode(message.getUpdateTime(), out);
+    dateTimeFieldHandler.encode(message.getTimeOfFix(), out);
+    coordinateFieldHandler.encode(message.getLatitude(), out);
+    coordinateFieldHandler.encode(message.getLongitude(), out);
+    signedIntegerFieldHandler.encode(message.getAltitude(), out);
+    signedIntegerFieldHandler.encode(message.getSpeed(), out);
+    signedShortFieldHandler.encode(message.getHeading(), out);
+    unsignedShortFieldHandler.encode(message.getSatellitesCount(), out);
+    fixStatusFieldHandler.encode(message.getFixStatus(), out);
+    unsignedIntegerFieldHandler.encode(message.getCarrierId(), out);
+    signedShortFieldHandler.encode(message.getRssi(), out);
+    commStatusFieldHandler.encode(message.getCommStatus(), out);
+    hdopFieldHandler.encode(message.getHdop(), out);
+    inputFieldHandler.encode(message.getInput(), out);
+    unitStatusFieldHandler.encode(message.getUnitStatus(), out);
+    unsignedShortFieldHandler.encode(message.getEventIndex(), out);
+    unsignedShortFieldHandler.encode(message.getEventCode(), out);
+    out.write(message.getAccumulators().size());
+    out.write(0x00);// Append byte.
     for (AccumulatorField accumulator : message.getAccumulators()) {
-      add(messageBytes, accumulatorFieldHandler.encode(accumulator));
+      accumulatorFieldHandler.encode(accumulator, out);
     }
-
-    Byte[] bytes = messageBytes.toArray(new Byte[messageBytes.size()]);
-    return ArrayUtils.toPrimitive(bytes);
-  }
-
-  private void add(List<Byte> bytes, byte[] toAdd) {
-    bytes.addAll(Arrays.asList(ArrayUtils.toObject(toAdd)));
   }
 
 }

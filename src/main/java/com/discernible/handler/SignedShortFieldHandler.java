@@ -18,8 +18,8 @@ public class SignedShortFieldHandler implements FieldHandler<Short> {
   }
 
   @Override
-  public byte[] encode(Short value) {
-    return ByteBuffer.allocate(2).putShort(value).array();
+  public void encode(Short value, ByteOutputStream out) {
+    out.write(ByteBuffer.allocate(2).putShort(value).array());
   }
 
 }

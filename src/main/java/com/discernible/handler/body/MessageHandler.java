@@ -1,8 +1,8 @@
 package com.discernible.handler.body;
 
-import java.math.BigInteger;
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.type0.NullMessageHandler;
 import com.discernible.handler.body.type1.AcknowledgeMessageHandler;
 import com.discernible.handler.body.type2.EventReportMessageHandler;
@@ -68,65 +68,48 @@ public class MessageHandler {
     return messageBody;
   }
 
-  public byte[] encodeHeader(Message message) {
-
-    byte[] headerBytes = new byte[4];
-
-    headerBytes[0] = (byte) message.getServiceType().ordinal();
-    headerBytes[1] = (byte) message.getMessageType().ordinal();
-
-    byte[] sequenceNumberBytes = BigInteger.valueOf(message.getSequenceNumber()).toByteArray();
-    int padding = 2 - sequenceNumberBytes.length;
-    System.arraycopy(sequenceNumberBytes, 0, headerBytes, 2 + padding, sequenceNumberBytes.length);
-
-
-
-    return headerBytes;
+  public void encodeHeader(Message message, ByteOutputStream out) {
+    out.write(message.getServiceType().ordinal());
+    out.write(message.getMessageType().ordinal());
+    out.writeUnsignedShort(message.getSequenceNumber());
   }
 
-  public byte[] encodeBody(Message message, boolean sentFromLmu) {
-    byte[] messageBytes;
+  public void encodeBody(Message message, boolean sentFromLmu, ByteOutputStream out) {
     switch (message.getMessageType()) {
       case NULL_MESSAGE:
-        messageBytes = nullMessageHandler.encodeBody((NullMessage) message);
+        nullMessageHandler.encodeBody((NullMessage) message, out);
         break;
 
       case ACK_NAK_MESSAGE:
-        messageBytes = acknowledgeMessageHandler.encode((AcknowledgeMessage) message);
+        acknowledgeMessageHandler.encode((AcknowledgeMessage) message, out);
         break;
 
       case EVENT_REPORT_MESSAGE:
-        messageBytes = eventReportMessageHandler.encodeBody((EventReportMessage) message);
+        eventReportMessageHandler.encodeBody((EventReportMessage) message, out);
         break;
 
       case ID_REPORT_MESSAGE:
-        messageBytes = idReportMessageHandler.encodeBody((IdReportMessage) message);
+        idReportMessageHandler.encodeBody((IdReportMessage) message, out);
         break;
 
       case APPLICATION_DATA_MESSAGE:
-        messageBytes = applicationMessageHandler.encodeBody((ApplicationMessage) message, sentFromLmu);
+        applicationMessageHandler.encodeBody((ApplicationMessage) message, sentFromLmu, out);
         break;
 
       default:
         throw new IllegalStateException("Message Type not supported");
     }
-
-    return messageBytes;
   }
 
   public byte[] encode(Message message, boolean sendFromLmu) {
 
-    byte[] optionHeaderBytes = optionsHeaderFieldHandler.encode(message.getOptionHeader());
-    byte[] headerBytes = encodeHeader(message);
-    byte[] bodyBytes = encodeBody(message, sendFromLmu);
+    ByteOutputStream out = new ByteOutputStream();
 
-    byte[] messageBytes = new byte[optionHeaderBytes.length + headerBytes.length + bodyBytes.length];
+    optionsHeaderFieldHandler.encode(message.getOptionHeader(), out);
+    encodeHeader(message, out);
+    encodeBody(message, sendFromLmu, out);
 
-    System.arraycopy(optionHeaderBytes, 0, messageBytes, 0, optionHeaderBytes.length);
-    System.arraycopy(headerBytes, 0, messageBytes, optionHeaderBytes.length, headerBytes.length);
-    System.arraycopy(bodyBytes, 0, messageBytes, optionHeaderBytes.length + headerBytes.length, bodyBytes.length);
-
-    return messageBytes;
+    return out.toByteArray();
   }
 
 }

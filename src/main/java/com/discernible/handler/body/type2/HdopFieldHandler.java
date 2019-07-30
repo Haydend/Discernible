@@ -2,6 +2,7 @@ package com.discernible.handler.body.type2;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.UnsignedShortFieldHandler;
 import com.discernible.message.body.type2.HdopField;
@@ -22,10 +23,10 @@ public class HdopFieldHandler implements FieldHandler<HdopField> {
   }
 
   @Override
-  public byte[] encode(HdopField field) {
+  public void encode(HdopField field, ByteOutputStream out) {
     double value = field.getValue();
     short movedValue = (short) Math.round(value * Math.pow(10, 1));
-    return unsignedShortFieldHandler.encode(movedValue);
+    unsignedShortFieldHandler.encode(movedValue, out);
   }
 
 }

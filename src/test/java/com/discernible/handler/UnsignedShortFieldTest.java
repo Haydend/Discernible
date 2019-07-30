@@ -16,12 +16,13 @@ public class UnsignedShortFieldTest {
 
     // Given
     Short value = 6;
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = fieldHandler.encode(value);
+    fieldHandler.encode(value, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x06}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x06}, out.toByteArray());
   }
 
   @Test

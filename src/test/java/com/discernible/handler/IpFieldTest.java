@@ -28,12 +28,13 @@ public class IpFieldTest {
 
     // Given
     IP ipField = new IP("192.168.0.1");
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = fieldHandler.encode(ipField);
+    fieldHandler.encode(ipField, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {(byte) 0xC0, (byte) 0xA8, 0x00, 0x01}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {(byte) 0xC0, (byte) 0xA8, 0x00, 0x01}, out.toByteArray());
   }
 
   @Test

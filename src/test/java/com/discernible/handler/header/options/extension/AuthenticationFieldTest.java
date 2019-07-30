@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.message.header.options.extension.AuthenticationField;
 
 public class AuthenticationFieldTest {
@@ -18,12 +19,13 @@ public class AuthenticationFieldTest {
 
     // Given
     AuthenticationField authenticationField = new AuthenticationField(AuthenticationField.AuthenticationSubField.FORWARD);
+    ByteOutputStream output = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = authenticationFieldHandler.encode(authenticationField);
+    authenticationFieldHandler.encode(authenticationField, output);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x01, 0x03}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x01, 0x03}, output.toByteArray());
   }
 
   @Test

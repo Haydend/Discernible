@@ -2,6 +2,7 @@ package com.discernible.handler.body.type0;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.message.body.type0.NullMessage;
 
 public class NullMessageHandler {
@@ -10,8 +11,6 @@ public class NullMessageHandler {
     return new NullMessage();
   }
 
-  public byte[] encodeBody(NullMessage message) {
-    return new byte[0];
-  }
+  public void encodeBody(NullMessage message, ByteOutputStream output) {}
 
 }

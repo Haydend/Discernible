@@ -1,6 +1,5 @@
 package com.discernible.handler;
 
-import java.math.BigInteger;
 import java.util.Queue;
 
 import com.discernible.util.ByteUtils;
@@ -11,14 +10,8 @@ import lombok.Data;
 public class UnsignedIntegerFieldHandler implements FieldHandler<Integer> {
 
   @Override
-  public byte[] encode(Integer value) {
-    byte[] messageBytes = new byte[2];
-
-    byte[] integerBytes = BigInteger.valueOf(value).toByteArray();
-    int padding = 2 - integerBytes.length;
-    System.arraycopy(integerBytes, 0, messageBytes, padding, integerBytes.length);
-
-    return messageBytes;
+  public void encode(Integer value, ByteOutputStream out) {
+    out.writeUnsignedShort(value);
   }
 
   public Integer decode(Queue<Byte> messageBytes) {

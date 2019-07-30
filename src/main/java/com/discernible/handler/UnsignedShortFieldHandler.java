@@ -8,8 +8,8 @@ import lombok.Data;
 public class UnsignedShortFieldHandler implements FieldHandler<Short> {
 
   @Override
-  public byte[] encode(Short value) {
-    return new byte[] {value.byteValue()};
+  public void encode(Short value, ByteOutputStream out) {
+    out.write(value.byteValue());
   }
 
   public Short decode(Queue<Byte> messageBytes) {

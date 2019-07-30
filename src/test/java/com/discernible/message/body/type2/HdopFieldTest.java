@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.type2.HdopFieldHandler;
 
 public class HdopFieldTest {
@@ -19,9 +20,11 @@ public class HdopFieldTest {
 
     // Given
     HdopField hdopField = new HdopField(0.2);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] fieldBytes = hdopFieldHandler.encode(hdopField);
+    hdopFieldHandler.encode(hdopField, out);
+    byte[] fieldBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0x02}, fieldBytes);

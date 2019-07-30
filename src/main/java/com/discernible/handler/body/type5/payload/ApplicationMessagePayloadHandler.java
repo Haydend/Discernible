@@ -1,7 +1,9 @@
 package com.discernible.handler.body.type5.payload;
 
+import java.io.IOException;
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.UnsignedIntegerFieldHandler;
 import com.discernible.message.body.type5.payload.ApplicationMessagePayload;
@@ -38,33 +40,32 @@ public class ApplicationMessagePayloadHandler implements FieldHandler<Applicatio
   }
 
   @Override
-  public byte[] encode(ApplicationMessagePayload message) {
+  public void encode(ApplicationMessagePayload message, ByteOutputStream output) {
 
-    final byte[] payloadBytes;
-    switch (message.getApplicationMessageType()) {
-      case 131:
-        payloadBytes = vehicleIdReportHandler.encodePayload((VehicleIdReport) message);
-        break;
+    try (ByteOutputStream payloadOutput = new ByteOutputStream()) {
+      switch (message.getApplicationMessageType()) {
+        case 131:
+          vehicleIdReportHandler.encodePayload((VehicleIdReport) message, payloadOutput);
+          break;
 
-      case 122:
-        payloadBytes = motionLogReportHandler.encodePayload((MotionLogReport) message);
-        break;
+        case 122:
+          motionLogReportHandler.encodePayload((MotionLogReport) message, payloadOutput);
+          break;
 
-      default:
-        throw new IllegalArgumentException(String.format("Type not support: %s", message));
+        default:
+          throw new IllegalArgumentException(String.format("Type not support: %s", message));
+      }
+
+
+      byte[] payloadBytes = payloadOutput.toByteArray();
+
+      unsignedIntegerFieldHandler.encode(message.getApplicationMessageType(), output);
+      unsignedIntegerFieldHandler.encode(payloadBytes.length, output);
+      output.write(payloadBytes);
+
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     }
-
-
-    byte[] payloadSizeBytes = unsignedIntegerFieldHandler.encode(payloadBytes.length);
-    byte[] payloadTypeBytes = unsignedIntegerFieldHandler.encode(message.getApplicationMessageType());
-
-    byte[] messageBytes = new byte[4 + payloadBytes.length];
-
-    System.arraycopy(payloadTypeBytes, 0, messageBytes, 0, 2);
-    System.arraycopy(payloadSizeBytes, 0, messageBytes, 2, 2);
-    System.arraycopy(payloadBytes, 0, messageBytes, 4, payloadBytes.length);
-
-    return messageBytes;
   }
 
 }

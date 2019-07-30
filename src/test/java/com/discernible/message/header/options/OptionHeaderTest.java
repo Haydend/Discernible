@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.header.options.OptionsHeaderFieldHandler;
 import com.discernible.message.Socket;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
@@ -22,9 +23,11 @@ public class OptionHeaderTest {
     // Given
     byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04};
     OptionsHeader optionsHeader = new OptionsHeader(mobileId, null, null, null, null, null, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionsHeaderFieldHandler.encode(optionsHeader);
+    optionsHeaderFieldHandler.encode(optionsHeader, out);
+    byte[] actualBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b10000001, 0x04, 0x01, 0x02, 0x03, 0x04}, actualBytes);
@@ -57,9 +60,11 @@ public class OptionHeaderTest {
     // Given
     MobileIdTypeField mobileIdTypeField = new MobileIdTypeField(MobileIdType.ESN);
     OptionsHeader optionsHeader = new OptionsHeader(null, mobileIdTypeField, null, null, null, null, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionsHeaderFieldHandler.encode(optionsHeader);
+    optionsHeaderFieldHandler.encode(optionsHeader, out);
+    byte[] actualBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b10000010, 0x01, 0x01}, actualBytes);
@@ -92,9 +97,11 @@ public class OptionHeaderTest {
     // Given
     byte[] authentication = new byte[] {0x01, 0x02, 0x03, 0x04};
     OptionsHeader optionsHeader = new OptionsHeader(null, null, authentication, null, null, null, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionsHeaderFieldHandler.encode(optionsHeader);
+    optionsHeaderFieldHandler.encode(optionsHeader, out);
+    byte[] actualBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b10000100, 0x04, 0x01, 0x02, 0x03, 0x04}, actualBytes);
@@ -127,9 +134,11 @@ public class OptionHeaderTest {
     // Given
     byte[] routing = new byte[] {0x01, 0x02, 0x03, 0x04};
     OptionsHeader optionsHeader = new OptionsHeader(null, null, null, routing, null, null, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionsHeaderFieldHandler.encode(optionsHeader);
+    optionsHeaderFieldHandler.encode(optionsHeader, out);
+    byte[] actualBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b10001000, 0x04, 0x01, 0x02, 0x03, 0x04}, actualBytes);
@@ -162,9 +171,11 @@ public class OptionHeaderTest {
     // Given
     ForwardingField forwardingField = new ForwardingField("192.168.0.1", 5000, Protocol.TCP, ForwardingOperationType.FORWARD);
     OptionsHeader optionsHeader = new OptionsHeader(null, null, null, null, forwardingField, null, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionsHeaderFieldHandler.encode(optionsHeader);
+    optionsHeaderFieldHandler.encode(optionsHeader, out);
+    byte[] actualBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b10010000, 0x08, (byte) 0xC0, (byte) 0xA8, 0x00, 0x01, 0x13, (byte) 0x88, 0x06, 0x00},
@@ -202,9 +213,11 @@ public class OptionHeaderTest {
     // Given
     Socket responseRedirection = new Socket("192.168.0.1", 5000);
     OptionsHeader optionsHeader = new OptionsHeader(null, null, null, null, null, responseRedirection, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionsHeaderFieldHandler.encode(optionsHeader);
+    optionsHeaderFieldHandler.encode(optionsHeader, out);
+    byte[] actualBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b10100000, 0x06, (byte) 0xC0, (byte) 0xA8, 0x00, 0x01, 0x13, (byte) 0x88}, actualBytes);
@@ -239,9 +252,11 @@ public class OptionHeaderTest {
     // Given
     OptionExtension optionExtension = new OptionExtension(null, null, null, false, null);
     OptionsHeader optionsHeader = new OptionsHeader(null, null, null, null, null, null, optionExtension);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionsHeaderFieldHandler.encode(optionsHeader);
+    optionsHeaderFieldHandler.encode(optionsHeader, out);
+    byte[] actualBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {(byte) 0b11000000, 0x01, (byte) 0b00000000}, actualBytes);

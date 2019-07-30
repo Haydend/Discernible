@@ -2,6 +2,7 @@ package com.discernible.handler.header.options;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.ForwardingOperationType;
 
@@ -24,15 +25,18 @@ public class ForwardingOperationTypeFieldHandler implements FieldHandler<Forward
   }
 
   @Override
-  public byte[] encode(ForwardingOperationType field) {
+  public void encode(ForwardingOperationType field, ByteOutputStream out) {
 
     switch (field) {
       case FORWARD:
-        return new byte[] {0x00};
+        out.write(0x00);
+        break;
       case PROXY:
-        return new byte[] {0x01};
+        out.write(0x01);
+        break;
       case FORWARD_WITH_LOOKUP:
-        return new byte[] {0x02};
+        out.write(0x02);
+        break;
       default:
         throw new IllegalArgumentException(String.format("No Byte code found for Forwarding Operation Type: %s", field));
     }

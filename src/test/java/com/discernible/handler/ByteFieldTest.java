@@ -16,12 +16,13 @@ public class ByteFieldTest {
 
     // Given
     byte[] byteField = new byte[] {0x02, 0x03, 0x04};
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = fieldHandler.encode(byteField);
+    fieldHandler.encode(byteField, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x03, 0x02, 0x03, 0x04}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x03, 0x02, 0x03, 0x04}, out.toByteArray());
   }
 
   @Test

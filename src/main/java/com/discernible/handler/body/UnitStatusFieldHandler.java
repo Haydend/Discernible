@@ -2,6 +2,7 @@ package com.discernible.handler.body;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.UnitStatusField.Status;
@@ -26,7 +27,7 @@ public class UnitStatusFieldHandler implements FieldHandler<UnitStatusField> {
   }
 
   @Override
-  public byte[] encode(UnitStatusField field) {
+  public void encode(UnitStatusField field, ByteOutputStream output) {
     byte fieldByte = (byte) 0b00000000;
 
     if (Status.OK.equals(field.getHttpOtaUpdateStatus())) {
@@ -45,7 +46,7 @@ public class UnitStatusFieldHandler implements FieldHandler<UnitStatusField> {
       fieldByte = (byte) (fieldByte | 0b00001000);
     }
 
-    return new byte[] {fieldByte};
+    output.write(fieldByte);
   }
 
 }

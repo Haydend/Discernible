@@ -22,16 +22,10 @@ public class SocketFieldHandler implements FieldHandler<Socket> {
   }
 
   @Override
-  public byte[] encode(Socket socket) {
-    byte[] messageBytes = new byte[6];
-
-    byte[] ipBytes = ipHandler.encode(socket.getIp());
-    System.arraycopy(ipBytes, 0, messageBytes, 0, ipBytes.length);
-
-    byte[] portBytes = portHandler.encode(socket.getPort());
-    System.arraycopy(portBytes, 0, messageBytes, 4, portBytes.length);
-
-    return ByteUtils.prependFieldLength(messageBytes);
+  public void encode(Socket socket, ByteOutputStream out) {
+    out.write(0x06); // Message length
+    ipHandler.encode(socket.getIp(), out);
+    portHandler.encode(socket.getPort(), out);
   }
 
 }

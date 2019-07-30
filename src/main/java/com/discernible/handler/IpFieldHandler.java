@@ -17,15 +17,11 @@ public class IpFieldHandler implements FieldHandler<IP> {
   }
 
   @Override
-  public byte[] encode(IP ip) {
-
-    byte[] messageBytes = new byte[4];
-    messageBytes[0] = (byte) ip.getFirstOctet();
-    messageBytes[1] = (byte) ip.getSecondOctet();
-    messageBytes[2] = (byte) ip.getThirdOctet();
-    messageBytes[3] = (byte) ip.getFourthOctet();
-
-    return messageBytes;
+  public void encode(IP ip, ByteOutputStream out) {
+    out.write(ip.getFirstOctet());
+    out.write(ip.getSecondOctet());
+    out.write(ip.getThirdOctet());
+    out.write(ip.getFourthOctet());
   }
 
 }

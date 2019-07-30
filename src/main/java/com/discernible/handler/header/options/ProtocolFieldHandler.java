@@ -2,6 +2,7 @@ package com.discernible.handler.header.options;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.Protocol;
 
@@ -22,13 +23,15 @@ public class ProtocolFieldHandler implements FieldHandler<Protocol> {
   }
 
   @Override
-  public byte[] encode(Protocol field) {
+  public void encode(Protocol field, ByteOutputStream out) {
 
     switch (field) {
       case TCP:
-        return new byte[] {0x06};
+        out.write(0x06);
+        break;
       case UDP:
-        return new byte[] {0x11};
+        out.write(0x11);
+        break;
       default:
         throw new IllegalArgumentException(String.format("No Byte code found for Protocol: %s", field));
     }

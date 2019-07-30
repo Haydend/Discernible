@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.header.options.ForwardingFieldHandler;
 
 public class ForwardingFieldTest {
@@ -18,9 +19,11 @@ public class ForwardingFieldTest {
 
     // Given
     ForwardingField forwardingField = new ForwardingField("192.168.0.1", 5000, Protocol.TCP, ForwardingOperationType.FORWARD);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualFieldBytes = forwardingFieldHandler.encode(forwardingField);
+    forwardingFieldHandler.encode(forwardingField, out);
+    byte[] actualFieldBytes = out.toByteArray();
 
     // Then
     // --------------------------------- IP Address / Forwarding Address ....| Forwarding Port .| TCP | Type

@@ -16,12 +16,13 @@ public class SignedIntegerFieldTest {
 
     // Given
     Integer value = 4;
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = fieldHandler.encode(value);
+    fieldHandler.encode(value, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x00, 0x00, 0x00, 0x04}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x00, 0x00, 0x00, 0x04}, out.toByteArray());
   }
 
   @Test

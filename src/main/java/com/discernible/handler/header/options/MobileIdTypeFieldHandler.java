@@ -2,10 +2,10 @@ package com.discernible.handler.header.options;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.MobileIdTypeField;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
-import com.discernible.util.ByteUtils;
 
 public class MobileIdTypeFieldHandler implements FieldHandler<MobileIdTypeField> {
 
@@ -20,12 +20,9 @@ public class MobileIdTypeFieldHandler implements FieldHandler<MobileIdTypeField>
   }
 
   @Override
-  public byte[] encode(MobileIdTypeField field) {
-
-    byte[] messageBytes = new byte[1];
-    messageBytes[0] = (byte) field.getMobileIdType().ordinal();
-
-    return ByteUtils.prependFieldLength(messageBytes);
+  public void encode(MobileIdTypeField field, ByteOutputStream out) {
+    out.write(0x01);
+    out.write(field.getMobileIdType().ordinal());
   }
 
 }

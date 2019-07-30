@@ -2,6 +2,7 @@ package com.discernible.handler.body;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.util.ByteUtils;
 
@@ -31,7 +32,7 @@ public class PackedBcdFieldHandler implements FieldHandler<String> {
   }
 
   @Override
-  public byte[] encode(String value) {
+  public void encode(String value, ByteOutputStream output) {
 
     String hexString = value;
 
@@ -39,7 +40,7 @@ public class PackedBcdFieldHandler implements FieldHandler<String> {
       hexString += "F"; // Add padding to the until the length is correct.
     }
 
-    return hexStringToByteArray(hexString);
+    output.write(hexStringToByteArray(hexString));
   }
 
   private static String getTwoNumbersFromByte(byte theByte) {

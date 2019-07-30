@@ -2,9 +2,9 @@ package com.discernible.handler.header.options.extension;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.LmDirectRouting;
-import com.discernible.util.ByteUtils;
 
 public class LmDirectRoutingFieldHandler implements FieldHandler<LmDirectRouting> {
 
@@ -19,11 +19,11 @@ public class LmDirectRoutingFieldHandler implements FieldHandler<LmDirectRouting
   }
 
   @Override
-  public byte[] encode(LmDirectRouting lmDirectRouting) {
-    byte[] messageBytes = new byte[3];
-    messageBytes[0] = 0x01; // Routing Version
-
-    return ByteUtils.prependFieldLength(messageBytes);
+  public void encode(LmDirectRouting lmDirectRouting, ByteOutputStream out) {
+    out.write(0x03); // Field length
+    out.write(0x01); // Version
+    out.write(0x00); // Destination
+    out.write(0x00); // Source
   }
 
 }

@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.LmDirectRouting;
 import com.discernible.message.header.options.extension.OptionExtension;
@@ -21,12 +22,13 @@ public class OptionExtensionTest {
     // Given
     byte[] esn = new byte[] {0x01, 0x02, 0x03, 0x04};
     OptionExtension optionExtension = new OptionExtension(esn, null, null, false, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionExtensionFieldHandler.encode(optionExtension);
+    optionExtensionFieldHandler.encode(optionExtension, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00000001, 0x04, 0x01, 0x02, 0x03, 0x04}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00000001, 0x04, 0x01, 0x02, 0x03, 0x04}, out.toByteArray());
   }
 
   @Test
@@ -55,12 +57,13 @@ public class OptionExtensionTest {
     // Given
     String vin = "test";
     OptionExtension optionExtension = new OptionExtension(null, vin, null, false, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionExtensionFieldHandler.encode(optionExtension);
+    optionExtensionFieldHandler.encode(optionExtension, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00000010, 0x04, 0x74, 0x65, 0x73, 0x74}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00000010, 0x04, 0x74, 0x65, 0x73, 0x74}, out.toByteArray());
   }
 
   @Test
@@ -89,12 +92,13 @@ public class OptionExtensionTest {
     // Given
     EncryptionField encryptionField = new EncryptionField(EncryptionField.EncryptionSubField.ESN, 1234567);
     OptionExtension optionExtension = new OptionExtension(null, null, encryptionField, false, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionExtensionFieldHandler.encode(optionExtension);
+    optionExtensionFieldHandler.encode(optionExtension, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00000100, 0x06, 0x01, 0x01, 0x00, 0x12, (byte) 0xD6, (byte) 0x87}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00000100, 0x06, 0x01, 0x01, 0x00, 0x12, (byte) 0xD6, (byte) 0x87}, out.toByteArray());
   }
 
   @Test
@@ -123,12 +127,13 @@ public class OptionExtensionTest {
 
     // Given
     OptionExtension optionExtension = new OptionExtension(null, null, null, true, null);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionExtensionFieldHandler.encode(optionExtension);
+    optionExtensionFieldHandler.encode(optionExtension, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00001000}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00001000}, out.toByteArray());
   }
 
   @Test
@@ -154,12 +159,14 @@ public class OptionExtensionTest {
     // Given
     LmDirectRouting lmDirectRouting = new LmDirectRouting();
     OptionExtension optionExtension = new OptionExtension(null, null, null, false, lmDirectRouting);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = optionExtensionFieldHandler.encode(optionExtension);
+    optionExtensionFieldHandler.encode(optionExtension, out);
+    byte[] bytes = out.toByteArray();
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00010000, 0x03, 0x01, 0x00, 0x00}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x01, (byte) 0b00010000, 0x03, 0x01, 0x00, 0x00}, bytes);
   }
 
   @Test

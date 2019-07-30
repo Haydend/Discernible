@@ -2,6 +2,7 @@ package com.discernible.handler.header.options;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.IpFieldHandler;
 import com.discernible.handler.UnsignedIntegerFieldHandler;
@@ -9,7 +10,6 @@ import com.discernible.message.IP;
 import com.discernible.message.header.options.ForwardingField;
 import com.discernible.message.header.options.ForwardingOperationType;
 import com.discernible.message.header.options.Protocol;
-import com.discernible.util.ByteUtils;
 
 public class ForwardingFieldHandler implements FieldHandler<ForwardingField> {
 
@@ -31,20 +31,13 @@ public class ForwardingFieldHandler implements FieldHandler<ForwardingField> {
   }
 
   @Override
-  public byte[] encode(ForwardingField forwardingField) {
+  public void encode(ForwardingField forwardingField, ByteOutputStream out) {
+    out.write(0x08); // Field Length;
 
-    byte[] messageBytes = new byte[8];
-
-    byte[] ipBytes = ipFieldHandler.encode(forwardingField.getIp());
-    System.arraycopy(ipBytes, 0, messageBytes, 0, ipBytes.length);
-
-    byte[] portBytes = unsignedIntegerFieldHandler.encode(forwardingField.getPort());
-    System.arraycopy(portBytes, 0, messageBytes, 4, portBytes.length);
-
-    messageBytes[6] = protocolFieldHandler.encode(forwardingField.getForwardingProtocol())[0];
-    messageBytes[7] = forwardingOperationTypeFieldHandler.encode(forwardingField.getForwardingOperationType())[0];
-
-    return ByteUtils.prependFieldLength(messageBytes);
+    ipFieldHandler.encode(forwardingField.getIp(), out);
+    unsignedIntegerFieldHandler.encode(forwardingField.getPort(), out);
+    protocolFieldHandler.encode(forwardingField.getForwardingProtocol(), out);
+    forwardingOperationTypeFieldHandler.encode(forwardingField.getForwardingOperationType(), out);
   }
 
 }

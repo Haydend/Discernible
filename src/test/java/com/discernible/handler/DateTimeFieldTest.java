@@ -1,5 +1,6 @@
 package com.discernible.handler;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -13,16 +14,18 @@ public class DateTimeFieldTest {
   private final DateTimeFieldHandler fieldHandler = new DateTimeFieldHandler();
 
   @Test
-  public void test_encode() {
+  public void test_encode() throws IOException {
 
     // Given
     LocalDateTime dateTimeField = LocalDateTime.of(1970, 01, 1, 1, 0);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] dateTimeFieldBytes = fieldHandler.encode(dateTimeField);
+    fieldHandler.encode(dateTimeField, out);
+    out.flush();
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x00, 0x00, 0x0E, 0x10}, dateTimeFieldBytes);
+    Assert.assertArrayEquals(new byte[] {0x00, 0x00, 0x0E, 0x10}, out.toByteArray());
   }
 
   @Test

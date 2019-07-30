@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.PackedBcd8ByteFieldHandler;
 
 public class PackedBcdFieldTest {
@@ -18,9 +19,11 @@ public class PackedBcdFieldTest {
 
     // Given
     String packedBcdField = "4532459871";
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] fieldBytes = packedBcd8ByteFieldHandler.encode(packedBcdField);
+    packedBcd8ByteFieldHandler.encode(packedBcdField, out);
+    byte[] fieldBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {0x45, 0x32, 0x45, (byte) 0x98, 0x71, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF}, fieldBytes);

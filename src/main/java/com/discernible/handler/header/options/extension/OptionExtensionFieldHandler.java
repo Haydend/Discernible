@@ -1,15 +1,11 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.discernible.handler.Ascii8BitFieldHandler;
 import com.discernible.handler.ByteFieldHandler;
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.LmDirectRouting;
@@ -60,34 +56,26 @@ public class OptionExtensionFieldHandler implements FieldHandler<OptionExtension
   }
 
   @Override
-  public byte[] encode(OptionExtension optionExtension) {
+  public void encode(OptionExtension optionExtension, ByteOutputStream out) {
 
-    List<Byte> messageBytes = new ArrayList<>();
-    messageBytes.add(new Byte((byte) 0x01));
-    messageBytes.add(buildFlagByte(optionExtension));
+    out.write(0x01);
+    out.write(buildFlagByte(optionExtension));
 
     if (Objects.nonNull(optionExtension.getEsn())) {
-      byte[] esn = byteFieldHandler.encode(optionExtension.getEsn());
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(esn)));
+      byteFieldHandler.encode(optionExtension.getEsn(), out);
     }
 
     if (Objects.nonNull(optionExtension.getVin())) {
-      byte[] vin = ascii8BitFieldHandler.encode(optionExtension.getVin());
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(vin)));
+      ascii8BitFieldHandler.encode(optionExtension.getVin(), out);
     }
 
     if (Objects.nonNull(optionExtension.getEncryption())) {
-      byte[] encryption = encryptionFieldHandler.encode(optionExtension.getEncryption());
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(encryption)));
+      encryptionFieldHandler.encode(optionExtension.getEncryption(), out);
     }
 
     if (Objects.nonNull(optionExtension.getLmDirectRouting())) {
-      byte[] lmDirectRouting = lmDirectRoutingFieldHandler.encode(optionExtension.getLmDirectRouting());
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(lmDirectRouting)));
+      lmDirectRoutingFieldHandler.encode(optionExtension.getLmDirectRouting(), out);
     }
-
-    Byte[] bytes = messageBytes.toArray(new Byte[messageBytes.size()]);
-    return ArrayUtils.toPrimitive(bytes);
   }
 
   private byte buildFlagByte(OptionExtension optionExtension) {

@@ -3,6 +3,7 @@ package com.discernible.handler.body;
 import java.nio.charset.StandardCharsets;
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.AppVersionField;
 import com.discernible.util.ByteUtils;
@@ -21,9 +22,9 @@ public class AppVersionFieldHandler implements FieldHandler<AppVersionField> {
   }
 
   @Override
-  public byte[] encode(AppVersionField field) {
+  public void encode(AppVersionField field, ByteOutputStream out) {
     String versionString = new Integer(field.getVersion()).toString() + new Character(field.getSubVersion()).toString();
-    return versionString.getBytes(StandardCharsets.UTF_8);
+    out.write(versionString.getBytes(StandardCharsets.UTF_8));
   }
 
 }

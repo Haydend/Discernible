@@ -2,6 +2,7 @@ package com.discernible.handler.header.options.extension;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.AuthenticationField;
 import com.discernible.message.header.options.extension.AuthenticationField.AuthenticationSubField;
@@ -23,12 +24,9 @@ public class AuthenticationFieldHandler implements FieldHandler<AuthenticationFi
   }
 
   @Override
-  public byte[] encode(AuthenticationField authenticationField) {
-    byte[] messageBytes = new byte[2];
-    messageBytes[0] = 0x01; // HMAC-MD5
-    messageBytes[1] = (byte) authenticationField.getAuthenticationSubField().ordinal();
-
-    return messageBytes;
+  public void encode(AuthenticationField authenticationField, ByteOutputStream out) {
+    out.write(0x01); // HMAC-MD5
+    out.write(authenticationField.getAuthenticationSubField().ordinal());
   }
 
 }

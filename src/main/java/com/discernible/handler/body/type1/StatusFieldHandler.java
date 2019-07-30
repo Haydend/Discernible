@@ -2,6 +2,7 @@ package com.discernible.handler.body.type1;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.type1.StatusField;
 import com.discernible.message.body.type1.StatusField.Status;
@@ -23,9 +24,8 @@ public class StatusFieldHandler implements FieldHandler<StatusField> {
   }
 
   @Override
-  public byte[] encode(StatusField field) {
-    byte statusByte = (byte) field.getStatus().ordinal();
-    return new byte[] {statusByte};
+  public void encode(StatusField field, ByteOutputStream output) {
+    output.write(field.getStatus().ordinal());
   }
 
 }

@@ -6,6 +6,6 @@ public interface FieldHandler<E> {
 
   E decode(Queue<Byte> messageBytes);
 
-  byte[] encode(E field);
+  void encode(E field, ByteOutputStream out);
 
 }

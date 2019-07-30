@@ -2,6 +2,7 @@ package com.discernible.handler.body.type5.payload;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.message.body.type5.payload.MotionLogReport;
 
 public class MotionLogReportHandler {
@@ -31,8 +32,6 @@ public class MotionLogReportHandler {
     return null;
   }
 
-  protected byte[] encodePayload(MotionLogReport motionLogReport) {
-    return new byte[0];
-  }
+  protected void encodePayload(MotionLogReport motionLogReport, ByteOutputStream output) {}
 
 }

@@ -22,9 +22,9 @@ public class ExtensionStringsFieldHandler implements FieldHandler<String> {
   }
 
   @Override
-  public byte[] encode(String field) {
+  public void encode(String field, ByteOutputStream out) {
     byte[] fieldBytes = field.getBytes(StandardCharsets.UTF_8);
-    return fieldBytes;
+    out.write(fieldBytes);
   }
 
 }

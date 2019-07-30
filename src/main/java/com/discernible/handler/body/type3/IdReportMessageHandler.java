@@ -1,13 +1,9 @@
 package com.discernible.handler.body.type3;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import org.apache.commons.lang3.ArrayUtils;
-
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.DataListFieldHandler;
 import com.discernible.handler.SignedIntegerFieldHandler;
 import com.discernible.handler.UnsignedShortFieldHandler;
@@ -52,31 +48,22 @@ public class IdReportMessageHandler {
         mobileId, queryId, esn, imei, imsi, phoneNo, iccid, extensionStrings);
   }
 
-  public byte[] encodeBody(IdReportMessage message) {
-    List<Byte> messageBytes = new ArrayList<>();
-
-    add(messageBytes, unsignedShortFieldHandler.encode(message.getScriptVersion()));
-    add(messageBytes, unsignedShortFieldHandler.encode(message.getConfigVersion()));
-    add(messageBytes, appVersionFieldHandler.encode(message.getFirmwareVersion()));
-    add(messageBytes, unsignedShortFieldHandler.encode(message.getVehicleClass()));
-    add(messageBytes, unitStatusFieldHandler.encode(message.getUnitStatus()));
-    add(messageBytes, unsignedShortFieldHandler.encode(message.getModemSelection()));
-    add(messageBytes, unsignedShortFieldHandler.encode(message.getApplicationId()));
-    add(messageBytes, unsignedShortFieldHandler.encode(message.getMobileId()));
-    add(messageBytes, signedIntegerFieldHandler.encode(message.getQueryId()));
-    add(messageBytes, packedBcd8ByteFieldHandler.encode(message.getEsn()));
-    add(messageBytes, packedBcd8ByteFieldHandler.encode(message.getImei()));
-    add(messageBytes, packedBcd8ByteFieldHandler.encode(message.getImsi()));
-    add(messageBytes, packedBcd8ByteFieldHandler.encode(message.getPhoneNo()));
-    add(messageBytes, packedBcd10ByteFieldHandler.encode(message.getIccid()));
-    add(messageBytes, dataListFieldHandler.encode(message.getExtensionStrings()));
-
-    Byte[] bytes = messageBytes.toArray(new Byte[messageBytes.size()]);
-    return ArrayUtils.toPrimitive(bytes);
-  }
-
-  private void add(List<Byte> bytes, byte[] toAdd) {
-    bytes.addAll(Arrays.asList(ArrayUtils.toObject(toAdd)));
+  public void encodeBody(IdReportMessage message, ByteOutputStream output) {
+    unsignedShortFieldHandler.encode(message.getScriptVersion(), output);
+    unsignedShortFieldHandler.encode(message.getConfigVersion(), output);
+    appVersionFieldHandler.encode(message.getFirmwareVersion(), output);
+    unsignedShortFieldHandler.encode(message.getVehicleClass(), output);
+    unitStatusFieldHandler.encode(message.getUnitStatus(), output);
+    unsignedShortFieldHandler.encode(message.getModemSelection(), output);
+    unsignedShortFieldHandler.encode(message.getApplicationId(), output);
+    unsignedShortFieldHandler.encode(message.getMobileId(), output);
+    signedIntegerFieldHandler.encode(message.getQueryId(), output);
+    packedBcd8ByteFieldHandler.encode(message.getEsn(), output);
+    packedBcd8ByteFieldHandler.encode(message.getImei(), output);
+    packedBcd8ByteFieldHandler.encode(message.getImsi(), output);
+    packedBcd8ByteFieldHandler.encode(message.getPhoneNo(), output);
+    packedBcd10ByteFieldHandler.encode(message.getIccid(), output);
+    dataListFieldHandler.encode(message.getExtensionStrings(), output);
   }
 
 }

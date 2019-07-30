@@ -1,13 +1,9 @@
 package com.discernible.handler.body.type5;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Queue;
 
-import org.apache.commons.lang3.ArrayUtils;
-
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.DateTimeFieldHandler;
 import com.discernible.handler.SignedIntegerFieldHandler;
 import com.discernible.handler.SignedShortFieldHandler;
@@ -93,36 +89,26 @@ public class ApplicationMessageHandler {
         fixStatus, carrierId, rssi, commStatus, hdop, input, unitStatus, applicationMessagePayload);
   }
 
-  public byte[] encodeBody(ApplicationMessage message, boolean sentByLmu) {
-
-    List<Byte> messageBytes = new ArrayList<>();
+  public void encodeBody(ApplicationMessage message, boolean sentByLmu, ByteOutputStream output) {
 
     if (sentByLmu) {
-      add(messageBytes, dateTimeFieldHandler.encode(message.getUpdateTime()));
-      add(messageBytes, dateTimeFieldHandler.encode(message.getTimeOfFix()));
-      add(messageBytes, coordinateFieldHandler.encode(message.getLatitude()));
-      add(messageBytes, coordinateFieldHandler.encode(message.getLongitude()));
-      add(messageBytes, signedIntegerFieldHandler.encode(message.getAltitude()));
-      add(messageBytes, signedIntegerFieldHandler.encode(message.getSpeed()));
-      add(messageBytes, signedShortFieldHandler.encode(message.getHeading()));
-      add(messageBytes, unsignedShortFieldHandler.encode(message.getSatellitesCount()));
-      add(messageBytes, fixStatusFieldHandler.encode(message.getFixStatus()));
-      add(messageBytes, unsignedIntegerFieldHandler.encode(message.getCarrierId()));
-      add(messageBytes, signedShortFieldHandler.encode(message.getRssi()));
-      add(messageBytes, commStatusFieldHandler.encode(message.getCommStatus()));
-      add(messageBytes, hdopFieldHandler.encode(message.getHdop()));
-      add(messageBytes, inputFieldHandler.encode(message.getInput()));
-      add(messageBytes, unitStatusField.encode(message.getUnitStatus()));
+      dateTimeFieldHandler.encode(message.getUpdateTime(), output);
+      dateTimeFieldHandler.encode(message.getTimeOfFix(), output);
+      coordinateFieldHandler.encode(message.getLatitude(), output);
+      coordinateFieldHandler.encode(message.getLongitude(), output);
+      signedIntegerFieldHandler.encode(message.getAltitude(), output);
+      signedIntegerFieldHandler.encode(message.getSpeed(), output);
+      signedShortFieldHandler.encode(message.getHeading(), output);
+      unsignedShortFieldHandler.encode(message.getSatellitesCount(), output);
+      fixStatusFieldHandler.encode(message.getFixStatus(), output);
+      unsignedIntegerFieldHandler.encode(message.getCarrierId(), output);
+      signedShortFieldHandler.encode(message.getRssi(), output);
+      commStatusFieldHandler.encode(message.getCommStatus(), output);
+      hdopFieldHandler.encode(message.getHdop(), output);
+      inputFieldHandler.encode(message.getInput(), output);
+      unitStatusField.encode(message.getUnitStatus(), output);
     }
 
-    add(messageBytes, applicationMessagePayloadHandler.encode(message.getApplicationMessagePayload()));
-
-    Byte[] bytes = messageBytes.toArray(new Byte[messageBytes.size()]);
-    return ArrayUtils.toPrimitive(bytes);
+    applicationMessagePayloadHandler.encode(message.getApplicationMessagePayload(), output);
   }
-
-  private void add(List<Byte> bytes, byte[] toAdd) {
-    bytes.addAll(Arrays.asList(ArrayUtils.toObject(toAdd)));
-  }
-
 }

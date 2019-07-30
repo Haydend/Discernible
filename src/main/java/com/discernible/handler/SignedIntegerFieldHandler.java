@@ -20,8 +20,8 @@ public class SignedIntegerFieldHandler implements FieldHandler<Integer> {
   }
 
   @Override
-  public byte[] encode(Integer value) {
-    return ByteUtils.intToSignedBytes(value);
+  public void encode(Integer value, ByteOutputStream out) {
+    out.write(ByteUtils.intToSignedBytes(value));
   }
 
 }

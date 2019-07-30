@@ -1,8 +1,8 @@
 package com.discernible.handler.header.options.extension;
 
-import java.math.BigInteger;
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.EncryptionField.EncryptionSubField;
@@ -30,19 +30,11 @@ public class EncryptionFieldHandler implements FieldHandler<EncryptionField> {
   }
 
   @Override
-  public byte[] encode(EncryptionField encryptionField) {
-
-    byte[] messageBytes = new byte[6];
-
-    messageBytes[0] = 0x01;
-
-    messageBytes[1] = (byte) encryptionField.getEncryptionSubField().ordinal();
-
-    byte[] randomKeyBytes = BigInteger.valueOf(encryptionField.getRandomKey()).toByteArray();
-    int padding = 4 - randomKeyBytes.length;
-    System.arraycopy(randomKeyBytes, 0, messageBytes, 2 + padding, randomKeyBytes.length);
-
-    return ByteUtils.prependFieldLength(messageBytes);
+  public void encode(EncryptionField encryptionField, ByteOutputStream out) {
+    out.write(0x06);
+    out.write(0x01);
+    out.write(encryptionField.getEncryptionSubField().ordinal());
+    out.writeUnsignedInt(encryptionField.getRandomKey());
   }
 
 }

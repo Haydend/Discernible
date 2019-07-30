@@ -1,14 +1,10 @@
 package com.discernible.handler.header.options;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
-import org.apache.commons.lang3.ArrayUtils;
-
 import com.discernible.handler.ByteFieldHandler;
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.SocketFieldHandler;
 import com.discernible.handler.header.options.extension.OptionExtensionFieldHandler;
@@ -75,41 +71,36 @@ public class OptionsHeaderFieldHandler implements FieldHandler<OptionsHeader> {
   }
 
   @Override
-  public byte[] encode(OptionsHeader optionsHeader) {
-
-    List<Byte> messageBytes = new ArrayList<>();
-    messageBytes.add(buildFlagByte(optionsHeader));
+  public void encode(OptionsHeader optionsHeader, ByteOutputStream out) {
+    out.write(buildFlagByte(optionsHeader));
 
     if (Objects.nonNull(optionsHeader.getMobileId())) {
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(byteFieldHandler.encode(optionsHeader.getMobileId()))));
+      byteFieldHandler.encode(optionsHeader.getMobileId(), out);
     }
 
     if (Objects.nonNull(optionsHeader.getMobileIdType())) {
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(mobileIdTypeFieldHandler.encode(optionsHeader.getMobileIdType()))));
+      mobileIdTypeFieldHandler.encode(optionsHeader.getMobileIdType(), out);
     }
 
     if (Objects.nonNull(optionsHeader.getAuthentication())) {
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(byteFieldHandler.encode(optionsHeader.getAuthentication()))));
+      byteFieldHandler.encode(optionsHeader.getAuthentication(), out);
     }
 
     if (Objects.nonNull(optionsHeader.getRouting())) {
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(byteFieldHandler.encode(optionsHeader.getRouting()))));
+      byteFieldHandler.encode(optionsHeader.getRouting(), out);
     }
 
     if (Objects.nonNull(optionsHeader.getForwarding())) {
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(forwardingFieldHandler.encode(optionsHeader.getForwarding()))));
+      forwardingFieldHandler.encode(optionsHeader.getForwarding(), out);
     }
 
     if (Objects.nonNull(optionsHeader.getResponseRedirection())) {
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(socketFieldHandler.encode(optionsHeader.getResponseRedirection()))));
+      socketFieldHandler.encode(optionsHeader.getResponseRedirection(), out);
     }
 
     if (Objects.nonNull(optionsHeader.getOptionExtension())) {
-      messageBytes.addAll(Arrays.asList(ArrayUtils.toObject(optionExtensionFieldHandler.encode(optionsHeader.getOptionExtension()))));
+      optionExtensionFieldHandler.encode(optionsHeader.getOptionExtension(), out);
     }
-
-    Byte[] bytes = messageBytes.toArray(new Byte[messageBytes.size()]);
-    return ArrayUtils.toPrimitive(bytes);
   }
 
   private byte buildFlagByte(OptionsHeader optionsHeader) {

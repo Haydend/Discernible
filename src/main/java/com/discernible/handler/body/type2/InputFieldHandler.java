@@ -2,6 +2,7 @@ package com.discernible.handler.body.type2;
 
 import java.util.Queue;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.type2.InputField;
 
@@ -29,7 +30,7 @@ public class InputFieldHandler implements FieldHandler<InputField> {
   }
 
   @Override
-  public byte[] encode(InputField field) {
+  public void encode(InputField field, ByteOutputStream out) {
 
     byte fieldByte = (byte) 0b00000000;
 
@@ -65,6 +66,6 @@ public class InputFieldHandler implements FieldHandler<InputField> {
       fieldByte = (byte) (fieldByte | 0b10000000);
     }
 
-    return new byte[] {fieldByte};
+    out.write(fieldByte);
   }
 }

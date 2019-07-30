@@ -16,12 +16,13 @@ public class Ascii8BitFieldHandlerTest {
 
     // Given
     String value = "test";
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = fieldHandler.encode(value);
+    fieldHandler.encode(value, out);
 
     // Then
-    Assert.assertArrayEquals(new byte[] {0x04, 0x74, 0x65, 0x73, 0x74}, actualBytes);
+    Assert.assertArrayEquals(new byte[] {0x04, 0x74, 0x65, 0x73, 0x74}, out.toByteArray());
   }
 
   @Test

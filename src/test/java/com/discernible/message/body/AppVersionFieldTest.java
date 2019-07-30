@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.AppVersionFieldHandler;
 
 public class AppVersionFieldTest {
@@ -18,9 +19,11 @@ public class AppVersionFieldTest {
 
     // Given
     AppVersionField appVersionField = new AppVersionField(39, 'l');
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] fieldBytes = appVersionFieldHandler.encode(appVersionField);
+    appVersionFieldHandler.encode(appVersionField, out);
+    byte[] fieldBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {0x33, 0x39, 0x6C}, fieldBytes);

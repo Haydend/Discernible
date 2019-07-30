@@ -8,6 +8,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.type2.FixStatusFieldHandler;
 
 public class FixStatusFieldTest {
@@ -20,9 +21,11 @@ public class FixStatusFieldTest {
 
     // Given
     FixStatusField fixStatusField = new FixStatusField(EnumSet.of(FixStatusField.FixStatus._2D_FIX));
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = fixStatusFieldHandler.encode(fixStatusField);
+    fixStatusFieldHandler.encode(fixStatusField, out);
+    byte[] actualBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {0b00010000,}, actualBytes);

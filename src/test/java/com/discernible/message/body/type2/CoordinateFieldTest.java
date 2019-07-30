@@ -7,6 +7,7 @@ import java.util.Queue;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.type2.CoordinateFieldHandler;
 
 public class CoordinateFieldTest {
@@ -19,9 +20,11 @@ public class CoordinateFieldTest {
 
     // Given
     CoordinateField byteField = new CoordinateField(1.1234567);
+    ByteOutputStream out = new ByteOutputStream();
 
     // When
-    byte[] actualBytes = coordinateFieldHandler.encode(byteField);
+    coordinateFieldHandler.encode(byteField, out);
+    byte[] actualBytes = out.toByteArray();
 
     // Then
     Assert.assertArrayEquals(new byte[] {0x00, (byte) 0xAB, 0x6D, 0x07}, actualBytes);
