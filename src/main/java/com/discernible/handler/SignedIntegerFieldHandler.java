@@ -2,8 +2,6 @@ package com.discernible.handler;
 
 import java.nio.ByteBuffer;
 
-import com.discernible.util.ByteUtils;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -20,7 +18,11 @@ public class SignedIntegerFieldHandler implements FieldHandler<Integer> {
 
   @Override
   public void encode(Integer value, ByteOutputStream out) {
-    out.write(ByteUtils.intToSignedBytes(value));
+    out.write(intToSignedBytes(value));
+  }
+
+  private static final byte[] intToSignedBytes(int value) {
+    return new byte[] {(byte) (value >>> 24), (byte) (value >>> 16), (byte) (value >>> 8), (byte) value};
   }
 
 }

@@ -3,9 +3,9 @@ package com.discernible.handler.header.options.extension;
 import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
+import com.discernible.handler.UnsignedLongFieldHandler;
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.EncryptionField.EncryptionSubField;
-import com.discernible.util.ByteUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +13,8 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class EncryptionFieldHandler implements FieldHandler<EncryptionField> {
+
+  private final UnsignedLongFieldHandler unsignedLongFieldHandler = new UnsignedLongFieldHandler();
 
   @Override
   public EncryptionField decode(ByteInputStream in) {
@@ -22,8 +24,7 @@ public class EncryptionFieldHandler implements FieldHandler<EncryptionField> {
 
     EncryptionSubField encryptionSubField = EncryptionSubField.values()[in.read()];
 
-    byte[] randomKeyBytes = in.read(4);
-    long randomKey = ByteUtils.unsignedIntToLong(randomKeyBytes);
+    long randomKey = unsignedLongFieldHandler.decode(in);
 
     return new EncryptionField(encryptionSubField, randomKey);
   }
@@ -33,7 +34,7 @@ public class EncryptionFieldHandler implements FieldHandler<EncryptionField> {
     out.write(0x06);
     out.write(0x01);
     out.write(encryptionField.getEncryptionSubField().ordinal());
-    out.writeUnsignedInt(encryptionField.getRandomKey());
+    unsignedLongFieldHandler.encode(encryptionField.getRandomKey(), out);
   }
 
 }

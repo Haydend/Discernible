@@ -4,9 +4,6 @@ import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 
-import lombok.Data;
-
-@Data
 public class PackedBcdFieldHandler implements FieldHandler<String> {
 
   public int fieldLength;

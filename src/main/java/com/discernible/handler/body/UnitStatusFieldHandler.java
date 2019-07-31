@@ -6,11 +6,6 @@ import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.UnitStatusField;
 import com.discernible.message.body.UnitStatusField.Status;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class UnitStatusFieldHandler implements FieldHandler<UnitStatusField> {
 
   public UnitStatusField decode(ByteInputStream in) {

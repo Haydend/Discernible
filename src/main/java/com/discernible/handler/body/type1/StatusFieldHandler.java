@@ -6,11 +6,6 @@ import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.type1.StatusField;
 import com.discernible.message.body.type1.StatusField.Status;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
-@Data
-@AllArgsConstructor
 public class StatusFieldHandler implements FieldHandler<StatusField> {
 
   @Override
