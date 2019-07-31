@@ -1,8 +1,8 @@
 package com.discernible.handler.body.type5.payload;
 
 import java.io.IOException;
-import java.util.Queue;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.UnsignedIntegerFieldHandler;
@@ -17,19 +17,19 @@ public class ApplicationMessagePayloadHandler implements FieldHandler<Applicatio
   private MotionLogReportHandler motionLogReportHandler = new MotionLogReportHandler();
 
   @Override
-  public ApplicationMessagePayload decode(Queue<Byte> fieldBytes) {
+  public ApplicationMessagePayload decode(ByteInputStream in) {
 
-    Integer applicationMessageType = unsignedIntegerFieldHandler.decode(fieldBytes);
-    Integer payloadLength = unsignedIntegerFieldHandler.decode(fieldBytes);
+    Integer applicationMessageType = unsignedIntegerFieldHandler.decode(in);
+    Integer payloadLength = unsignedIntegerFieldHandler.decode(in);
 
     final ApplicationMessagePayload applicationMessagePayload;
     switch (applicationMessageType) {
       case 131:
-        applicationMessagePayload = vehicleIdReportHandler.decodePayload(fieldBytes, payloadLength);
+        applicationMessagePayload = vehicleIdReportHandler.decodePayload(in, payloadLength);
         break;
 
       case 122:
-        applicationMessagePayload = motionLogReportHandler.decodePayload(fieldBytes, payloadLength);
+        applicationMessagePayload = motionLogReportHandler.decodePayload(in, payloadLength);
         break;
 
       default:

@@ -1,8 +1,8 @@
 package com.discernible.handler.body.type2;
 
 import java.util.EnumSet;
-import java.util.Queue;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.type2.FixStatusField;
@@ -16,8 +16,8 @@ import lombok.Data;
 public class FixStatusFieldHandler implements FieldHandler<FixStatusField> {
 
   @Override
-  public FixStatusField decode(Queue<Byte> messageQueue) {
-    EnumSet<FixStatus> fixStatus = FixStatus.decode(messageQueue.poll());
+  public FixStatusField decode(ByteInputStream in) {
+    EnumSet<FixStatus> fixStatus = FixStatus.decode((byte) in.read());
     return new FixStatusField(fixStatus);
   }
 

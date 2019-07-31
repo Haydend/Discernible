@@ -1,12 +1,9 @@
 package com.discernible.message.body.type2;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.type2.InputFieldHandler;
 
@@ -34,10 +31,11 @@ public class InputFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b01010101));
+    byte[] bytes = new byte[] {(byte) 0b01010101};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    InputField actualInputField = inputFieldHandler.decode(bytes);
+    InputField actualInputField = inputFieldHandler.decode(in);
 
     // Then
     InputField expectedInputField = new InputField(true, false, true, false, true, false, true, false);

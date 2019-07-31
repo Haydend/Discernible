@@ -1,9 +1,5 @@
 package com.discernible.handler;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,10 +25,11 @@ public class SignedIntegerFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x04));
+    byte[] bytes = new byte[] {(byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x04};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    int integerField = fieldHandler.decode(bytes);
+    int integerField = fieldHandler.decode(in);
 
     // Then
     Assert.assertEquals(4, integerField);

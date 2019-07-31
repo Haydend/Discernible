@@ -1,18 +1,17 @@
 package com.discernible.handler.body;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Queue;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.AppVersionField;
-import com.discernible.util.ByteUtils;
 
 public class AppVersionFieldHandler implements FieldHandler<AppVersionField> {
 
-  public AppVersionField decode(Queue<Byte> messageBytes) {
+  public AppVersionField decode(ByteInputStream in) {
 
-    byte[] fieldBytes = ByteUtils.getFieldBytes(3, messageBytes);
+    byte[] fieldBytes = in.read(3);
     String fieldString = new String(fieldBytes, StandardCharsets.UTF_8);
 
     int version = Integer.parseInt(fieldString.substring(0, 2));

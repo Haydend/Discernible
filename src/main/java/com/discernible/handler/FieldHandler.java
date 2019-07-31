@@ -1,10 +1,8 @@
 package com.discernible.handler;
 
-import java.util.Queue;
-
 public interface FieldHandler<E> {
 
-  E decode(Queue<Byte> messageBytes);
+  E decode(ByteInputStream in);
 
   void encode(E field, ByteOutputStream out);
 

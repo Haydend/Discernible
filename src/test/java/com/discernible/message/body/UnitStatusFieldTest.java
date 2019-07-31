@@ -1,12 +1,9 @@
 package com.discernible.message.body;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.UnitStatusFieldHandler;
 import com.discernible.message.body.UnitStatusField.Status;
@@ -34,10 +31,11 @@ public class UnitStatusFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b00001101));
+    byte[] bytes = new byte[] {(byte) 0b00001101};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    UnitStatusField actualUnitStatusField = unitStatusFieldHandler.decode(bytes);
+    UnitStatusField actualUnitStatusField = unitStatusFieldHandler.decode(in);
 
     // Then
     UnitStatusField expectedInputField = new UnitStatusField(Status.OK, Status.ERROR, Status.OK, true);

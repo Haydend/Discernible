@@ -1,12 +1,9 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.EncryptionField.EncryptionSubField;
@@ -33,11 +30,11 @@ public class EncryptionFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes =
-        new LinkedList<Byte>(Arrays.asList((byte) 0x06, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x12, (byte) 0xD6, (byte) 0x87));
+    byte[] bytes = new byte[] {(byte) 0x06, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x12, (byte) 0xD6, (byte) 0x87};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    EncryptionField encryptionField = encryptionFieldHandler.decode(bytes);
+    EncryptionField encryptionField = encryptionFieldHandler.decode(in);
 
     // Then
     Assert.assertEquals(EncryptionField.EncryptionSubField.ESN, encryptionField.getEncryptionSubField());

@@ -1,17 +1,15 @@
 package com.discernible.handler;
 
-import java.util.Queue;
-
 import com.discernible.message.IP;
 
 public class IpFieldHandler implements FieldHandler<IP> {
 
-  public IP decode(Queue<Byte> messageBytes) {
+  public IP decode(ByteInputStream in) {
 
-    int firstOctet = messageBytes.poll() & 0xFF; // 'AND' the byte value to get the unsigned value.
-    int secondOctet = messageBytes.poll() & 0xFF;
-    int thirdOctet = messageBytes.poll() & 0xFF;
-    int fourthOctet = messageBytes.poll() & 0xFF;
+    int firstOctet = in.read() & 0xFF; // 'AND' the byte value to get the unsigned value.
+    int secondOctet = in.read() & 0xFF;
+    int thirdOctet = in.read() & 0xFF;
+    int fourthOctet = in.read() & 0xFF;
 
     return new IP(firstOctet, secondOctet, thirdOctet, fourthOctet);
   }

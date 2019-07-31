@@ -1,7 +1,6 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.LmDirectRouting;
@@ -9,11 +8,11 @@ import com.discernible.message.header.options.extension.LmDirectRouting;
 public class LmDirectRoutingFieldHandler implements FieldHandler<LmDirectRouting> {
 
   @Override
-  public LmDirectRouting decode(Queue<Byte> messageBytes) {
-    messageBytes.poll(); // Throw away field length
-    messageBytes.poll(); // Throw away version
-    messageBytes.poll(); // Throw away destination
-    messageBytes.poll(); // Throw away source
+  public LmDirectRouting decode(ByteInputStream in) {
+    in.read(); // Throw away field length
+    in.read(); // Throw away version
+    in.read(); // Throw away destination
+    in.read(); // Throw away source
 
     return new LmDirectRouting();
   }

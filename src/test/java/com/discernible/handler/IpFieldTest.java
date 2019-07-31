@@ -1,9 +1,5 @@
 package com.discernible.handler;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,10 +37,11 @@ public class IpFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01));
+    byte[] bytes = new byte[] {(byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    IP ipField = fieldHandler.decode(bytes);
+    IP ipField = fieldHandler.decode(in);
 
     // Then
     Assert.assertEquals("192.168.0.1", ipField.getIP());

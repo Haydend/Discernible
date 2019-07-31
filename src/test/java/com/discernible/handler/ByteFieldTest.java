@@ -1,9 +1,5 @@
 package com.discernible.handler;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,10 +25,11 @@ public class ByteFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x02, (byte) 0x01, (byte) 0x02, (byte) 0x01));
+    byte[] bytes = new byte[] {(byte) 0x02, (byte) 0x01, (byte) 0x02, (byte) 0x01};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    byte[] byteField = fieldHandler.decode(bytes);
+    byte[] byteField = fieldHandler.decode(in);
 
     // Then
     Assert.assertArrayEquals(new byte[] {0x01, 0x02}, byteField);

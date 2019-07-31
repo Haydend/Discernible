@@ -1,8 +1,8 @@
 package com.discernible.handler.body.type3;
 
 import java.util.Map;
-import java.util.Queue;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.DataListFieldHandler;
 import com.discernible.handler.SignedIntegerFieldHandler;
@@ -26,23 +26,23 @@ public class IdReportMessageHandler {
   private final PackedBcd10ByteFieldHandler packedBcd10ByteFieldHandler = new PackedBcd10ByteFieldHandler();
   private final DataListFieldHandler dataListFieldHandler = new DataListFieldHandler();
 
-  public IdReportMessage decodeBody(Queue<Byte> messageBytes, ServiceType serviceType) {
+  public IdReportMessage decodeBody(ByteInputStream in, ServiceType serviceType) {
 
-    Short scriptVersion = unsignedShortFieldHandler.decode(messageBytes);
-    Short configVersion = unsignedShortFieldHandler.decode(messageBytes);
-    AppVersionField firmwareVersion = appVersionFieldHandler.decode(messageBytes);
-    Short vehicleClass = unsignedShortFieldHandler.decode(messageBytes);
-    UnitStatusField unitStatus = unitStatusFieldHandler.decode(messageBytes);
-    Short modemSelection = unsignedShortFieldHandler.decode(messageBytes);
-    Short applicationId = unsignedShortFieldHandler.decode(messageBytes);
-    Short mobileId = unsignedShortFieldHandler.decode(messageBytes);
-    Integer queryId = signedIntegerFieldHandler.decode(messageBytes);
-    String esn = packedBcd8ByteFieldHandler.decode(messageBytes);
-    String imei = packedBcd8ByteFieldHandler.decode(messageBytes);
-    String imsi = packedBcd8ByteFieldHandler.decode(messageBytes);
-    String phoneNo = packedBcd8ByteFieldHandler.decode(messageBytes);
-    String iccid = packedBcd10ByteFieldHandler.decode(messageBytes);
-    Map<String, String> extensionStrings = dataListFieldHandler.decode(messageBytes);
+    Short scriptVersion = unsignedShortFieldHandler.decode(in);
+    Short configVersion = unsignedShortFieldHandler.decode(in);
+    AppVersionField firmwareVersion = appVersionFieldHandler.decode(in);
+    Short vehicleClass = unsignedShortFieldHandler.decode(in);
+    UnitStatusField unitStatus = unitStatusFieldHandler.decode(in);
+    Short modemSelection = unsignedShortFieldHandler.decode(in);
+    Short applicationId = unsignedShortFieldHandler.decode(in);
+    Short mobileId = unsignedShortFieldHandler.decode(in);
+    Integer queryId = signedIntegerFieldHandler.decode(in);
+    String esn = packedBcd8ByteFieldHandler.decode(in);
+    String imei = packedBcd8ByteFieldHandler.decode(in);
+    String imsi = packedBcd8ByteFieldHandler.decode(in);
+    String phoneNo = packedBcd8ByteFieldHandler.decode(in);
+    String iccid = packedBcd10ByteFieldHandler.decode(in);
+    Map<String, String> extensionStrings = dataListFieldHandler.decode(in);
 
     return new IdReportMessage(serviceType, scriptVersion, configVersion, firmwareVersion, vehicleClass, unitStatus, modemSelection, applicationId,
         mobileId, queryId, esn, imei, imsi, phoneNo, iccid, extensionStrings);

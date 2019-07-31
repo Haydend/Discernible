@@ -1,12 +1,9 @@
 package com.discernible.message.body.type1;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.type1.TypeFieldHandler;
 import com.discernible.message.body.Message.MessageType;
@@ -34,10 +31,11 @@ public class TypeFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x01));
+    byte[] bytes = new byte[] {(byte) 0x01};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    TypeField typeField = typeFieldHandler.decode(bytes);
+    TypeField typeField = typeFieldHandler.decode(in);
 
     // Then
     Assert.assertEquals(MessageType.ACK_NAK_MESSAGE, typeField.getType());

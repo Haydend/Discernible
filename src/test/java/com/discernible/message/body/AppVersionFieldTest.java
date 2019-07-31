@@ -1,12 +1,9 @@
 package com.discernible.message.body;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.AppVersionFieldHandler;
 
@@ -33,10 +30,11 @@ public class AppVersionFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x33, (byte) 0x39, (byte) 0x6C));
+    byte[] bytes = new byte[] {(byte) 0x33, (byte) 0x39, (byte) 0x6C};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    AppVersionField appVersionField = appVersionFieldHandler.decode(bytes);
+    AppVersionField appVersionField = appVersionFieldHandler.decode(in);
 
     // Then
     Assert.assertEquals(39, appVersionField.getVersion());

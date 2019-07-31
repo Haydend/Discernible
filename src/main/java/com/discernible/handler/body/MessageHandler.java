@@ -1,7 +1,6 @@
 package com.discernible.handler.body;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.type0.NullMessageHandler;
 import com.discernible.handler.body.type1.AcknowledgeMessageHandler;
@@ -29,34 +28,34 @@ public class MessageHandler {
   private final ApplicationMessageHandler applicationMessageHandler = new ApplicationMessageHandler();
   private final OptionsHeaderFieldHandler optionsHeaderFieldHandler = new OptionsHeaderFieldHandler();
 
-  public Message decode(Queue<Byte> messageBytes, boolean sentFromLmu) {
+  public Message decode(ByteInputStream in, boolean sentFromLmu) {
 
-    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(messageBytes);
+    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(in);
 
-    ServiceType serviceType = ServiceType.values()[messageBytes.poll()];
-    MessageType messageType = MessageType.values()[messageBytes.poll()];
-    int sequenceNumber = ByteUtils.unsignedShortToInt(ByteUtils.getFieldBytes(2, messageBytes));
+    ServiceType serviceType = ServiceType.values()[in.read()];
+    MessageType messageType = MessageType.values()[in.read()];
+    int sequenceNumber = ByteUtils.unsignedShortToInt(in.read(2));
 
     final Message messageBody;
     switch (messageType) {
       case NULL_MESSAGE:
-        messageBody = nullMessageHandler.decodeBody(messageBytes);
+        messageBody = nullMessageHandler.decodeBody(in);
         break;
 
       case ACK_NAK_MESSAGE:
-        messageBody = acknowledgeMessageHandler.decode(messageBytes);
+        messageBody = acknowledgeMessageHandler.decode(in);
         break;
 
       case EVENT_REPORT_MESSAGE:
-        messageBody = eventReportMessageHandler.decodeBody(messageBytes, serviceType);
+        messageBody = eventReportMessageHandler.decodeBody(in, serviceType);
         break;
 
       case ID_REPORT_MESSAGE:
-        messageBody = idReportMessageHandler.decodeBody(messageBytes, serviceType);
+        messageBody = idReportMessageHandler.decodeBody(in, serviceType);
         break;
 
       case APPLICATION_DATA_MESSAGE:
-        messageBody = applicationMessageHandler.decodeBody(messageBytes, serviceType, sentFromLmu);
+        messageBody = applicationMessageHandler.decodeBody(in, serviceType, sentFromLmu);
         break;
 
       default:

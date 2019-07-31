@@ -4,15 +4,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Queue;
-
-import com.discernible.util.ByteUtils;
 
 public class DataListFieldHandler implements FieldHandler<Map<String, String>> {
 
-  public Map<String, String> decode(Queue<Byte> messageBytes) {
+  public Map<String, String> decode(ByteInputStream in) {
 
-    byte[] fieldBytes = ByteUtils.getFieldBytes(messageBytes.size(), messageBytes);
+    byte[] fieldBytes = in.readAll();
 
     String field = new String(fieldBytes, StandardCharsets.UTF_8);
 

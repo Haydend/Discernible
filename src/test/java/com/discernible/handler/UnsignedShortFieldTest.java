@@ -1,9 +1,5 @@
 package com.discernible.handler;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -29,10 +25,11 @@ public class UnsignedShortFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x06));
+    byte[] bytes = new byte[] {(byte) 0x06};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    short value = fieldHandler.decode(bytes);
+    short value = fieldHandler.decode(in);
 
     // Then
     Assert.assertEquals(6, value);

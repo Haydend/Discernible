@@ -1,9 +1,6 @@
 package com.discernible.handler;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Queue;
-
-import com.discernible.util.ByteUtils;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,9 +9,9 @@ import lombok.Data;
 @AllArgsConstructor
 public class ExtensionStringsFieldHandler implements FieldHandler<String> {
 
-  public String decode(Queue<Byte> messageBytes) {
+  public String decode(ByteInputStream in) {
 
-    byte[] fieldBytes = ByteUtils.getFieldBytes(messageBytes.size(), messageBytes);
+    byte[] fieldBytes = in.readAll();
 
     String field = new String(fieldBytes, StandardCharsets.UTF_8);
 

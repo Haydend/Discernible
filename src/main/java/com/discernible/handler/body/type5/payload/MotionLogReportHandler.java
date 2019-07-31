@@ -1,13 +1,12 @@
 package com.discernible.handler.body.type5.payload;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.message.body.type5.payload.MotionLogReport;
 
 public class MotionLogReportHandler {
 
-  public MotionLogReport decodePayload(Queue<Byte> fieldBytes, int fieldLength) {
+  public MotionLogReport decodePayload(ByteInputStream in, int fieldLength) {
 
     // Byte recordType = fieldBytes.poll(); // 1 byte
     // UnsignedShortFieldHandler groupCount = UnsignedShortFieldHandler.decode(fieldBytes); // 1 byte

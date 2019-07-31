@@ -1,12 +1,9 @@
 package com.discernible.message.body;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.PackedBcd8ByteFieldHandler;
 
@@ -33,11 +30,11 @@ public class PackedBcd8ByteFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes =
-        new LinkedList<Byte>(Arrays.asList((byte) 0x45, (byte) 0x32, (byte) 0x45, (byte) 0x98, (byte) 0x71, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF));
+    byte[] bytes = new byte[] {(byte) 0x45, (byte) 0x32, (byte) 0x45, (byte) 0x98, (byte) 0x71, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    String field = packedBcd8ByteFieldHandler.decode(bytes);
+    String field = packedBcd8ByteFieldHandler.decode(in);
 
     // Then
     Assert.assertEquals("4532459871", field);

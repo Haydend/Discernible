@@ -1,17 +1,14 @@
 package com.discernible.handler;
 
 import java.nio.ByteBuffer;
-import java.util.Queue;
-
-import com.discernible.util.ByteUtils;
 
 import lombok.Data;
 
 @Data
 public class SignedShortFieldHandler implements FieldHandler<Short> {
 
-  public Short decode(Queue<Byte> messageBytes) {
-    byte[] fieldBytes = ByteUtils.getFieldBytes(2, messageBytes);
+  public Short decode(ByteInputStream in) {
+    byte[] fieldBytes = in.read(2);
     short value = ByteBuffer.wrap(fieldBytes).getShort();
 
     return value;

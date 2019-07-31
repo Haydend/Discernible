@@ -3,8 +3,8 @@ package com.discernible.handler.body.type2;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.DateTimeFieldHandler;
 import com.discernible.handler.SignedIntegerFieldHandler;
@@ -44,31 +44,31 @@ public class EventReportMessageHandler {
   private final UnitStatusFieldHandler unitStatusFieldHandler = new UnitStatusFieldHandler();
   private final AccumulatorFieldHandler accumulatorFieldHandler = new AccumulatorFieldHandler();
 
-  public EventReportMessage decodeBody(Queue<Byte> messageBytes, ServiceType serviceType) {
+  public EventReportMessage decodeBody(ByteInputStream in, ServiceType serviceType) {
 
-    LocalDateTime updateTime = dateTimeFieldHandler.decode(messageBytes);
-    LocalDateTime timeOfFix = dateTimeFieldHandler.decode(messageBytes);
-    CoordinateField latitude = coordinateFieldHandler.decode(messageBytes);
-    CoordinateField longitude = coordinateFieldHandler.decode(messageBytes);
-    Integer altitude = signedIntegerFieldHandler.decode(messageBytes);
-    Integer speed = signedIntegerFieldHandler.decode(messageBytes);
-    Short heading = signedShortFieldHandler.decode(messageBytes);
-    Short satellitesCount = unsignedShortFieldHandler.decode(messageBytes);
-    FixStatusField fixStatus = fixStatusFieldHandler.decode(messageBytes);
-    Integer carrierId = unsignedIntegerFieldHandler.decode(messageBytes);
-    Short rssi = signedShortFieldHandler.decode(messageBytes);
-    CommStatusField commStatus = commStatusFieldHandler.decode(messageBytes);
-    HdopField hdopField = hdopFieldHandler.decode(messageBytes);
-    InputField inputField = inputFieldHandler.decode(messageBytes);
-    UnitStatusField untiStatusField = unitStatusFieldHandler.decode(messageBytes);
-    Short eventIndex = unsignedShortFieldHandler.decode(messageBytes);
-    Short eventCode = unsignedShortFieldHandler.decode(messageBytes);
+    LocalDateTime updateTime = dateTimeFieldHandler.decode(in);
+    LocalDateTime timeOfFix = dateTimeFieldHandler.decode(in);
+    CoordinateField latitude = coordinateFieldHandler.decode(in);
+    CoordinateField longitude = coordinateFieldHandler.decode(in);
+    Integer altitude = signedIntegerFieldHandler.decode(in);
+    Integer speed = signedIntegerFieldHandler.decode(in);
+    Short heading = signedShortFieldHandler.decode(in);
+    Short satellitesCount = unsignedShortFieldHandler.decode(in);
+    FixStatusField fixStatus = fixStatusFieldHandler.decode(in);
+    Integer carrierId = unsignedIntegerFieldHandler.decode(in);
+    Short rssi = signedShortFieldHandler.decode(in);
+    CommStatusField commStatus = commStatusFieldHandler.decode(in);
+    HdopField hdopField = hdopFieldHandler.decode(in);
+    InputField inputField = inputFieldHandler.decode(in);
+    UnitStatusField untiStatusField = unitStatusFieldHandler.decode(in);
+    Short eventIndex = unsignedShortFieldHandler.decode(in);
+    Short eventCode = unsignedShortFieldHandler.decode(in);
 
-    Short numberOfAccumulators = unsignedShortFieldHandler.decode(messageBytes);
-    messageBytes.poll(); // Throw away 'append' byte.
+    Short numberOfAccumulators = unsignedShortFieldHandler.decode(in);
+    in.read(); // Throw away 'append' byte.
     List<AccumulatorField> accumulatorFields = new ArrayList<>();
     for (int i = 0; i < numberOfAccumulators; i++) {
-      accumulatorFields.add(accumulatorFieldHandler.decode(messageBytes));
+      accumulatorFields.add(accumulatorFieldHandler.decode(in));
     }
 
     return new EventReportMessage(serviceType, updateTime, timeOfFix, latitude, longitude, altitude, speed, heading, satellitesCount, fixStatus,

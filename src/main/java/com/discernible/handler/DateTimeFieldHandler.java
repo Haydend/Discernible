@@ -2,15 +2,14 @@ package com.discernible.handler;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Queue;
 
 import com.discernible.util.ByteUtils;
 
 public class DateTimeFieldHandler implements FieldHandler<LocalDateTime> {
 
-  public LocalDateTime decode(Queue<Byte> messageBytes) {
+  public LocalDateTime decode(ByteInputStream in) {
 
-    byte[] dateTimeFieldBytes = ByteUtils.getFieldBytes(4, messageBytes);
+    byte[] dateTimeFieldBytes = in.read(4);
     long epochSeconds = ByteUtils.unsignedIntToLong(dateTimeFieldBytes);
     LocalDateTime dateTime = LocalDateTime.ofEpochSecond(epochSeconds, 0, ZoneOffset.UTC);
 

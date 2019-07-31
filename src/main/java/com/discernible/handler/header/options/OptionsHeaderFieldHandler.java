@@ -1,9 +1,9 @@
 package com.discernible.handler.header.options;
 
 import java.util.Objects;
-import java.util.Queue;
 
 import com.discernible.handler.ByteFieldHandler;
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.SocketFieldHandler;
@@ -28,43 +28,43 @@ public class OptionsHeaderFieldHandler implements FieldHandler<OptionsHeader> {
   private final OptionExtensionFieldHandler optionExtensionFieldHandler = new OptionExtensionFieldHandler();
 
   @Override
-  public OptionsHeader decode(Queue<Byte> messageBytes) {
+  public OptionsHeader decode(ByteInputStream in) {
 
-    byte flagByte = messageBytes.poll();
+    byte flagByte = (byte) in.read();
 
     byte[] mobileId = null;
     if ((flagByte & 0b00000001) == 0b00000001) {
-      mobileId = byteFieldHandler.decode(messageBytes);
+      mobileId = byteFieldHandler.decode(in);
     }
 
     MobileIdTypeField mobileIdTypeField = null;
     if ((flagByte & 0b00000010) == 0b00000010) {
-      mobileIdTypeField = mobileIdTypeFieldHandler.decode(messageBytes);
+      mobileIdTypeField = mobileIdTypeFieldHandler.decode(in);
     }
 
     byte[] authentication = null;
     if ((flagByte & 0b00000100) == 0b00000100) {
-      authentication = byteFieldHandler.decode(messageBytes);
+      authentication = byteFieldHandler.decode(in);
     }
 
     byte[] routing = null;
     if ((flagByte & 0b00001000) == 0b00001000) {
-      routing = byteFieldHandler.decode(messageBytes);
+      routing = byteFieldHandler.decode(in);
     }
 
     ForwardingField forwarding = null;
     if ((flagByte & 0b00010000) == 0b00010000) {
-      forwarding = forwardingFieldHandler.decode(messageBytes);
+      forwarding = forwardingFieldHandler.decode(in);
     }
 
     Socket responseRedirection = null;
     if ((flagByte & 0b00100000) == 0b00100000) {
-      responseRedirection = socketFieldHandler.decode(messageBytes);
+      responseRedirection = socketFieldHandler.decode(in);
     }
 
     OptionExtension optionExtension = null;
     if ((flagByte & 0b01000000) == 0b01000000) {
-      optionExtension = optionExtensionFieldHandler.decode(messageBytes);
+      optionExtension = optionExtensionFieldHandler.decode(in);
     }
 
     return new OptionsHeader(mobileId, mobileIdTypeField, authentication, routing, forwarding, responseRedirection, optionExtension);

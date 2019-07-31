@@ -1,12 +1,9 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.message.header.options.extension.AuthenticationField;
 
@@ -32,10 +29,11 @@ public class AuthenticationFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0x03));
+    byte[] bytes = new byte[] {(byte) 0x01, (byte) 0x03};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    AuthenticationField authenticationField = authenticationFieldHandler.decode(bytes);
+    AuthenticationField authenticationField = authenticationFieldHandler.decode(in);
 
     // Then
     Assert.assertEquals(AuthenticationField.AuthenticationSubField.FORWARD, authenticationField.getAuthenticationSubField());

@@ -1,7 +1,6 @@
 package com.discernible.handler.body.type1;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.Message.MessageType;
@@ -10,9 +9,9 @@ import com.discernible.message.body.type1.TypeField;
 public class TypeFieldHandler implements FieldHandler<TypeField> {
 
   @Override
-  public TypeField decode(Queue<Byte> messageBytes) {
+  public TypeField decode(ByteInputStream in) {
 
-    byte typeByte = messageBytes.poll();
+    byte typeByte = (byte) in.read();
     MessageType messageType = MessageType.values()[(int) typeByte];
 
     return new TypeField(messageType);

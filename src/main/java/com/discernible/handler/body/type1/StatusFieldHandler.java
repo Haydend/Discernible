@@ -1,7 +1,6 @@
 package com.discernible.handler.body.type1;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.type1.StatusField;
@@ -15,9 +14,9 @@ import lombok.Data;
 public class StatusFieldHandler implements FieldHandler<StatusField> {
 
   @Override
-  public StatusField decode(Queue<Byte> messageBytes) {
+  public StatusField decode(ByteInputStream in) {
 
-    byte statusByte = messageBytes.poll();
+    byte statusByte = (byte) in.read();
     Status status = Status.values()[(int) statusByte];
 
     return new StatusField(status);

@@ -1,7 +1,6 @@
 package com.discernible.handler.body.type2;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.SignedIntegerFieldHandler;
@@ -12,8 +11,8 @@ public class CoordinateFieldHandler implements FieldHandler<CoordinateField> {
   private SignedIntegerFieldHandler signedIntegerFieldHandler = new SignedIntegerFieldHandler();
 
   @Override
-  public CoordinateField decode(Queue<Byte> messageBytes) {
-    Integer movedValue = signedIntegerFieldHandler.decode(messageBytes);
+  public CoordinateField decode(ByteInputStream in) {
+    Integer movedValue = signedIntegerFieldHandler.decode(in);
     double value = (double) movedValue * Math.pow(10, -7); // Shift value by -7 decimal points to true value.
 
     return new CoordinateField(value);

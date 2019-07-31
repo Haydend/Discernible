@@ -2,9 +2,6 @@ package com.discernible.handler;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -32,10 +29,11 @@ public class DateTimeFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x00, (byte) 0x00, (byte) 0x0E, (byte) 0x10));
+    byte[] bytes = new byte[] {(byte) 0x00, (byte) 0x00, (byte) 0x0E, (byte) 0x10};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    LocalDateTime dateTimeField = fieldHandler.decode(bytes);
+    LocalDateTime dateTimeField = fieldHandler.decode(in);
 
     // Then
     Assert.assertEquals(LocalDateTime.of(1970, 1, 1, 1, 0), dateTimeField);

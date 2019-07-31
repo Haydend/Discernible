@@ -1,7 +1,6 @@
 package com.discernible.handler.body.type2;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.UnsignedShortFieldHandler;
@@ -16,8 +15,8 @@ public class HdopFieldHandler implements FieldHandler<HdopField> {
 
   private final UnsignedShortFieldHandler unsignedShortFieldHandler = new UnsignedShortFieldHandler();
 
-  public HdopField decode(Queue<Byte> messageBytes) {
-    short movedValue = unsignedShortFieldHandler.decode(messageBytes);
+  public HdopField decode(ByteInputStream in) {
+    short movedValue = unsignedShortFieldHandler.decode(in);
     double value = (double) movedValue * Math.pow(10, -1);
     return new HdopField(value);
   }

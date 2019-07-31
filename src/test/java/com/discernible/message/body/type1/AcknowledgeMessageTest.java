@@ -1,12 +1,9 @@
 package com.discernible.message.body.type1;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.body.MessageHandler;
 import com.discernible.message.body.AppVersionField;
 import com.discernible.message.body.Message;
@@ -50,12 +47,12 @@ public class AcknowledgeMessageTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList((byte) 0x83, (byte) 0x05, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x01, (byte) 0x01,
-            (byte) 0x02, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x0C, (byte) 0x05, (byte) 0x00, (byte) 0x36, (byte) 0x35, (byte) 0x62));
+    byte[] bytes = new byte[] {(byte) 0x83, (byte) 0x05, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x01, (byte) 0x01,
+        (byte) 0x02, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x0C, (byte) 0x05, (byte) 0x00, (byte) 0x36, (byte) 0x35, (byte) 0x62};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    Message message = messageHandler.decode(bytes, false);
+    Message message = messageHandler.decode(in, false);
 
     // Then
     byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};

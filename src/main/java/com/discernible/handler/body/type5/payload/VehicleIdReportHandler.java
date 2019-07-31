@@ -2,8 +2,8 @@ package com.discernible.handler.body.type5.payload;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Queue;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.DataListFieldHandler;
 import com.discernible.message.body.type5.payload.VehicleIdReport;
@@ -17,8 +17,8 @@ public class VehicleIdReportHandler {
 
   private final DataListFieldHandler dataListFieldHandler = new DataListFieldHandler();
 
-  public VehicleIdReport decodePayload(Queue<Byte> fieldBytes, int fieldLength) {
-    Map<String, String> data = dataListFieldHandler.decode(fieldBytes);
+  public VehicleIdReport decodePayload(ByteInputStream in, int fieldLength) {
+    Map<String, String> data = dataListFieldHandler.decode(in);
 
     String vin = data.get(VIN_KEY);
     Integer obd2ProtocolId = Integer.parseInt(data.get(OBD2_PROTOCOL_ID_KEY));

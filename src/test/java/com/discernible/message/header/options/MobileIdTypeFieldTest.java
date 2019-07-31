@@ -1,15 +1,11 @@
 package com.discernible.message.header.options;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import org.apache.commons.lang3.ArrayUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.header.options.MobileIdTypeFieldHandler;
 import com.discernible.message.header.options.MobileIdTypeField.MobileIdType;
@@ -117,10 +113,10 @@ public class MobileIdTypeFieldTest {
   private void test_decode(MobileIdTypeField.MobileIdType expectedMobileIdType, byte[] messageBytes) {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList(ArrayUtils.toObject(messageBytes)));
+    ByteInputStream in = new ByteInputStream(messageBytes);
 
     // When
-    MobileIdTypeField mobileIdTypeField = mobileIdTypeFieldHandler.decode(bytes);
+    MobileIdTypeField mobileIdTypeField = mobileIdTypeFieldHandler.decode(in);
 
     // Then
     Assert.assertEquals(String.format("Did not get expected field: %s", expectedMobileIdType), expectedMobileIdType,

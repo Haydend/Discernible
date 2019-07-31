@@ -1,7 +1,6 @@
 package com.discernible.handler.header.options;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.ForwardingOperationType;
@@ -9,8 +8,8 @@ import com.discernible.message.header.options.ForwardingOperationType;
 public class ForwardingOperationTypeFieldHandler implements FieldHandler<ForwardingOperationType> {
 
   @Override
-  public ForwardingOperationType decode(Queue<Byte> messageBytes) {
-    byte byteToMatch = messageBytes.poll();
+  public ForwardingOperationType decode(ByteInputStream in) {
+    byte byteToMatch = (byte) in.read();
 
     switch (byteToMatch) {
       case 0x00:

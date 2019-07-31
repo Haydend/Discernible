@@ -1,12 +1,9 @@
 package com.discernible.message.header.options;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.header.options.OptionsHeaderFieldHandler;
 import com.discernible.message.Socket;
@@ -37,10 +34,11 @@ public class OptionHeaderTest {
   public void test_decode_mobileId() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10000001, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    byte[] bytes = new byte[] {(byte) 0b10000001, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
+    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(in);
 
     // Then
     Assert.assertNotNull(optionsHeader.getMobileId());
@@ -74,10 +72,11 @@ public class OptionHeaderTest {
   public void test_decode_mobileIdType() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10000010, (byte) 0x01, (byte) 0x01));
+    byte[] bytes = new byte[] {(byte) 0b10000010, (byte) 0x01, (byte) 0x01};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
+    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionsHeader.getMobileId());
@@ -111,10 +110,11 @@ public class OptionHeaderTest {
   public void test_decode_authentication() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10000100, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    byte[] bytes = new byte[] {(byte) 0b10000100, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
+    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionsHeader.getMobileId());
@@ -148,10 +148,11 @@ public class OptionHeaderTest {
   public void test_decode_routing() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10001000, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    byte[] bytes = new byte[] {(byte) 0b10001000, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
+    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionsHeader.getMobileId());
@@ -186,11 +187,12 @@ public class OptionHeaderTest {
   public void test_decode_forwarding() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b10010000, (byte) 0x08, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01,
-        (byte) 0x13, (byte) 0x88, (byte) 0x06, (byte) 0x00));
+    byte[] bytes = new byte[] {(byte) 0b10010000, (byte) 0x08, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01,
+        (byte) 0x13, (byte) 0x88, (byte) 0x06, (byte) 0x00};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
+    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionsHeader.getMobileId());
@@ -227,11 +229,11 @@ public class OptionHeaderTest {
   public void test_decode_socketField() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList((byte) 0b10100000, (byte) 0x06, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01, (byte) 0x13, (byte) 0x88));
+    byte[] bytes = new byte[] {(byte) 0b10100000, (byte) 0x06, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01, (byte) 0x13, (byte) 0x88};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
+    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionsHeader.getMobileId());
@@ -266,10 +268,11 @@ public class OptionHeaderTest {
   public void test_decode_optionExtension() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0b11000000, (byte) 0x01, (byte) 0b00000000));
+    byte[] bytes = new byte[] {(byte) 0b11000000, (byte) 0x01, (byte) 0b00000000};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(bytes);
+    OptionsHeader optionsHeader = optionsHeaderFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionsHeader.getMobileId());

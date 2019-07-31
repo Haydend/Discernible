@@ -1,8 +1,8 @@
 package com.discernible.handler.body.type5;
 
 import java.time.LocalDateTime;
-import java.util.Queue;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.DateTimeFieldHandler;
 import com.discernible.handler.SignedIntegerFieldHandler;
@@ -48,7 +48,7 @@ public class ApplicationMessageHandler {
   private final UnitStatusFieldHandler unitStatusField = new UnitStatusFieldHandler();
   private final ApplicationMessagePayloadHandler applicationMessagePayloadHandler = new ApplicationMessagePayloadHandler();
 
-  public ApplicationMessage decodeBody(Queue<Byte> messageBytes, ServiceType serviceType, boolean sentByLmu) {
+  public ApplicationMessage decodeBody(ByteInputStream in, ServiceType serviceType, boolean sentByLmu) {
 
     LocalDateTime updateTime = null;
     LocalDateTime timeOfFix = null;
@@ -66,24 +66,24 @@ public class ApplicationMessageHandler {
     InputField input = null;
     UnitStatusField unitStatus = null;
     if (sentByLmu) {
-      updateTime = dateTimeFieldHandler.decode(messageBytes);
-      timeOfFix = dateTimeFieldHandler.decode(messageBytes);
-      latitude = coordinateFieldHandler.decode(messageBytes);
-      longitude = coordinateFieldHandler.decode(messageBytes);
-      altitude = signedIntegerFieldHandler.decode(messageBytes);
-      speed = signedIntegerFieldHandler.decode(messageBytes);
-      heading = signedShortFieldHandler.decode(messageBytes);
-      satellitesCount = unsignedShortFieldHandler.decode(messageBytes);
-      fixStatus = fixStatusFieldHandler.decode(messageBytes);
-      carrierId = unsignedIntegerFieldHandler.decode(messageBytes);
-      rssi = signedShortFieldHandler.decode(messageBytes);
-      commStatus = commStatusFieldHandler.decode(messageBytes);
-      hdop = hdopFieldHandler.decode(messageBytes);
-      input = inputFieldHandler.decode(messageBytes);
-      unitStatus = unitStatusField.decode(messageBytes);
+      updateTime = dateTimeFieldHandler.decode(in);
+      timeOfFix = dateTimeFieldHandler.decode(in);
+      latitude = coordinateFieldHandler.decode(in);
+      longitude = coordinateFieldHandler.decode(in);
+      altitude = signedIntegerFieldHandler.decode(in);
+      speed = signedIntegerFieldHandler.decode(in);
+      heading = signedShortFieldHandler.decode(in);
+      satellitesCount = unsignedShortFieldHandler.decode(in);
+      fixStatus = fixStatusFieldHandler.decode(in);
+      carrierId = unsignedIntegerFieldHandler.decode(in);
+      rssi = signedShortFieldHandler.decode(in);
+      commStatus = commStatusFieldHandler.decode(in);
+      hdop = hdopFieldHandler.decode(in);
+      input = inputFieldHandler.decode(in);
+      unitStatus = unitStatusField.decode(in);
     }
 
-    ApplicationMessagePayload applicationMessagePayload = applicationMessagePayloadHandler.decode(messageBytes);
+    ApplicationMessagePayload applicationMessagePayload = applicationMessagePayloadHandler.decode(in);
 
     return new ApplicationMessage(serviceType, sentByLmu, updateTime, timeOfFix, latitude, longitude, altitude, speed, heading, satellitesCount,
         fixStatus, carrierId, rssi, commStatus, hdop, input, unitStatus, applicationMessagePayload);

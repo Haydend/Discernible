@@ -3,13 +3,12 @@ package com.discernible.message.body.type2;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.EnumSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.body.MessageHandler;
 import com.discernible.message.body.Message;
 import com.discernible.message.body.Message.ServiceType;
@@ -79,17 +78,16 @@ public class EventReportMessageTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList(
-            (byte) 0x83, (byte) 0x05, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x01, (byte) 0x01,
-            (byte) 0x01, (byte) 0x02, (byte) 0x00, (byte) 0x01, (byte) 0x4F, (byte) 0xB4, (byte) 0x64, (byte) 0x88, (byte) 0x4F, (byte) 0xB4,
-            (byte) 0x64, (byte) 0x88, (byte) 0x13, (byte) 0xBF, (byte) 0x71, (byte) 0xA8, (byte) 0xBA, (byte) 0x18, (byte) 0xA5, (byte) 0x06,
-            (byte) 0x00, (byte) 0x00, (byte) 0x13, (byte) 0x33, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x11, (byte) 0x11,
-            (byte) 0x02, (byte) 0x33, (byte) 0x44, (byte) 0x44, (byte) 0x55, (byte) 0x55, (byte) 0x66, (byte) 0x77, (byte) 0x88, (byte) 0x09,
-            (byte) 0x10, (byte) 0x11, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    byte[] bytes = new byte[] {(byte) 0x83, (byte) 0x05, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04, (byte) 0x05, (byte) 0x01, (byte) 0x01,
+        (byte) 0x01, (byte) 0x02, (byte) 0x00, (byte) 0x01, (byte) 0x4F, (byte) 0xB4, (byte) 0x64, (byte) 0x88, (byte) 0x4F, (byte) 0xB4,
+        (byte) 0x64, (byte) 0x88, (byte) 0x13, (byte) 0xBF, (byte) 0x71, (byte) 0xA8, (byte) 0xBA, (byte) 0x18, (byte) 0xA5, (byte) 0x06,
+        (byte) 0x00, (byte) 0x00, (byte) 0x13, (byte) 0x33, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x11, (byte) 0x11,
+        (byte) 0x02, (byte) 0x33, (byte) 0x44, (byte) 0x44, (byte) 0x55, (byte) 0x55, (byte) 0x66, (byte) 0x77, (byte) 0x88, (byte) 0x09,
+        (byte) 0x10, (byte) 0x11, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    Message message = messageHandler.decode(bytes, true);
+    Message message = messageHandler.decode(in, true);
 
     // Then
     byte[] mobileId = new byte[] {0x01, 0x02, 0x03, 0x04, 0x05};

@@ -1,7 +1,6 @@
 package com.discernible.handler.header.options;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.handler.IpFieldHandler;
@@ -18,14 +17,14 @@ public class ForwardingFieldHandler implements FieldHandler<ForwardingField> {
   private final ProtocolFieldHandler protocolFieldHandler = new ProtocolFieldHandler();
   private final ForwardingOperationTypeFieldHandler forwardingOperationTypeFieldHandler = new ForwardingOperationTypeFieldHandler();
 
-  public ForwardingField decode(Queue<Byte> messageBytes) {
+  public ForwardingField decode(ByteInputStream in) {
 
-    messageBytes.poll(); // Throw away field length.
+    in.read(); // Throw away field length.
 
-    IP ipField = ipFieldHandler.decode(messageBytes);
-    Integer portField = unsignedIntegerFieldHandler.decode(messageBytes);
-    Protocol forwardingProtocol = protocolFieldHandler.decode(messageBytes);
-    ForwardingOperationType forwardingOperationType = forwardingOperationTypeFieldHandler.decode(messageBytes);
+    IP ipField = ipFieldHandler.decode(in);
+    Integer portField = unsignedIntegerFieldHandler.decode(in);
+    Protocol forwardingProtocol = protocolFieldHandler.decode(in);
+    ForwardingOperationType forwardingOperationType = forwardingOperationTypeFieldHandler.decode(in);
 
     return new ForwardingField(ipField, portField, forwardingProtocol, forwardingOperationType);
   }

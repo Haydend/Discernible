@@ -1,12 +1,9 @@
 package com.discernible.message.body.type2;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.body.type2.CoordinateFieldHandler;
 
@@ -34,10 +31,11 @@ public class CoordinateFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x00, (byte) 0xAB, (byte) 0x6D, (byte) 0x07));
+    byte[] bytes = new byte[] {(byte) 0x00, (byte) 0xAB, (byte) 0x6D, (byte) 0x07};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    CoordinateField coordinateField = coordinateFieldHandler.decode(bytes);
+    CoordinateField coordinateField = coordinateFieldHandler.decode(in);
 
     // Then
     Assert.assertEquals(1.1234567, coordinateField.getValue(), 0.00000001);

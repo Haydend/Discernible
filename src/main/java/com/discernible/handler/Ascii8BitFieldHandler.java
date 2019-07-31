@@ -1,17 +1,14 @@
 package com.discernible.handler;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Queue;
-
-import com.discernible.util.ByteUtils;
 
 public class Ascii8BitFieldHandler implements FieldHandler<String> {
 
-  public String decode(Queue<Byte> messageBytes) {
+  public String decode(ByteInputStream in) {
 
-    int fieldLength = ByteUtils.getFieldLength(messageBytes);
+    int fieldLength = in.read();
 
-    byte[] fieldBytes = ByteUtils.getFieldBytes(fieldLength, messageBytes);
+    byte[] fieldBytes = in.read(fieldLength);
 
     String field = new String(fieldBytes, StandardCharsets.UTF_8);
 

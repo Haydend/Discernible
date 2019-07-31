@@ -1,12 +1,9 @@
 package com.discernible.message.header.options;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.header.options.ForwardingFieldHandler;
 
@@ -34,11 +31,11 @@ public class ForwardingFieldTest {
   public void test_decode() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList((byte) 0x08, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01, (byte) 0x13, (byte) 0x88, (byte) 0x06, (byte) 0x00));
+    byte[] bytes = new byte[] {(byte) 0x08, (byte) 0xC0, (byte) 0xA8, (byte) 0x00, (byte) 0x01, (byte) 0x13, (byte) 0x88, (byte) 0x06, (byte) 0x00};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    ForwardingField forwardingField = forwardingFieldHandler.decode(bytes);
+    ForwardingField forwardingField = forwardingFieldHandler.decode(in);
 
     // Then
     Assert.assertEquals("192.168.0.1", forwardingField.getIp().getIP());

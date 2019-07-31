@@ -1,16 +1,12 @@
 package com.discernible.handler;
 
-import java.util.Queue;
-
-import com.discernible.util.ByteUtils;
-
 public class ByteFieldHandler implements FieldHandler<byte[]> {
 
-  public byte[] decode(Queue<Byte> messageBytes) {
+  public byte[] decode(ByteInputStream in) {
 
-    int fieldLength = ByteUtils.getFieldLength(messageBytes);
+    int fieldLength = in.read();
 
-    byte[] fieldBytes = ByteUtils.getFieldBytes(fieldLength, messageBytes);
+    byte[] fieldBytes = in.read(fieldLength);
 
     return fieldBytes;
   }

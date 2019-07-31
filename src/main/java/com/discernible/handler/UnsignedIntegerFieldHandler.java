@@ -1,7 +1,5 @@
 package com.discernible.handler;
 
-import java.util.Queue;
-
 import com.discernible.util.ByteUtils;
 
 import lombok.Data;
@@ -14,8 +12,8 @@ public class UnsignedIntegerFieldHandler implements FieldHandler<Integer> {
     out.writeUnsignedShort(value);
   }
 
-  public Integer decode(Queue<Byte> messageBytes) {
-    byte[] valueBytes = ByteUtils.getFieldBytes(2, messageBytes);
+  public Integer decode(ByteInputStream in) {
+    byte[] valueBytes = in.read(2);
     int value = ByteUtils.unsignedShortToInt(valueBytes);
 
     return value;

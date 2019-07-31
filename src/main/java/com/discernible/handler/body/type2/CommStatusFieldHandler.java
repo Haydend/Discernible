@@ -1,7 +1,6 @@
 package com.discernible.handler.body.type2;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.body.type2.CommStatusField;
@@ -15,8 +14,8 @@ import lombok.Data;
 public class CommStatusFieldHandler implements FieldHandler<CommStatusField> {
 
   @Override
-  public CommStatusField decode(Queue<Byte> messageQueue) {
-    byte fieldByte = messageQueue.poll();
+  public CommStatusField decode(ByteInputStream in) {
+    byte fieldByte = (byte) in.read();
 
     boolean available = (fieldByte & 0b00000001) != 0;
     boolean networkService = (fieldByte & 0b00000010) != 0;

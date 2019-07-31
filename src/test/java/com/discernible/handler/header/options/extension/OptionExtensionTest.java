@@ -1,12 +1,9 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
-
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.message.header.options.extension.EncryptionField;
 import com.discernible.message.header.options.extension.LmDirectRouting;
@@ -35,11 +32,11 @@ public class OptionExtensionTest {
   public void test_decode_esn() {
 
     // Given
-    Queue<Byte> bytes =
-        new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0b00000001, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04));
+    byte[] bytes = new byte[] {(byte) 0x01, (byte) 0b00000001, (byte) 0x04, (byte) 0x01, (byte) 0x02, (byte) 0x03, (byte) 0x04};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);
+    OptionExtension optionExtension = optionExtensionFieldHandler.decode(in);
 
     // Then
     Assert.assertNotNull(optionExtension.getEsn());
@@ -70,11 +67,11 @@ public class OptionExtensionTest {
   public void test_decode_vin() {
 
     // Given
-    Queue<Byte> bytes =
-        new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0b00000010, (byte) 0x04, (byte) 0x74, (byte) 0x65, (byte) 0x73, (byte) 0x74));
+    byte[] bytes = new byte[] {(byte) 0x01, (byte) 0b00000010, (byte) 0x04, (byte) 0x74, (byte) 0x65, (byte) 0x73, (byte) 0x74};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);
+    OptionExtension optionExtension = optionExtensionFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionExtension.getEsn());
@@ -105,11 +102,12 @@ public class OptionExtensionTest {
   public void test_decode_encryption() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(
-        Arrays.asList((byte) 0x01, (byte) 0b00000100, (byte) 0x06, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x12, (byte) 0xD6, (byte) 0x87));
+    byte[] bytes =
+        new byte[] {(byte) 0x01, (byte) 0b00000100, (byte) 0x06, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x12, (byte) 0xD6, (byte) 0x87};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);
+    OptionExtension optionExtension = optionExtensionFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionExtension.getEsn());
@@ -140,10 +138,11 @@ public class OptionExtensionTest {
   public void test_decode_lmDirectCompression() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0b00001000));
+    byte[] bytes = new byte[] {(byte) 0x01, (byte) 0b00001000};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);
+    OptionExtension optionExtension = optionExtensionFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionExtension.getEsn());
@@ -173,10 +172,11 @@ public class OptionExtensionTest {
   public void test_decode_lmDirectRouting() {
 
     // Given
-    Queue<Byte> bytes = new LinkedList<Byte>(Arrays.asList((byte) 0x01, (byte) 0b00010000, (byte) 0x03, (byte) 0x01, (byte) 0x00, (byte) 0x00));
+    byte[] bytes = new byte[] {(byte) 0x01, (byte) 0b00010000, (byte) 0x03, (byte) 0x01, (byte) 0x00, (byte) 0x00};
+    ByteInputStream in = new ByteInputStream(bytes);
 
     // When
-    OptionExtension optionExtension = optionExtensionFieldHandler.decode(bytes);
+    OptionExtension optionExtension = optionExtensionFieldHandler.decode(in);
 
     // Then
     Assert.assertNull(optionExtension.getEsn());

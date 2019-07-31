@@ -1,7 +1,6 @@
 package com.discernible.handler.header.options.extension;
 
-import java.util.Queue;
-
+import com.discernible.handler.ByteInputStream;
 import com.discernible.handler.ByteOutputStream;
 import com.discernible.handler.FieldHandler;
 import com.discernible.message.header.options.extension.AuthenticationField;
@@ -15,10 +14,10 @@ import lombok.Data;
 public class AuthenticationFieldHandler implements FieldHandler<AuthenticationField> {
 
   @Override
-  public AuthenticationField decode(Queue<Byte> messageBytes) {
-    messageBytes.poll(); // Throw away the first byte as we don't need it.
+  public AuthenticationField decode(ByteInputStream in) {
+    in.read(); // Throw away the first byte as we don't need it.
 
-    AuthenticationSubField authenticationSubField = AuthenticationSubField.values()[messageBytes.poll()];
+    AuthenticationSubField authenticationSubField = AuthenticationSubField.values()[in.read()];
 
     return new AuthenticationField(authenticationSubField);
   }
